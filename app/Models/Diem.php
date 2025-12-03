@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Diem extends Model
+{
+    use HasFactory;
+    
+    protected $table = 'diem'; 
+    protected $primaryKey = 'DiemID';
+    public $timestamps = false;       
+
+    protected $fillable = ['SinhVienID', 'MonHocID', 'DiemSo', 'HocKy'];
+    
+    public function sinhVien() {
+        return $this->belongsTo(SinhVien::class, 'SinhVienID', 'SinhVienID');
+    }
+
+    public function monHoc() {
+        return $this->belongsTo(MonHoc::class, 'MonHocID', 'MonHocID');
+    }
+}
