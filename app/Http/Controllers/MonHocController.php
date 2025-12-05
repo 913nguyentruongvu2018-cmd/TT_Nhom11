@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MonHoc;
+use App\Models\ThoiKhoaBieu;
 
 class MonHocController extends Controller
 {
@@ -66,10 +67,12 @@ class MonHocController extends Controller
 
     public function xoa($id)
     {
-        $monHoc = MonHoc::find($id);
-        $monHoc->delete();
-
-        return redirect('/admin/mon-hoc');
+       ThoiKhoaBieu::where('MonHocId',$id)->delete();
+       $monHoc = MonHoc::find($id);
+       if($monHoc) {
+           $monHoc->delete();
+       }
+       return redirect('/admin/mon-hoc')->with('success', 'Đã xóa môn học và lịch học liên quan.');
     }
 
     //test github
