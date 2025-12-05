@@ -25,6 +25,15 @@ class NguoiDungController extends Controller
             'TenDangNhap' => 'required|unique:nguoidung,TenDangNhap',
             'MatKhau' => 'required|min:6',
             'HoTen' => 'required',
+            'VaiTro' => 'required',
+            'SinhVienID'  => 'required_if:VaiTro,SinhVien'
+        ], [
+            'SinhVienID.required_if' => 'Vui lòng chọn hồ sơ để liên kết! Không được để trống.',
+            'TenDangNhap.unique' => 'Tên đăng nhập này đã tồn tại!',
+            'TenDangNhap.required' => 'Vui lòng nhập tên đăng nhập.',
+            'MatKhau.required' => 'Vui lòng nhập mật khẩu.',
+            'HoTen.required' => 'Vui lòng nhập họ tên.',
+            'MatKhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',            
             'VaiTro' => 'required'
         ], [
             'TenDangNhap.unique' => 'Tên đăng nhập này đã tồn tại!',

@@ -16,6 +16,9 @@
                             <option value="{{ $lop->LopID }}">{{ $lop->TenLop }}</option>
                         @endforeach
                     </select>
+                    @error('LopID')
+                        <div style="color:red; font-size:13px; margin-top:2px;">⚠️ {{ $message }}</div>
+                    @enderror
                 </div>
                 <div style="flex:1;">
                     <label>Môn Học:</label>
@@ -33,6 +36,9 @@
                     <option value="{{ $gv->GiangVienID }}">{{ $gv->HoTen }} ({{ $gv->MaGV }})</option>
                 @endforeach
             </select>
+            @error('GiangVienID')
+                <div style="color:red; font-size:13px; margin-top:2px;">⚠️ {{ $message }}</div>
+            @enderror
 
             <div style="display:flex; gap:20px;">
                 <div style="flex:1;">
@@ -49,6 +55,9 @@
                 <div style="flex:1;">
                     <label>Phòng Học:</label>
                     <input type="text" name="PhongHoc" required placeholder="VD: A101" style="width:100%; padding:10px; margin:5px 0;">
+                    @error('PhongHoc')
+                        <div style="color:red; font-size:13px; margin-top:2px;">⚠️ {{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 

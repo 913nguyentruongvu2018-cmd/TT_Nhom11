@@ -41,7 +41,36 @@ class ThoiKhoaBieuController extends Controller
         ], [
             'GioKetThuc.after' => 'Giờ kết thúc phải sau giờ bắt đầu.'
         ]);
+    
+        //Trung Phong
+        $trungPhong = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
+            ->where('PhongHoc', $request->PhongHoc)
+            ->whereTime('GioBatDau', '<', $request->GioKetThuc)
+            ->whereTime('GioKetThuc', '>', $request->GioBatDau)
+            ->exists();
 
+        if ($trungPhong) {
+            return back()->withErrors(['PhongHoc' => 'Phòng học này đã có lớp học vào giờ đó!'])->withInput();
+        }
+        //Trung GV
+        $trungGV = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
+            ->where('GiangVienID', $request->GiangVienID)
+            ->whereTime('GioBatDau', '<', $request->GioKetThuc)
+            ->whereTime('GioKetThuc', '>', $request->GioBatDau)
+            ->exists();
+        if ($trungGV) {
+            return back()->withErrors(['GiangVienID' => 'Giảng viên này đã có lịch dạy lớp khác vào giờ đó!'])->withInput();
+        }
+        //Trung Lop
+        $trungLop = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
+            ->where('LopID', $request->LopID)
+            ->whereTime('GioBatDau', '<', $request->GioKetThuc)
+            ->whereTime('GioKetThuc', '>', $request->GioBatDau)
+            ->exists();
+
+        if ($trungLop) {
+            return back()->withErrors(['LopID' => 'Lớp này đang học môn khác vào giờ đó!'])->withInput();
+        }
 
         ThoiKhoaBieu::create($request->all());
         return redirect('/admin/tkb')->with('success', 'Đã xếp lịch học thành công!');
