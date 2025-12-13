@@ -129,6 +129,9 @@
         <a href="/admin/nguoi-dung" class="{{ Request::is('admin/nguoi-dung*') ? 'active' : '' }}">
             👤 Quản lý Người Dùng
         </a>
+        <a href="/admin/chuyen-nganh">
+            Quản Lý Chuyên Ngành
+        </a>
 
         <form action="/dang-xuat" method="POST" class="logout-form">
             @csrf

@@ -13,9 +13,13 @@ class LopHoc extends Model
     protected $primaryKey = 'LopID'; 
     public $timestamps = false;        
 
-    protected $fillable = ['TenLop', 'GiangVienID'];
+    protected $fillable = ['TenLop', 'GiangVienID','ChuyenNganhID'];
 
     public function giangVien() {
         return $this->belongsTo(GiangVien::class, 'GiangVienID', 'GiangVienID');
+    }
+
+    public function chuyenNganh() {
+        return $this->belongsTo(ChuyenNganh::class, 'ChuyenNganhID', 'ChuyenNganhID');
     }
 }

@@ -31,7 +31,9 @@
                         <td style="font-weight:bold; color:blue;">{{ $gv->MaGV }}</td>
                         <td>{{ $gv->HoTen }}</td>
                         <td>{{ $gv->HocVi }}</td>
-                        <td>{{ $gv->ChuyenNganh }}</td>
+                        <td>
+                            {{ $gv->chuyenNganh->TenChuyenNganh ?? 'Chưa cập nhật' }}
+                        </td>
                         <td>
                             <a href="/admin/giang-vien/sua/{{ $gv->GiangVienID }}" style="color: blue;">Sửa</a> |
                             <a href="/admin/giang-vien/xoa/{{ $gv->GiangVienID }}" style="color: red;"

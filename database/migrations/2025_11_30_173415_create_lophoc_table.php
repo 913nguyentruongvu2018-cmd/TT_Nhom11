@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('TenLop');
             
             $table->unsignedBigInteger('GiangVienID'); 
+            $table->integer('ChuyenNganhID')->nullable();
 
             // $table->foreign('GiangVienID')->references('GiangVienID')->on('giangvien')->onDelete('cascade');
         });

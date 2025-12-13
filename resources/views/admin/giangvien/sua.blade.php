@@ -24,8 +24,14 @@
                 style="width:100%; padding:10px; margin:5px 0;">
 
             <label>Chuyên Ngành:</label>
-            <input type="text" name="ChuyenNganh" value="{{ old('ChuyenNganh', $gv->ChuyenNganh) }}"
-                style="width:100%; padding:10px; margin:5px 0;">
+            <select name="ChuyenNganhID" style="width:100%; padding:10px; margin:5px 0;" required>
+                @foreach ($dsChuyenNganh as $cn)
+                    <option value="{{ $cn->ChuyenNganhID }}"
+                        {{ $gv->ChuyenNganhID == $cn->ChuyenNganhID ? 'selected' : '' }}>
+                        {{ $cn->TenChuyenNganh }}
+                    </option>
+                @endforeach
+            </select>
 
             <button type="submit"
                 style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Cập

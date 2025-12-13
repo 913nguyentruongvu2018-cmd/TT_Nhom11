@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('ChuyenNganh')->nullable();
             
             $table->unsignedBigInteger('NguoiDungID')->nullable();
+            $table->integer('ChuyenNganhID')->nullable();
         });
     }
 

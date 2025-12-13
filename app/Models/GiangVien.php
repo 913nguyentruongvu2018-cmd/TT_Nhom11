@@ -13,5 +13,8 @@ class GiangVien extends Model
     protected $primaryKey = 'GiangVienID';
     public $timestamps = false;           
 
-    protected $fillable = ['MaGV', 'HoTen', 'HocVi', 'ChuyenNganh', 'NguoiDungID'];
+    protected $fillable = ['MaGV', 'HoTen', 'HocVi', 'ChuyenNganhID', 'NguoiDungID'];
+    public function chuyenNganh() {
+        return $this->belongsTo(ChuyenNganh::class, 'ChuyenNganhID', 'ChuyenNganhID');
+    }
 }

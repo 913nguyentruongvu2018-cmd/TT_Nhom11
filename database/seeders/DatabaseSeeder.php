@@ -10,122 +10,125 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. TẠO TÀI KHOẢN ADMIN
+        // 0. GỌI SEEDER CHUYÊN NGÀNH
+        $this->call(ChuyenNganhSeeder::class);
+        
+        // Lấy danh sách ID chuyên ngành
+        $listChuyenNganhIDs = DB::table('chuyennganh')->pluck('ChuyenNganhID')->toArray();
+
+        // Xóa sạch dữ liệu cũ
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('nguoidung')->truncate();
+        DB::table('giangvien')->truncate();
+        DB::table('lophoc')->truncate();
+        DB::table('sinhvien')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        echo "--- ĐANG TẠO DỮ LIỆU VỚI TÊN THẬT ---\n";
+
+        // ================================================================
+        // BỘ DỮ LIỆU TÊN TIẾNG VIỆT
+        // ================================================================
+        $ho = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Hoàng', 'Phan', 'Vũ', 'Võ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý'];
+        $demNam = ['Văn', 'Minh', 'Đức', 'Thành', 'Quốc', 'Tuấn', 'Hữu', 'Công', 'Gia'];
+        $demNu = ['Thị', 'Ngọc', 'Thu', 'Mai', 'Thanh', 'Khánh', 'Hồng', 'Thùy'];
+        $tenNam = ['Hùng', 'Tuấn', 'Dũng', 'Nam', 'Sơn', 'Huy', 'Phúc', 'Long', 'Quân', 'Minh', 'Hiếu', 'Thịnh', 'Trí', 'Tài'];
+        $tenNu = ['Lan', 'Hương', 'Hoa', 'Thảo', 'Trang', 'Linh', 'Huyền', 'Ngân', 'Hằng', 'Nhung', 'Phương', 'Uyên', 'Vy'];
+
+        // Hàm tạo tên ngẫu nhiên
+        $taoTen = function() use ($ho, $demNam, $demNu, $tenNam, $tenNu) {
+            $isNam = rand(0, 1);
+            $chonHo = $ho[array_rand($ho)];
+            if ($isNam) {
+                return $chonHo . ' ' . $demNam[array_rand($demNam)] . ' ' . $tenNam[array_rand($tenNam)];
+            } else {
+                return $chonHo . ' ' . $demNu[array_rand($demNu)] . ' ' . $tenNu[array_rand($tenNu)];
+            }
+        };
+
+        // ================================================================
+        // 1. TẠO ADMIN
+        // ================================================================
         DB::table('nguoidung')->insert([
             'TenDangNhap' => 'admin',
-            'Email' => 'admin@ntv.edu.vn', // Đã có email
-            'MatKhau' => Hash::make('123456'), 
-            'HoTen' => 'Quản Trị Viên',
-            'VaiTro' => 'Admin',
+            'Email'       => 'daotao@ntv.edu.vn',
+            'MatKhau'     => Hash::make('123456'),
+            'HoTen'       => 'Phòng Đào Tạo',
+            'VaiTro'      => 'Admin',
         ]);
 
-        // --- KHAI BÁO BIẾN TRƯỚC KHI DÙNG (Sửa lỗi ảnh 2) ---
-        $soNgauNhien = rand(10000, 99999);
-        $mssv = 'DH522' . $soNgauNhien;             // Tạo biến mssv
-        $emailSinhVien = $mssv . '@student.ntv.vn'; // Tạo biến email
-        // ---------------------------------------------------
+        // ================================================================
+        // 2. TẠO 5 GIẢNG VIÊN (TÊN THẬT)
+        // ================================================================
+        $listGiangVienIDs = [];
+        $hocVis = ['Thạc sĩ', 'Tiến sĩ', 'Giáo sư'];
 
-        // 2. TẠO TÀI KHOẢN SINH VIÊN
-        $studentUserId = DB::table('nguoidung')->insertGetId([
-            'TenDangNhap' => $mssv,        // Dùng biến đã khai báo
-            'Email' => $emailSinhVien,     // Dùng biến đã khai báo
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Nguyễn Văn A',
-            'VaiTro' => 'SinhVien',
-        ]);
+        for ($i = 1; $i <= 5; $i++) {
+            $maGV = 'GV' . str_pad($i, 3, '0', STR_PAD_LEFT);
+            $hoTenGV = $taoTen(); // Tạo tên thật
+            
+            // 2a. User Giảng viên
+            $userId = DB::table('nguoidung')->insertGetId([
+                'TenDangNhap' => strtolower($maGV),
+                'Email'       => strtolower($maGV) . '@ntv.edu.vn',
+                'MatKhau'     => Hash::make('123456'),
+                'HoTen'       => $hoTenGV,
+                'VaiTro'      => 'GiangVien',
+            ]);
 
-        // 3. TẠO HỒ SƠ SINH VIÊN
-        DB::table('sinhvien')->insert([
-            'MaSV' => $mssv,
-            'HoTen' => 'Nguyễn Văn A',
-            'NguoiDungID' => $studentUserId,
-            'Lop' => 'CNTT K15',
-        ]);
+            // 2b. Hồ sơ Giảng viên
+            $gvId = DB::table('giangvien')->insertGetId([
+                'MaGV'          => $maGV,
+                'HoTen'         => $hoTenGV,
+                'HocVi'         => $hocVis[array_rand($hocVis)],
+                'ChuyenNganhID' => $listChuyenNganhIDs[array_rand($listChuyenNganhIDs)],
+                'NguoiDungID'   => $userId,
+            ]);
 
-        // 4. TẠO MÔN HỌC MẪU
-        DB::table('monhoc')->insert([
-            ['TenMonHoc' => 'Lập Trình Web', 'SoTinChi' => 3],
-            ['TenMonHoc' => 'Cơ Sở Dữ Liệu', 'SoTinChi' => 4],
-            ['TenMonHoc' => 'Tiếng Anh Chuyên Ngành', 'SoTinChi' => 2],
-        ]);
+            $listGiangVienIDs[] = $gvId;
+            echo "   + GV: $maGV - $hoTenGV\n";
+        }
 
-        echo "Đã tạo xong dữ liệu SV mẫu! \n";
-        echo "Email SV: $emailSinhVien \n";
+        // ================================================================
+        // 3. TẠO 3 LỚP HỌC MẪU
+        // ================================================================
+        $tenLops = ['CNTT K15', 'KTPM K16', 'HTTT K15'];
+        $listLopIDs = [];
 
-        // 5. TẠO TÀI KHOẢN GIẢNG VIÊN 1 (SỬA LỖI ẢNH 1 TẠI ĐÂY)
-        $gvUserId1 = DB::table('nguoidung')->insertGetId([
-            'TenDangNhap' => 'gv01',
-            'Email' => 'gv01@ntv.edu.vn', // <--- THÊM DÒNG NÀY
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Thầy Giáo Ba',
-            'VaiTro' => 'GiangVien',
-        ]);
+        foreach ($tenLops as $tenLop) {
+            $lopId = DB::table('lophoc')->insertGetId([
+                'TenLop'        => $tenLop,
+                'GiangVienID'   => $listGiangVienIDs[array_rand($listGiangVienIDs)],
+                'ChuyenNganhID' => $listChuyenNganhIDs[array_rand($listChuyenNganhIDs)],
+            ]);
+            $listLopIDs[] = $tenLop; // Lưu tên lớp để gán cho SV
+        }
 
-        // 6. TẠO HỒ SƠ GIẢNG VIÊN 1
-        $gvId1 = DB::table('giangvien')->insertGetId([
-            'MaGV' => 'GV001',
-            'HoTen' => 'Thầy Giáo Ba',
-            'HocVi' => 'Tiến sĩ',
-            'ChuyenNganh' => 'Công nghệ phần mềm',
-            'NguoiDungID' => $gvUserId1,
-        ]);
+        // ================================================================
+        // 4. TẠO 15 SINH VIÊN (TÊN THẬT)
+        // ================================================================
+        for ($k = 1; $k <= 15; $k++) {
+            $mssv = 'SV24' . str_pad($k, 3, '0', STR_PAD_LEFT);
+            $hoTenSV = $taoTen(); // Tạo tên thật
 
-        // 7. TẠO TÀI KHOẢN GIẢNG VIÊN 2 (SỬA LỖI ẢNH 1 TẠI ĐÂY)
-        $gvUserId2 = DB::table('nguoidung')->insertGetId([
-            'TenDangNhap' => 'gv02',
-            'Email' => 'gv02@ntv.edu.vn', // <--- THÊM DÒNG NÀY
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Cô Giáo Tư',
-            'VaiTro' => 'GiangVien',
-        ]);
+            // 4a. User Sinh viên
+            $userId = DB::table('nguoidung')->insertGetId([
+                'TenDangNhap' => $mssv,
+                'Email'       => $mssv . '@student.ntv.edu.vn',
+                'MatKhau'     => Hash::make('123456'),
+                'HoTen'       => $hoTenSV,
+                'VaiTro'      => 'SinhVien',
+            ]);
 
-        // 8. TẠO HỒ SƠ GIẢNG VIÊN 2
-        $gvId2 = DB::table('giangvien')->insertGetId([
-            'MaGV' => 'GV002',
-            'HoTen' => 'Cô Giáo Tư',
-            'HocVi' => 'Thạc sĩ',
-            'ChuyenNganh' => 'Hệ thống thông tin',
-            'NguoiDungID' => $gvUserId2,
-        ]);
-
-        // 9. TẠO LỚP HỌC
-        DB::table('lophoc')->insert([
-            ['TenLop' => 'CNTT K15', 'GiangVienID' => $gvId1],
-            ['TenLop' => 'CNTT K16', 'GiangVienID' => $gvId2],
-            ['TenLop' => 'KTPM K15', 'GiangVienID' => $gvId1],
-        ]);
-
-        // 10. TẠO THỜI KHÓA BIỂU MẪU
-        DB::table('thoikhoabieu')->insert([
-            [
-                'LopID' => 1,
-                'MonHocID' => 1,
-                'GiangVienID' => 1,
-                'ThuTrongTuan' => 'Hai',
-                'GioBatDau' => '07:00:00',
-                'GioKetThuc' => '11:00:00',
-                'PhongHoc' => 'A101',
-            ],
-            [
-                'LopID' => 1,
-                'MonHocID' => 2,
-                'GiangVienID' => 2,
-                'ThuTrongTuan' => 'Tu',
-                'GioBatDau' => '13:00:00',
-                'GioKetThuc' => '16:30:00',
-                'PhongHoc' => 'Lab 3',
-            ],
-            [
-                'LopID' => 2,
-                'MonHocID' => 1,
-                'GiangVienID' => 1,
-                'ThuTrongTuan' => 'Sau',
-                'GioBatDau' => '07:00:00',
-                'GioKetThuc' => '11:00:00',
-                'PhongHoc' => 'C305',
-            ],
-        ]);
+            // 4b. Hồ sơ Sinh viên
+            DB::table('sinhvien')->insert([
+                'MaSV'        => $mssv,
+                'HoTen'       => $hoTenSV,
+                'NguoiDungID' => $userId,
+                'Lop'         => $listLopIDs[array_rand($listLopIDs)],
+            ]);
+        }
         
-        echo "Đã nạp full dữ liệu thành công!";
+        echo "✅ Xong! Đã tạo 15 SV với tên tiếng Việt ngẫu nhiên.\n";
     }
 }

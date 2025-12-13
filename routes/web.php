@@ -59,13 +59,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/giang-vien/xoa/{id}', [GiangVienController::class, 'xoa']);
 
     Route::get('/admin/lop-hoc', [LopHocController::class, 'index']);
-    
+
     Route::get('/admin/lop-hoc/them', [LopHocController::class, 'hienFormThem']);
     Route::post('/admin/lop-hoc/them', [LopHocController::class, 'luuLopHoc']);
-    
+
     Route::get('/admin/lop-hoc/sua/{id}', [LopHocController::class, 'hienFormSua']);
     Route::post('/admin/lop-hoc/sua/{id}', [LopHocController::class, 'capNhat']);
-    
+
     Route::get('/admin/lop-hoc/xoa/{id}', [LopHocController::class, 'xoa']);
 
 
@@ -75,14 +75,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/tkb/xoa/{id}', [ThoiKhoaBieuController::class, 'xoa']);
 
     Route::get('/admin/nguoi-dung', [NguoiDungController::class, 'index']);
-    
+
     Route::get('/admin/nguoi-dung/them', [NguoiDungController::class, 'hienFormThem']);
     Route::post('/admin/nguoi-dung/them', [NguoiDungController::class, 'luuNguoiDung']);
-    
+
     Route::get('/admin/nguoi-dung/sua/{id}', [NguoiDungController::class, 'hienFormSua']);
     Route::post('/admin/nguoi-dung/sua/{id}', [NguoiDungController::class, 'capNhat']);
-    
+
     Route::get('/admin/nguoi-dung/xoa/{id}', [NguoiDungController::class, 'xoa']);
+
+    // Route Quản lý Chuyên Ngành
+    Route::get('/admin/chuyen-nganh', [App\Http\Controllers\ChuyenNganhController::class, 'index']);
+
+    Route::get('/admin/chuyen-nganh/them', [App\Http\Controllers\ChuyenNganhController::class, 'hienFormThem']);
+    Route::post('/admin/chuyen-nganh/them', [App\Http\Controllers\ChuyenNganhController::class, 'luuChuyenNganh']);
+
+    Route::get('/admin/chuyen-nganh/sua/{id}', [App\Http\Controllers\ChuyenNganhController::class, 'hienFormSua']);
+    Route::post('/admin/chuyen-nganh/sua/{id}', [App\Http\Controllers\ChuyenNganhController::class, 'capNhat']);
+
+    Route::get('/admin/chuyen-nganh/xoa/{id}', [App\Http\Controllers\ChuyenNganhController::class, 'xoa']);
 
     // test git
     Route::get('/', function () {

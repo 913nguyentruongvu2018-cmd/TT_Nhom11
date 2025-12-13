@@ -24,8 +24,12 @@
                 style="width:100%; padding:10px; margin:5px 0;">
 
             <label>Chuyên Ngành:</label>
-            <input type="text" name="ChuyenNganh" value="{{ old('ChuyenNganh') }}" placeholder="VD: Công nghệ phần mềm"
-                style="width:100%; padding:10px; margin:5px 0;">
+            <select name="ChuyenNganhID" style="width:100%; padding:10px; margin:5px 0;" required>
+                <option value="">-- Chọn chuyên ngành --</option>
+                @foreach ($dsChuyenNganh as $cn)
+                    <option value="{{ $cn->ChuyenNganhID }}">{{ $cn->TenChuyenNganh }}</option>
+                @endforeach
+            </select>
 
             <button type="submit"
                 style="background:green; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Lưu

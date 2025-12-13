@@ -1,58 +1,62 @@
 <?php
-//update
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LopHoc;
 use App\Models\GiangVien;
+use App\Models\ChuyenNganh; // Nhớ thêm
 
 class LopHocController extends Controller
 {
-    // 1. Danh sách
     public function index() {
-        $dsLop = LopHoc::with('giangVien')->get();
+        // Load cả giảng viên và chuyên ngành
+        $dsLop = LopHoc::with(['giangVien', 'chuyenNganh'])->get();
         return view('admin.lophoc.index', ['dsLop' => $dsLop]);
     }
 
-    // 2. Thêm mới
     public function hienFormThem() {
         $dsGiangVien = GiangVien::all();
-        return view('admin.lophoc.them', ['dsGiangVien' => $dsGiangVien]);
+        $dsChuyenNganh = ChuyenNganh::all(); // Lấy list CN
+        return view('admin.lophoc.them', [
+            'dsGiangVien' => $dsGiangVien, 
+            'dsChuyenNganh' => $dsChuyenNganh
+        ]);
     }
 
     public function luuLopHoc(Request $request) {
         $request->validate([
             'TenLop' => 'required|unique:lophoc,TenLop',
             'GiangVienID' => 'required',
-        ], [
-            'TenLop.unique' => 'Tên lớp này đã tồn tại!',
-            'TenLop.required' => 'Vui lòng nhập tên lớp.',
-            'GiangVienID.required' => 'Vui lòng chọn giảng viên chủ nhiệm.'
+            'ChuyenNganhID' => 'required',
         ]);
 
         LopHoc::create($request->all());
         return redirect('/admin/lop-hoc')->with('success', 'Đã tạo lớp học mới!');
     }
 
-    // 3. Sửa
     public function hienFormSua($id) {
         $lop = LopHoc::find($id);
         $dsGiangVien = GiangVien::all();
-        return view('admin.lophoc.sua', ['lop' => $lop, 'dsGiangVien' => $dsGiangVien]);
+        $dsChuyenNganh = ChuyenNganh::all();
+        return view('admin.lophoc.sua', [
+            'lop' => $lop, 
+            'dsGiangVien' => $dsGiangVien,
+            'dsChuyenNganh' => $dsChuyenNganh
+        ]);
     }
 
     public function capNhat(Request $request, $id) {
         $request->validate([
             'TenLop' => 'required|unique:lophoc,TenLop,'.$id.',LopID',
             'GiangVienID' => 'required',
+            'ChuyenNganhID' => 'required',
         ]);
 
         $lop = LopHoc::find($id);
         $lop->update($request->all());
-        return redirect('/admin/lop-hoc')->with('success', 'Cập nhật lớp thành công!');
+        return redirect('/admin/lop-hoc')->with('success', 'Cập nhật thành công!');
     }
 
-    // 4. Xóa
     public function xoa($id) {
         LopHoc::find($id)->delete();
         return redirect('/admin/lop-hoc')->with('success', 'Đã xóa lớp học.');
