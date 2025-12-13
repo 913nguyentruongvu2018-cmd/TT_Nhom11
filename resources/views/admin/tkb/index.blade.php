@@ -2,39 +2,38 @@
 
 @section('noidung')
     <div class="card">
-        <h1>Quản Lý Thời Khóa Biểu</h1>
-        
-        <a href="/admin/tkb/them" style="background:green; color:white; padding:10px; text-decoration:none; border-radius:5px; margin-bottom:15px; display:inline-block;">+ Xếp Lịch Học Mới</a>
+        <h1>Danh Sách Sinh Viên</h1>
+        <a href="/admin/sinh-vien/them" style="background:green; color:white; padding:10px; text-decoration:none; border-radius:5px; margin-bottom:15px; display:inline-block;">+ Thêm Sinh Viên</a>
 
-        @if(session('success'))
+        @if (session('success'))
             <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">✅ {{ session('success') }}</div>
         @endif
 
-        <table>
-            <thead>
+        <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse; border-color: #ddd;">
+            <thead style="background-color: #f2f2f2;">
                 <tr>
-                    <th>Thứ</th>
-                    <th>Lớp</th>
-                    <th>Môn Học</th>
-                    <th>Giảng Viên</th>
-                    <th>Thời Gian</th>
-                    <th>Phòng</th>
+                    <th>ID</th>
+                    <th>Mã SV</th>
+                    <th>Họ Tên</th>
+                    <th>Ngày Sinh</th> <th>Lớp</th>
                     <th>Hành Động</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($dsTKB as $tkb)
-                <tr>
-                    <td style="font-weight:bold;">{{ $tkb->ThuTrongTuan }}</td>
-                    <td style="color:blue; font-weight:bold;">{{ $tkb->lopHoc->TenLop }}</td>
-                    <td>{{ $tkb->monHoc->TenMonHoc }}</td>
-                    <td>{{ $tkb->giangVien->HoTen }}</td>
-                    <td>{{ date('H:i', strtotime($tkb->GioBatDau)) }} - {{ date('H:i', strtotime($tkb->GioKetThuc)) }}</td>
-                    <td style="font-weight:bold; color:red;">{{ $tkb->PhongHoc }}</td>
+                @foreach ($dsSinhVien as $sv)
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td>{{ $sv->id }}</td>
+                    <td style="font-weight:bold; color:blue;">{{ $sv->MaSV }}</td>
+                    <td>{{ $sv->HoTen }}</td>
+                    
                     <td>
-                        <a href="/admin/tkb/xoa/{{ $tkb->TKBid }}" 
-                           style="color: red; text-decoration:none;"
-                           onclick="return confirm('Xóa lịch học này?');">Xóa</a>
+                        {{ $sv->NgaySinh ? date('d/m/Y', strtotime($sv->NgaySinh)) : '' }}
+                    </td>
+
+                    <td>{{ $sv->Lop }}</td>
+                    <td>
+                        <a href="/admin/sinh-vien/sua/{{ $sv->id }}" style="color: blue;">Sửa</a> |
+                        <a href="/admin/sinh-vien/xoa/{{ $sv->id }}" style="color: red;" onclick="return confirm('Xóa sinh viên này?');">Xóa</a>
                     </td>
                 </tr>
                 @endforeach

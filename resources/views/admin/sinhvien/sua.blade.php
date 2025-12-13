@@ -9,27 +9,30 @@
             @csrf
 
             <label>Mã Sinh Viên:</label>
-            <input type="text" name="MaSV" value="{{ old('MaSV', $sv->MaSV) }}" required
-                style="width:100%; padding:10px; margin:5px 0;">
-            @error('MaSV')
-                <div style="color:red">{{ $message }}</div>
-            @enderror
+            <input type="text" name="MaSV" value="{{ $sv->MaSV }}" readonly
+                style="width:100%; padding:10px; margin:5px 0; background-color: #eee; cursor: not-allowed;">
 
             <label>Họ Tên:</label>
             <input type="text" name="HoTen" value="{{ old('HoTen', $sv->HoTen) }}" required
                 style="width:100%; padding:10px; margin:5px 0;">
 
             <label>Lớp:</label>
-            <input type="text" name="Lop" value="{{ old('Lop', $sv->Lop) }}" required
-                style="width:100%; padding:10px; margin:5px 0;">
+            <select name="Lop" style="width:100%; padding:10px; margin:5px 0;">
+                @foreach ($dsLop as $lop)
+                    <option value="{{ $lop->TenLop }}" {{ $lop->TenLop == $sv->Lop ? 'selected' : '' }}>
+                        {{ $lop->TenLop }}
+                    </option>
+                @endforeach
+            </select>
 
             <label>Ngày Sinh:</label>
-            <input type="date" name="NgaySinh" value="{{ old('NgaySinh', $sv->NgaySinh) }}"
+            <input type="date" name="NgaySinh" value="{{ old('NgaySinh', $sv->NgaySinh) }}" required
                 style="width:100%; padding:10px; margin:5px 0;">
 
             <button type="submit"
-                style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Cập
-                Nhật</button>
+                style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">
+                Cập Nhật
+            </button>
         </form>
     </div>
 @endsection

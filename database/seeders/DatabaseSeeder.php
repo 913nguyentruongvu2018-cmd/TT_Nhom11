@@ -13,24 +13,32 @@ class DatabaseSeeder extends Seeder
         // 1. TẠO TÀI KHOẢN ADMIN
         DB::table('nguoidung')->insert([
             'TenDangNhap' => 'admin',
-            'MatKhau' => Hash::make('123456'), // Mật khẩu là 123456
+            'Email' => 'admin@ntv.edu.vn', // Đã có email
+            'MatKhau' => Hash::make('123456'), 
             'HoTen' => 'Quản Trị Viên',
             'VaiTro' => 'Admin',
         ]);
 
-        // 2. TẠO TÀI KHOẢN SINH VIÊN (Và lấy luôn ID vừa tạo)
+        // --- KHAI BÁO BIẾN TRƯỚC KHI DÙNG (Sửa lỗi ảnh 2) ---
+        $soNgauNhien = rand(10000, 99999);
+        $mssv = 'DH522' . $soNgauNhien;             // Tạo biến mssv
+        $emailSinhVien = $mssv . '@student.ntv.vn'; // Tạo biến email
+        // ---------------------------------------------------
+
+        // 2. TẠO TÀI KHOẢN SINH VIÊN
         $studentUserId = DB::table('nguoidung')->insertGetId([
-            'TenDangNhap' => 'sinhvien',
+            'TenDangNhap' => $mssv,        // Dùng biến đã khai báo
+            'Email' => $emailSinhVien,     // Dùng biến đã khai báo
             'MatKhau' => Hash::make('123456'),
             'HoTen' => 'Nguyễn Văn A',
             'VaiTro' => 'SinhVien',
         ]);
 
-        // 3. TẠO HỒ SƠ SINH VIÊN (Nối với tài khoản trên)
+        // 3. TẠO HỒ SƠ SINH VIÊN
         DB::table('sinhvien')->insert([
-            'MaSV' => 'SV001',
+            'MaSV' => $mssv,
             'HoTen' => 'Nguyễn Văn A',
-            'NguoiDungID' => $studentUserId, // Tự động điền ID
+            'NguoiDungID' => $studentUserId,
             'Lop' => 'CNTT K15',
         ]);
 
@@ -41,19 +49,19 @@ class DatabaseSeeder extends Seeder
             ['TenMonHoc' => 'Tiếng Anh Chuyên Ngành', 'SoTinChi' => 2],
         ]);
 
-        echo "Đã tạo xong dữ liệu mẫu! \n";
-        echo "Admin: admin / 123456 \n";
-        echo "SinhVien: sinhvien / 123456 \n";
+        echo "Đã tạo xong dữ liệu SV mẫu! \n";
+        echo "Email SV: $emailSinhVien \n";
 
-        // 5. TẠO TÀI KHOẢN GIẢNG VIÊN 1
+        // 5. TẠO TÀI KHOẢN GIẢNG VIÊN 1 (SỬA LỖI ẢNH 1 TẠI ĐÂY)
         $gvUserId1 = DB::table('nguoidung')->insertGetId([
             'TenDangNhap' => 'gv01',
+            'Email' => 'gv01@ntv.edu.vn', // <--- THÊM DÒNG NÀY
             'MatKhau' => Hash::make('123456'),
             'HoTen' => 'Thầy Giáo Ba',
             'VaiTro' => 'GiangVien',
         ]);
 
-        // 6. TẠO HỒ SƠ GIẢNG VIÊN 1 (Lấy ID vừa tạo ở trên)
+        // 6. TẠO HỒ SƠ GIẢNG VIÊN 1
         $gvId1 = DB::table('giangvien')->insertGetId([
             'MaGV' => 'GV001',
             'HoTen' => 'Thầy Giáo Ba',
@@ -62,9 +70,10 @@ class DatabaseSeeder extends Seeder
             'NguoiDungID' => $gvUserId1,
         ]);
 
-        // 7. TẠO TÀI KHOẢN GIẢNG VIÊN 2
+        // 7. TẠO TÀI KHOẢN GIẢNG VIÊN 2 (SỬA LỖI ẢNH 1 TẠI ĐÂY)
         $gvUserId2 = DB::table('nguoidung')->insertGetId([
             'TenDangNhap' => 'gv02',
+            'Email' => 'gv02@ntv.edu.vn', // <--- THÊM DÒNG NÀY
             'MatKhau' => Hash::make('123456'),
             'HoTen' => 'Cô Giáo Tư',
             'VaiTro' => 'GiangVien',
@@ -79,37 +88,37 @@ class DatabaseSeeder extends Seeder
             'NguoiDungID' => $gvUserId2,
         ]);
 
-        // 9. TẠO LỚP HỌC (Gán cho giảng viên chủ nhiệm)
+        // 9. TẠO LỚP HỌC
         DB::table('lophoc')->insert([
-            ['TenLop' => 'CNTT K15', 'GiangVienID' => $gvId1], // Thầy Ba chủ nhiệm
-            ['TenLop' => 'CNTT K16', 'GiangVienID' => $gvId2], // Cô Tư chủ nhiệm
+            ['TenLop' => 'CNTT K15', 'GiangVienID' => $gvId1],
+            ['TenLop' => 'CNTT K16', 'GiangVienID' => $gvId2],
             ['TenLop' => 'KTPM K15', 'GiangVienID' => $gvId1],
         ]);
+
         // 10. TẠO THỜI KHÓA BIỂU MẪU
-        // Lưu ý: ID 1, 2, 3... tương ứng với thứ tự bạn tạo Lớp/Môn/GV ở trên
         DB::table('thoikhoabieu')->insert([
             [
-                'LopID' => 1,        // Lớp CNTT K15
-                'MonHocID' => 1,     // Môn Lập Trình Web
-                'GiangVienID' => 1,  // Thầy Ba
+                'LopID' => 1,
+                'MonHocID' => 1,
+                'GiangVienID' => 1,
                 'ThuTrongTuan' => 'Hai',
                 'GioBatDau' => '07:00:00',
                 'GioKetThuc' => '11:00:00',
                 'PhongHoc' => 'A101',
             ],
             [
-                'LopID' => 1,        // Vẫn lớp CNTT K15
-                'MonHocID' => 2,     // Môn Cơ Sở Dữ Liệu
-                'GiangVienID' => 2,  // Cô Tư
+                'LopID' => 1,
+                'MonHocID' => 2,
+                'GiangVienID' => 2,
                 'ThuTrongTuan' => 'Tu',
                 'GioBatDau' => '13:00:00',
                 'GioKetThuc' => '16:30:00',
                 'PhongHoc' => 'Lab 3',
             ],
             [
-                'LopID' => 2,        // Lớp CNTT K16
-                'MonHocID' => 1,     // Môn Lập Trình Web
-                'GiangVienID' => 1,  // Thầy Ba
+                'LopID' => 2,
+                'MonHocID' => 1,
+                'GiangVienID' => 1,
                 'ThuTrongTuan' => 'Sau',
                 'GioBatDau' => '07:00:00',
                 'GioKetThuc' => '11:00:00',
@@ -117,6 +126,6 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
         
-        echo "Đã nạp full dữ liệu mẫu (Admin, SV, GV, Môn, Lớp, TKB)!";
+        echo "Đã nạp full dữ liệu thành công!";
     }
 }

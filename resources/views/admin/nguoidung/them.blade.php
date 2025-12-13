@@ -75,7 +75,6 @@
                 area.style.display = 'none';
             }
         }
-        // Chạy ngay khi vào trang
         toggleStudentSelect();
     </script>
 @endsection

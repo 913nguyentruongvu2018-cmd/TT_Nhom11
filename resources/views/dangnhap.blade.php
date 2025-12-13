@@ -66,22 +66,14 @@
             border-radius: 4px;
             text-align: center;
         }
-
-        /* --- CSS MỚI CHO LINK ĐĂNG KÝ --- */
-        .register-link {
+        
+        /* Ghi chú nhỏ */
+        .note {
+            font-size: 12px;
+            color: #666;
             text-align: center;
             margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .register-link a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
+            font-style: italic;
         }
     </style>
 </head>
@@ -100,19 +92,23 @@
         @if ($errors->any())
             <div class="error">{{ $errors->first() }}</div>
         @endif
+        
+        @if (session('error'))
+            <div class="error">{{ session('error') }}</div>
+        @endif
 
         @csrf
 
-        <label>Tên đăng nhập:</label>
-        <input type="text" name="TenDangNhap" required placeholder="Nhập tên đăng nhập">
+        <label for="Email">Email nhà trường:</label>
+        <input type="email" id="Email" name="Email" required placeholder="VD: DH522xxxxx@student.ntv.vn" autofocus>
 
-        <label>Mật khẩu:</label>
-        <input type="password" name="MatKhau" required placeholder="Nhập mật khẩu">
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="MatKhau" required placeholder="Nhập mật khẩu">
 
         <button type="submit">Đăng Nhập</button>
-
-        <div class="register-link">
-            Chưa có tài khoản? <a href="/dang-ky">Đăng ký tại đây</a>
+        
+        <div class="note">
+            Vui lòng sử dụng tài khoản Email do nhà trường cấp.
         </div>
     </form>
 

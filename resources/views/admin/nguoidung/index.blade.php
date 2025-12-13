@@ -17,21 +17,24 @@
             <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:10px;">⚠️ {{ $errors->first() }}</div>
         @endif
 
-        <table>
+        <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse; border-color: #ddd;">
             <thead>
-                <tr>
+                <tr style="background-color: #f2f2f2; text-align: left;">
                     <th>ID</th>
-                    <th>Tên Đăng Nhập</th>
-                    <th>Họ Tên</th>
+                    <th>Email</th> <th>Họ Tên</th>
                     <th>Vai Trò</th>
                     <th>Hành Động</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($dsNguoiDung as $user)
-                    <tr>
+                    <tr style="border-bottom: 1px solid #ddd;">
                         <td>{{ $user->id }}</td>
-                        <td style="font-weight:bold; color:blue;">{{ $user->TenDangNhap }}</td>
+                        
+                        <td style="font-weight:bold; color:blue;">
+                            {{ $user->Email }}
+                        </td>
+
                         <td>{{ $user->HoTen }}</td>
                         <td>
                             @if ($user->VaiTro == 'Admin')

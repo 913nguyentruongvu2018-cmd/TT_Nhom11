@@ -12,8 +12,8 @@ use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\ThoiKhoaBieuController;
 use App\Http\Controllers\NguoiDungController;
 
-Route::get('/dang-ky', [DangKyController::class, 'hienForm']);
-Route::post('/dang-ky', [DangKyController::class, 'xuLyDangKy']);
+//Route::get('/dang-ky', [DangKyController::class, 'hienForm']);
+//Route::post('/dang-ky', [DangKyController::class, 'xuLyDangKy']);
 
 
 Route::get('/dang-nhap', [DangNhapController::class, 'hienForm'])->name('login'); // Laravel cần name='login'

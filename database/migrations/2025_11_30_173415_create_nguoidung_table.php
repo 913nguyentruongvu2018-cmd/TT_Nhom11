@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('TenDangNhap')->unique();
+            $table->string('Email')->unique();
             $table->string('MatKhau');
             $table->string('HoTen');
             $table->enum('VaiTro', ['Admin', 'GiangVien', 'SinhVien'])->default('SinhVien');
