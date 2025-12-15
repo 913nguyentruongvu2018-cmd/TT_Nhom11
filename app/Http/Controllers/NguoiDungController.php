@@ -5,55 +5,89 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\NguoiDung;
 use App\Models\SinhVien;
+use App\Models\GiangVien; // <--- THÊM DÒNG NÀY
 use Illuminate\Support\Facades\Hash;
 
 class NguoiDungController extends Controller
 {
-    public function index() {
-        $dsNguoiDung = NguoiDung::all();
+    // 1. Index: Đã thêm chức năng tìm kiếm
+    public function index(Request $request) {
+        $query = NguoiDung::query();
+
+        // Tìm theo từ khóa (Tên hoặc Email)
+        if ($request->filled('tu_khoa')) {
+            $query->where(function($q) use ($request) {
+                $q->where('HoTen', 'LIKE', '%' . $request->tu_khoa . '%')
+                  ->orWhere('Email', 'LIKE', '%' . $request->tu_khoa . '%');
+            });
+        }
+
+        // Tìm theo vai trò
+        if ($request->filled('vai_tro')) {
+            $query->where('VaiTro', $request->vai_tro);
+        }
+
+        // Lấy dữ liệu mới nhất lên đầu
+        $dsNguoiDung = $query->orderBy('id', 'desc')->get();
+        
         return view('admin.nguoidung.index', ['dsNguoiDung' => $dsNguoiDung]);
     }
 
+    // 2. Form Thêm: Lấy thêm danh sách Giảng viên chưa có TK
     public function hienFormThem() {
         $svChuaCoTK = SinhVien::whereNull('NguoiDungID')->get();
         
-        return view('admin.nguoidung.them', ['svChuaCoTK' => $svChuaCoTK]);
+        // Lấy giảng viên chưa có tài khoản
+        $gvChuaCoTK = GiangVien::whereNull('NguoiDungID')->get(); 
+        
+        return view('admin.nguoidung.them', [
+            'svChuaCoTK' => $svChuaCoTK,
+            'gvChuaCoTK' => $gvChuaCoTK // Truyền sang view
+        ]);
     }
 
+    // 3. Lưu: Đã thêm Email và Logic cho Giảng viên
     public function luuNguoiDung(Request $request) {
         $request->validate([
             'TenDangNhap' => 'required|unique:nguoidung,TenDangNhap',
-            'MatKhau' => 'required|min:6',
-            'HoTen' => 'required',
-            'VaiTro' => 'required',
-            'SinhVienID'  => 'required_if:VaiTro,SinhVien'
+            'Email'       => 'required|email|unique:nguoidung,Email', // <--- QUAN TRỌNG: Thêm check Email
+            'MatKhau'     => 'required|min:6',
+            'HoTen'       => 'required',
+            'VaiTro'      => 'required',
+            'SinhVienID'  => 'required_if:VaiTro,SinhVien',
+            'GiangVienID' => 'required_if:VaiTro,GiangVien' // <--- Bắt buộc chọn GV nếu role là GV
         ], [
-            'SinhVienID.required_if' => 'Vui lòng chọn hồ sơ để liên kết! Không được để trống.',
+            'SinhVienID.required_if' => 'Vui lòng chọn hồ sơ Sinh viên để liên kết!',
+            'GiangVienID.required_if' => 'Vui lòng chọn hồ sơ Giảng viên để liên kết!',
             'TenDangNhap.unique' => 'Tên đăng nhập này đã tồn tại!',
-            'TenDangNhap.required' => 'Vui lòng nhập tên đăng nhập.',
-            'MatKhau.required' => 'Vui lòng nhập mật khẩu.',
-            'HoTen.required' => 'Vui lòng nhập họ tên.',
-            'MatKhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',            
-            'VaiTro' => 'required'
-        ], [
-            'TenDangNhap.unique' => 'Tên đăng nhập này đã tồn tại!',
-            'TenDangNhap.required' => 'Vui lòng nhập tên đăng nhập.',
+            'Email.required' => 'Vui lòng nhập Email.',
+            'Email.unique' => 'Email này đã được sử dụng.',
             'MatKhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự.'
         ]);
 
+        // Tạo User
         $user = NguoiDung::create([
             'TenDangNhap' => $request->TenDangNhap,
-            'MatKhau' => Hash::make($request->MatKhau),
-            'HoTen' => $request->HoTen,
-            'VaiTro' => $request->VaiTro
+            'Email'       => $request->Email, // <--- SỬA LỖI SQL: Thêm dòng này
+            'MatKhau'     => Hash::make($request->MatKhau),
+            'HoTen'       => $request->HoTen,
+            'VaiTro'      => $request->VaiTro
         ]);
 
+        // Xử lý liên kết Sinh Viên
         if ($request->VaiTro == 'SinhVien' && $request->SinhVienID) {
             $sinhVien = SinhVien::find($request->SinhVienID);
-            
             if ($sinhVien) {
                 $sinhVien->NguoiDungID = $user->id; 
                 $sinhVien->save();
+            }
+        }
+        // Xử lý liên kết Giảng Viên (MỚI)
+        elseif ($request->VaiTro == 'GiangVien' && $request->GiangVienID) {
+            $giangVien = GiangVien::find($request->GiangVienID);
+            if ($giangVien) {
+                $giangVien->NguoiDungID = $user->id; 
+                $giangVien->save();
             }
         }
 
@@ -67,19 +101,29 @@ class NguoiDungController extends Controller
 
     public function capNhat(Request $request, $id) {
         $request->validate([
+            // Kiểm tra trùng tên đăng nhập (trừ chính nó ra)
             'TenDangNhap' => 'required|unique:nguoidung,TenDangNhap,'.$id,
+            // Kiểm tra trùng Email (trừ chính nó ra) <-- QUAN TRỌNG
+            'Email' => 'required|email|unique:nguoidung,Email,'.$id, 
             'HoTen' => 'required',
             'VaiTro' => 'required'
+        ], [
+            'TenDangNhap.unique' => 'Tên đăng nhập này đã có người dùng.',
+            'Email.unique' => 'Email này đã có người dùng.',
+            'Email.required' => 'Vui lòng nhập Email.',
+            'HoTen.required' => 'Vui lòng nhập họ tên.'
         ]);
 
         $user = NguoiDung::find($id);
         
         $data = [
             'TenDangNhap' => $request->TenDangNhap,
-            'HoTen' => $request->HoTen,
-            'VaiTro' => $request->VaiTro,
+            'Email'       => $request->Email, // <-- THÊM DÒNG NÀY
+            'HoTen'       => $request->HoTen,
+            'VaiTro'      => $request->VaiTro,
         ];
 
+        // Nếu có nhập mật khẩu mới thì mới cập nhật, không thì giữ nguyên
         if ($request->filled('MatKhau')) {
             $data['MatKhau'] = Hash::make($request->MatKhau);
         }
@@ -97,6 +141,4 @@ class NguoiDungController extends Controller
         NguoiDung::find($id)->delete();
         return redirect('/admin/nguoi-dung')->with('success', 'Đã xóa tài khoản.');
     }
-
-
 }
