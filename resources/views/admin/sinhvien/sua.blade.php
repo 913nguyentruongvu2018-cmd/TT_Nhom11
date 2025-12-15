@@ -5,8 +5,9 @@
         <a href="/admin/sinh-vien">← Quay lại</a>
         <h2>Cập Nhật Sinh Viên</h2>
 
-        <form action="/admin/sinh-vien/sua/{{ $sv->id }}" method="POST">
+        <form action="/admin/sinh-vien/sua/{{ $sv->MaSV }}" method="POST">
             @csrf
+            @method('POST')
 
             <label>Mã Sinh Viên:</label>
             <input type="text" name="MaSV" value="{{ $sv->MaSV }}" readonly
@@ -16,13 +17,22 @@
             <input type="text" name="HoTen" value="{{ old('HoTen', $sv->HoTen) }}" required
                 style="width:100%; padding:10px; margin:5px 0;">
 
-            <label>Lớp:</label>
-            <select name="Lop" style="width:100%; padding:10px; margin:5px 0;">
+           <label>Lớp:</label>
+
+            <select name="Lop" required style="width:100%; padding:10px; margin:5px 0 15px 0;">
+
+                <option value="">-- Chọn Lớp Học --</option>
+
                 @foreach ($dsLop as $lop)
-                    <option value="{{ $lop->TenLop }}" {{ $lop->TenLop == $sv->Lop ? 'selected' : '' }}>
+
+                    <option value="{{ $lop->LopID }}" {{ old('Lop', $sv->Lop) == $lop->LopID ? 'selected' : '' }}>
+
                         {{ $lop->TenLop }}
+
                     </option>
+
                 @endforeach
+
             </select>
 
             <label>Ngày Sinh:</label>

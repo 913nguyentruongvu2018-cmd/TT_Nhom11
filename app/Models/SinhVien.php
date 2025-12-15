@@ -15,7 +15,7 @@ class SinhVien extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
-    protected $fillable = ['MaSV', 'HoTen', 'NguoiDungID', 'Lop'];
+    protected $fillable = ['MaSV', 'HoTen', 'NguoiDungID', 'Lop', 'NgaySinh'];
 
     
     public function lopHoc() {

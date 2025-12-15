@@ -130,6 +130,9 @@ class SinhVienController extends Controller
     public function capNhat(Request $request, $id)
     {
         $sinhvien = SinhVien::find($id);
+        if (!$sinhvien) {
+            return redirect('/admin/sinh-vien')->with('error', 'Không tìm thấy sinh viên để cập nhật!');
+        }
 
         // Validate
         $request->validate([
