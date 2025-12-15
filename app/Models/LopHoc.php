@@ -13,7 +13,7 @@ class LopHoc extends Model
     protected $primaryKey = 'LopID'; 
     public $timestamps = false;        
 
-    protected $fillable = ['TenLop', 'GiangVienID','ChuyenNganhID'];
+    protected $fillable = ['TenLop','NamHoc', 'GiangVienID','ChuyenNganhID'];
 
     public function giangVien() {
         return $this->belongsTo(GiangVien::class, 'GiangVienID', 'GiangVienID');

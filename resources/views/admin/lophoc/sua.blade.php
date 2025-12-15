@@ -21,7 +21,7 @@
             <select name="ChuyenNganhID" style="width:100%; padding:10px; margin:5px 0;" required>
                 <option value="">-- Chọn chuyên ngành --</option>
                 @foreach ($dsChuyenNganh as $cn)
-                    <option value="{{ $cn->ChuyenNganhID }}" 
+                    <option value="{{ $cn->ChuyenNganhID }}"
                         {{ old('ChuyenNganhID', $lop->ChuyenNganhID) == $cn->ChuyenNganhID ? 'selected' : '' }}>
                         {{ $cn->TenChuyenNganh }}
                     </option>
@@ -33,12 +33,15 @@
             <select name="GiangVienID" style="width:100%; padding:10px; margin:5px 0;" required>
                 <option value="">-- Chọn giảng viên --</option>
                 @foreach ($dsGiangVien as $gv)
-                    <option value="{{ $gv->GiangVienID }}" 
+                    <option value="{{ $gv->GiangVienID }}"
                         {{ old('GiangVienID', $lop->GiangVienID) == $gv->GiangVienID ? 'selected' : '' }}>
                         {{ $gv->HoTen }} ({{ $gv->MaGV }})
                     </option>
                 @endforeach
             </select>
+            <label>Năm Học:</label>
+            <input type="text" name="NamHoc" value="{{ old('NamHoc', $lop->NamHoc) }}" required
+                style="width:100%; padding:10px; margin:5px 0;">
 
             <button type="submit"
                 style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">

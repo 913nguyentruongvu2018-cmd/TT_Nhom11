@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('lophoc', function (Blueprint $table) {
             $table->id('LopID'); 
             $table->string('TenLop');
+
+            $table->string('NamHoc', 20)->default('2024-2025');
             
             $table->unsignedBigInteger('GiangVienID'); 
             $table->integer('ChuyenNganhID')->nullable();
