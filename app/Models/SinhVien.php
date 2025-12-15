@@ -20,7 +20,7 @@ class SinhVien extends Model
     
     public function lopHoc() {
         
-        
+       
         return $this->belongsTo(LopHoc::class, 'Lop', 'LopID');
     }
 }
