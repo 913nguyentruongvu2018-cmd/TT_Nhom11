@@ -4,7 +4,7 @@
     <div class="card">
         <h1>Quản Lý Người Dùng</h1>
 
-        {{-- KHUNG TÌM KIẾM (MỚI THÊM) --}}
+        
         <div style="background:#f1f1f1; padding:15px; margin-bottom:20px; border-radius:5px;">
             <form action="/admin/nguoi-dung" method="GET" style="display:flex; gap:10px; align-items:center;">
                 <input type="text" name="tu_khoa" value="{{ request('tu_khoa') }}" 
@@ -24,7 +24,7 @@
                 <a href="/admin/nguoi-dung" style="color:#666; margin-left:10px; text-decoration:none;">🔄 Reset</a>
             </form>
         </div>
-        {{-- HẾT KHUNG TÌM KIẾM --}}
+        
 
         <a href="/admin/nguoi-dung/them"
             style="background:green; color:white; padding:10px; text-decoration:none; border-radius:5px; margin-bottom:15px; display:inline-block;">+

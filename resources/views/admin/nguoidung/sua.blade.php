@@ -15,7 +15,7 @@
                 <div style="color:red; font-size:14px;">{{ $message }}</div>
             @enderror
 
-            {{-- THÊM Ô EMAIL VÀO ĐÂY --}}
+            
             <label>Email:</label>
             <input type="email" name="Email" value="{{ old('Email', $user->Email) }}" required
                 style="width:100%; padding:10px; margin:5px 0;">
