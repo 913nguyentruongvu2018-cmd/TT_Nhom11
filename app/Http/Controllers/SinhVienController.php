@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class SinhVienController extends Controller
 {
-    
+
     public function index(Request $request)
     {
-        $query = SinhVien::with('lopHoc'); 
+        $query = SinhVien::with('lopHoc');
 
         if ($request->has('chua_co_tk')) {
             $query->whereNull('NguoiDungID');
@@ -24,30 +24,32 @@ class SinhVienController extends Controller
         if ($request->filled('tu_khoa')) {
             $query->where(function ($q) use ($request) {
                 $q->where('HoTen', 'LIKE', '%' . $request->tu_khoa . '%')
-                  ->orWhere('MaSV', 'LIKE', '%' . $request->tu_khoa . '%');
+                    ->orWhere('MaSV', 'LIKE', '%' . $request->tu_khoa . '%');
             });
         }
-        
+
         if ($request->sap_xep == 'az') {
             $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) ASC");
+        } elseif ($request->sap_xep == 'za') {
+            $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) DESC");
         } else {
             $query->orderBy('MaSV', 'ASC');
         }
 
-        $dsSinhVien = $query->paginate(10); 
+        $dsSinhVien = $query->paginate(50);
         $dsLop = LopHoc::all();
 
         return view('admin.sinhvien.index', ['dsSinhVien' => $dsSinhVien, 'dsLop' => $dsLop]);
     }
 
-    
+
     public function hienFormThem()
     {
         $dsLop = LopHoc::all();
         return view('admin.sinhvien.them', compact('dsLop'));
     }
 
-    
+
     public function luuSinhVien(Request $request)
     {
         $request->validate([
@@ -65,29 +67,29 @@ class SinhVienController extends Controller
             'HoTen' => $request->HoTen,
             'NgaySinh' => $request->NgaySinh,
             'Lop' => $request->Lop,
-            'NguoiDungID' => null 
+            'NguoiDungID' => null
         ]);
 
         return redirect('/admin/sinh-vien')->with('success', 'Đã thêm hồ sơ sinh viên (Chưa có tài khoản)!');
     }
 
-    
+
     public function hienFormSua($id)
     {
-        
+
         $sv = SinhVien::where('id', $id)->first();
-        if (!$sv) $sv = SinhVien::where('MaSV', $id)->first(); 
+        if (!$sv) $sv = SinhVien::where('MaSV', $id)->first();
 
         if (!$sv) return redirect('/admin/sinh-vien')->with('error', 'Không tìm thấy sinh viên!');
-        
+
         $dsLop = LopHoc::all();
         return view('admin.sinhvien.sua', compact('sv', 'dsLop'));
     }
 
-    
+
     public function capNhat(Request $request, $id)
     {
-        
+
         $sinhvien = SinhVien::where('id', $id)->first();
         if (!$sinhvien) $sinhvien = SinhVien::where('MaSV', $id)->first();
 
@@ -98,14 +100,14 @@ class SinhVienController extends Controller
             'Lop' => 'required',
         ]);
 
-        
+
         $sinhvien->update([
             'HoTen' => $request->HoTen,
             'NgaySinh' => $request->NgaySinh,
             'Lop' => $request->Lop,
         ]);
 
-        
+
         if ($sinhvien->NguoiDungID) {
             $user = NguoiDung::find($sinhvien->NguoiDungID);
             if ($user) {
@@ -116,13 +118,13 @@ class SinhVienController extends Controller
         return redirect('/admin/sinh-vien')->with('success', 'Cập nhật thông tin thành công!');
     }
 
-    
+
     public function xoa($id)
     {
         $sv = SinhVien::where('id', $id)->orWhere('MaSV', $id)->first();
         if ($sv) {
-            
-            
+
+
             $sv->delete();
         }
         return back()->with('success', 'Đã xóa sinh viên.');

@@ -11,23 +11,30 @@ use Illuminate\Support\Facades\Hash;
 class NguoiDungController extends Controller
 {
     
-    public function index(Request $request) {
-        $query = NguoiDung::query();
+    
 
-        if ($request->filled('tu_khoa')) {
-            $query->where(function($q) use ($request) {
-                $q->where('HoTen', 'LIKE', '%' . $request->tu_khoa . '%')
-                  ->orWhere('Email', 'LIKE', '%' . $request->tu_khoa . '%')
-                  ->orWhere('TenDangNhap', 'LIKE', '%' . $request->tu_khoa . '%');
-            });
-        }
-        if ($request->filled('vai_tro')) {
-            $query->where('VaiTro', $request->vai_tro);
-        }
+public function index(Request $request) {
+    $query = NguoiDung::query();
 
-        $dsNguoiDung = $query->orderBy('id', 'asc')->get();
-        return view('admin.nguoidung.index', ['dsNguoiDung' => $dsNguoiDung]);
+    
+    if ($request->filled('tu_khoa')) {
+        $query->where(function($q) use ($request) {
+            $q->where('HoTen', 'LIKE', '%' . $request->tu_khoa . '%')
+              ->orWhere('Email', 'LIKE', '%' . $request->tu_khoa . '%')
+              ->orWhere('TenDangNhap', 'LIKE', '%' . $request->tu_khoa . '%');
+        });
     }
+
+    
+    if ($request->filled('vai_tro')) {
+        $query->where('VaiTro', $request->vai_tro);
+    }
+
+    
+    $dsNguoiDung = $query->orderBy('id', 'asc')->paginate(50);
+
+    return view('admin.nguoidung.index', ['dsNguoiDung' => $dsNguoiDung]);
+}
 
     
     public function hienFormThem() {

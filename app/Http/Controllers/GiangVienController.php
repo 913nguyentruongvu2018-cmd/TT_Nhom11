@@ -9,49 +9,60 @@ use App\Models\ChuyenNganh;
 
 class GiangVienController extends Controller
 {
-    
-    public function index(Request $request) {
+
+    public function index(Request $request)
+    {
         $query = GiangVien::with('chuyenNganh');
 
-        
+
         if ($request->has('chua_co_tk')) {
             $query->whereNull('NguoiDungID');
         }
-        
 
-        
+
+
         if ($request->filled('tu_khoa')) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('HoTen', 'LIKE', '%' . $request->tu_khoa . '%')
-                  ->orWhere('MaGV', 'LIKE', '%' . $request->tu_khoa . '%');
+                    ->orWhere('MaGV', 'LIKE', '%' . $request->tu_khoa . '%');
             });
         }
 
-        
+
         if ($request->filled('cn_id')) {
             $query->where('ChuyenNganhID', $request->cn_id);
         }
 
-        $dsGiangVien = $query->paginate(10);
+        if ($request->sap_xep == 'az') {
+            $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) ASC");
+        } elseif ($request->sap_xep == 'za') {
+            $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) DESC");
+        } else {
+            $query->orderBy('MaGV', 'ASC');
+        }
+
+        $dsGiangVien = $query->paginate(50);
         $dsChuyenNganh = ChuyenNganh::all();
 
         return view('admin.giangvien.index', [
-            'dsGiangVien' => $dsGiangVien, 
+            'dsGiangVien' => $dsGiangVien,
             'dsChuyenNganh' => $dsChuyenNganh
         ]);
     }
 
-    
-    
-    
-    
-    
-    public function hienFormThem() {
+
+
+
+
+
+    public function hienFormThem()
+    {
         $dsChuyenNganh = ChuyenNganh::all();
         return view('admin.giangvien.them', ['dsChuyenNganh' => $dsChuyenNganh]);
     }
 
-    public function luuGiangVien(Request $request) {
+    public function luuGiangVien(Request $request)
+    {
         $request->validate([
             'MaGV' => 'required|unique:giangvien,MaGV',
             'HoTen' => 'required',
@@ -67,18 +78,20 @@ class GiangVienController extends Controller
         return redirect('/admin/giang-vien')->with('success', 'Đã thêm hồ sơ giảng viên!');
     }
 
-    public function hienFormSua($id) {
+    public function hienFormSua($id)
+    {
         $gv = GiangVien::where('GiangVienID', $id)->first();
-        if(!$gv) $gv = GiangVien::where('MaGV', $id)->first();
+        if (!$gv) $gv = GiangVien::where('MaGV', $id)->first();
         $dsChuyenNganh = ChuyenNganh::all();
         return view('admin.giangvien.sua', ['gv' => $gv, 'dsChuyenNganh' => $dsChuyenNganh]);
     }
 
-    public function capNhat(Request $request, $id) {
+    public function capNhat(Request $request, $id)
+    {
         $gv = GiangVien::where('GiangVienID', $id)->orWhere('MaGV', $id)->first();
-        if(!$gv) return back()->with('error', 'Không tìm thấy giảng viên.');
+        if (!$gv) return back()->with('error', 'Không tìm thấy giảng viên.');
         $request->validate([
-            'MaGV' => 'required|unique:giangvien,MaGV,'.$gv->GiangVienID.',GiangVienID',
+            'MaGV' => 'required|unique:giangvien,MaGV,' . $gv->GiangVienID . ',GiangVienID',
             'HoTen' => 'required',
             'ChuyenNganhID' => 'required',
         ]);
@@ -95,9 +108,10 @@ class GiangVienController extends Controller
         return redirect('/admin/giang-vien')->with('success', 'Cập nhật thành công!');
     }
 
-    public function xoa($id) {
+    public function xoa($id)
+    {
         $gv = GiangVien::where('GiangVienID', $id)->orWhere('MaGV', $id)->first();
-        if($gv) $gv->delete();
+        if ($gv) $gv->delete();
         return redirect('/admin/giang-vien')->with('success', 'Đã xóa giảng viên.');
     }
 }
