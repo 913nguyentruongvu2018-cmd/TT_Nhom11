@@ -1,5 +1,4 @@
 <?php
-//update
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,9 +10,9 @@ class MonHocController extends Controller
     public function index()
     {
         $danhSachMon = MonHoc::all();
-
         return view('admin.monhoc.index', ['dsMon' => $danhSachMon]);
     }
+
     public function hienFormThem()
     {
         return view('admin.monhoc.them');
@@ -21,26 +20,25 @@ class MonHocController extends Controller
 
     public function luuMonHoc(Request $request)
     {
-        $request->validate(
-            [
-                'TenMonHoc' => 'required|unique:monhoc,TenMonHoc',
-                'SoTinChi' => 'required|integer|min:1',
-            ],
-            [
-                'TenMonHoc.unique' => 'Tên môn học này đã tồn tại rồi',
-                'TenMonHoc.required' => 'Vui lòng nhập tên môn học.',
-                
-                'SoTinChi.required' => 'Vui lòng nhập số tín chỉ.',
-            ]
-        );
-
-        MonHoc::create([
-            'TenMonHoc' => $request->TenMonHoc,
-            'SoTinChi' => $request->SoTinChi
+        $request->validate([
+            'MaMon'     => 'required|unique:monhoc,MaMon', 
+            'TenMonHoc' => 'required|unique:monhoc,TenMonHoc',
+            'SoTinChi'  => 'required|integer|min:1',
+        ], [
+            'MaMon.unique' => 'Mã môn này đã tồn tại.',
+            'MaMon.required' => 'Vui lòng nhập mã môn.',
+            'TenMonHoc.unique' => 'Tên môn học này đã tồn tại.',
         ]);
 
-        return redirect('/admin/mon-hoc');
+        MonHoc::create([
+            'MaMon'     => $request->MaMon, 
+            'TenMonHoc' => $request->TenMonHoc,
+            'SoTinChi'  => $request->SoTinChi
+        ]);
+
+        return redirect('/admin/mon-hoc')->with('success', 'Thêm môn học thành công!');
     }
+
     public function hienFormSua($id)
     {
         $monHoc = MonHoc::find($id); 
@@ -50,19 +48,19 @@ class MonHocController extends Controller
     public function capNhat(Request $request, $id)
     {
         $request->validate([
-            'TenMonHoc' => 'required|unique:monhoc,TenMonHoc,' . $id . ',MonHocID',
-            'SoTinChi' => 'required|integer|min:1',
-        ], [
-            'TenMonHoc.unique' => 'Tên môn học này đã bị trùng với môn khác!',
+            'MaMon'     => 'required|unique:monhoc,MaMon,'.$id.',MonHocID', 
+            'TenMonHoc' => 'required|unique:monhoc,TenMonHoc,'.$id.',MonHocID',
+            'SoTinChi'  => 'required|integer|min:1',
         ]);
+
         $monHoc = MonHoc::find($id);
-
         $monHoc->update([
+            'MaMon'     => $request->MaMon, 
             'TenMonHoc' => $request->TenMonHoc,
-            'SoTinChi' => $request->SoTinChi
+            'SoTinChi'  => $request->SoTinChi
         ]);
 
-        return redirect('/admin/mon-hoc');
+        return redirect('/admin/mon-hoc')->with('success', 'Cập nhật thành công!');
     }
 
     public function xoa($id)
@@ -74,6 +72,4 @@ class MonHocController extends Controller
        }
        return redirect('/admin/mon-hoc')->with('success', 'Đã xóa môn học và lịch học liên quan.');
     }
-
-    //test github
 }

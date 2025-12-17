@@ -13,5 +13,5 @@ class MonHoc extends Model
     protected $primaryKey = 'MonHocID';
     public $timestamps = false; 
 
-    protected $fillable = ['TenMonHoc', 'SoTinChi'];
+    protected $fillable = ['MaMon','TenMonHoc', 'SoTinChi'];
 }

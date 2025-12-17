@@ -25,7 +25,7 @@ class NguoiDungController extends Controller
             $query->where('VaiTro', $request->vai_tro);
         }
 
-        $dsNguoiDung = $query->orderBy('id', 'desc')->paginate(10);
+        $dsNguoiDung = $query->orderBy('id', 'asc')->get();
         return view('admin.nguoidung.index', ['dsNguoiDung' => $dsNguoiDung]);
     }
 

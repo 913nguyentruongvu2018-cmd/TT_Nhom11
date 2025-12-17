@@ -15,7 +15,9 @@ class SinhVienController extends Controller
     {
         $query = SinhVien::with('lopHoc'); 
 
-        
+        if ($request->has('chua_co_tk')) {
+            $query->whereNull('NguoiDungID');
+        }
         if ($request->filled('lop_id')) {
             $query->where('Lop', $request->lop_id);
         }

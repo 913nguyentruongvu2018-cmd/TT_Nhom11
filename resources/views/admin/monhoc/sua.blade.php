@@ -1,27 +1,34 @@
 @extends('layouts.admin')
 
 @section('noidung')
-    <div class="card" style="width: 500px; margin: 0 auto;">
-        <a href="/admin/mon-hoc">← Quay lại</a>
-        <h2>Sửa Môn Học</h2>
+<div class="card" style="width: 500px; margin: 0 auto;">
+    <a href="/admin/mon-hoc">← Quay lại</a>
+    <h2>Sửa Môn Học</h2>
 
-        <form action="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" method="POST">
-            @csrf
+    <form action="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" method="POST">
+        @csrf
 
-            <label>Tên Môn Học:</label>
-            <input type="text" name="TenMonHoc" value="{{ old('TenMonHoc', $mon->TenMonHoc) }}" required
-                style="width:100%; padding:10px; margin:5px 0;">
-            @error('TenMonHoc')
-                <div style="color:red">{{ $message }}</div>
-            @enderror
+        <label>Mã Môn Học:</label>
+        <input type="text" name="MaMon" value="{{ old('MaMon', $mon->MaMon) }}" required
+            style="width:100%; padding:10px; margin:5px 0;">
+        @error('MaMon')
+        <div style="color:red">{{ $message }}</div>
+        @enderror
 
-            <label>Số Tín Chỉ:</label>
-            <input type="number" name="SoTinChi" value="{{ old('SoTinChi', $mon->SoTinChi) }}" min="1" required
-                style="width:100%; padding:10px; margin:5px 0;">
+        <label>Tên Môn Học:</label>
+        <input type="text" name="TenMonHoc" value="{{ old('TenMonHoc', $mon->TenMonHoc) }}" required
+            style="width:100%; padding:10px; margin:5px 0;">
+        @error('TenMonHoc')
+        <div style="color:red">{{ $message }}</div>
+        @enderror
 
-            <button type="submit"
-                style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Cập
-                Nhật</button>
-        </form>
-    </div>
+        <label>Số Tín Chỉ:</label>
+        <input type="number" name="SoTinChi" value="{{ old('SoTinChi', $mon->SoTinChi) }}" min="1" required
+            style="width:100%; padding:10px; margin:5px 0;">
+
+        <button type="submit"
+            style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Cập
+            Nhật</button>
+    </form>
+</div>
 @endsection

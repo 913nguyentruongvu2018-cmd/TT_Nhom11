@@ -7,24 +7,24 @@ use Illuminate\Support\Facades\DB;
 
 class ChuyenNganhSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Xóa dữ liệu cũ để tránh trùng lặp khi chạy lại
-        DB::table('chuyennganh')->delete();
-
-        $danhSach = [
-            ['MaCN' => 'CNTT', 'TenChuyenNganh' => 'Công nghệ thông tin'],
-            ['MaCN' => 'KTPM', 'TenChuyenNganh' => 'Kỹ thuật phần mềm'],
-            ['MaCN' => 'HTTT', 'TenChuyenNganh' => 'Hệ thống thông tin'],
-            ['MaCN' => 'KHMT', 'TenChuyenNganh' => 'Khoa học máy tính'],
-            ['MaCN' => 'MMT',  'TenChuyenNganh' => 'Mạng máy tính & TT'],
-            ['MaCN' => 'KTDT', 'TenChuyenNganh' => 'Kỹ thuật điện tử'],
-            ['MaCN' => 'TUD',  'TenChuyenNganh' => 'Tự động hóa'],
-            ['MaCN' => 'QTKD', 'TenChuyenNganh' => 'Quản trị kinh doanh'],
-            ['MaCN' => 'KT',   'TenChuyenNganh' => 'Kế toán'],
-            ['MaCN' => 'NNA',  'TenChuyenNganh' => 'Ngôn ngữ Anh'],
+        $nganhs = [
+            ['CNTT', 'Công nghệ thông tin'],
+            ['KTPM', 'Kỹ thuật phần mềm'],
+            ['HTTT', 'Hệ thống thông tin'],
+            ['MMT',  'Mạng máy tính & TT'],
+            ['KT',   'Kế toán'],
+            ['QTVP', 'Quản trị văn phòng'],
+            ['NNA',  'Ngôn ngữ Anh'],
         ];
 
-        DB::table('chuyennganh')->insert($danhSach);
+        foreach ($nganhs as $n) {
+            DB::table('chuyennganh')->insert([
+                'MaCN' => $n[0],
+                'TenChuyenNganh' => $n[1]
+            ]);
+        }
+        echo "   + Đã tạo Chuyên ngành.\n";
     }
 }

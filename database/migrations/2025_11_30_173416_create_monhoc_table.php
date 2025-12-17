@@ -13,9 +13,9 @@ public function up()
 {
     Schema::create('monhoc', function (Blueprint $table) {
         $table->id('MonHocID');
-        $table->string('TenMonHoc');
+        $table->string('MaMon')->unique(); 
+        $table->string('TenMonHoc');       
         $table->integer('SoTinChi')->default(1);
-        
     });
 }
 
