@@ -34,13 +34,13 @@ class SinhVienController extends Controller
             });
         }
 
-        // 4. LOGIC SẮP XẾP A-Z
+        // 4. LOGIC SẮP XẾP THEO TÊN 
         if ($request->sap_xep == 'az') {
-            $query->orderBy('HoTen', 'ASC'); // A -> Z
+            $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) ASC");
         } elseif ($request->sap_xep == 'za') {
-            $query->orderBy('HoTen', 'DESC'); // Z -> A
+            $query->orderByRaw("SUBSTRING_INDEX(HoTen, ' ', -1) DESC");
         } else {
-            $query->orderBy('MaSV', 'ASC'); // Mặc định xếp theo Mã
+            $query->orderBy('MaSV', 'ASC'); 
         }
 
         // 5. Lấy dữ liệu cuối cùng
