@@ -90,6 +90,6 @@
             </tbody>
         </table>
         
-        <div style="margin-top: 10px;">{{ $dsSinhVien->appends(request()->all())->links() }}</div>
+        <div style="margin-top: 10px;">{{ $dsSinhVien->appends(request()->all())->links('phantrang') }}</div>
     </div>
 @endsection

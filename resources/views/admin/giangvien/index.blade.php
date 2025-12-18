@@ -82,6 +82,6 @@
             </tbody>
         </table>
         
-        <div style="margin-top:15px;">{{ $dsGiangVien->appends(request()->all())->links() }}</div>
+        <div style="margin-top:15px;">{{ $dsGiangVien->appends(request()->all())->links('phantrang') }}</div>
     </div>
 @endsection

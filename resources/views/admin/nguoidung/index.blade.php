@@ -78,7 +78,7 @@
         </tbody>
     </table>
     <div style="margin-top: 15px;">
-        {{ $dsNguoiDung->appends(request()->all())->links() }}
+        {{ $dsNguoiDung->appends(request()->all())->links('phantrang') }}
     </div>
 </div>
 @endsection
