@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MonHoc;
 use App\Models\ThoiKhoaBieu;
+use App\Models\Diem;
 
 class MonHocController extends Controller
 {
@@ -66,6 +67,7 @@ class MonHocController extends Controller
     public function xoa($id)
     {
        ThoiKhoaBieu::where('MonHocId',$id)->delete();
+       Diem::where('MonHocID',$id)->delete();
        $monHoc = MonHoc::find($id);
        if($monHoc) {
            $monHoc->delete();

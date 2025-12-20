@@ -166,7 +166,7 @@
         <a href="/admin/sinh-vien" class="{{ Request::is('admin/sinh-vien*') ? 'active' : '' }}">
             🎓 Sinh viên
         </a>
-        <a href="/admin/diem/nhap" class="{{ Request::is('admin/diem*') ? 'active' : '' }}">
+        <a href="/admin/diem" class="{{ Request::is('admin/diem*') ? 'active' : '' }}">
             📝 Nhập Điểm
         </a>
 

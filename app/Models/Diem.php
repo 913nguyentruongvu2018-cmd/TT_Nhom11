@@ -16,7 +16,7 @@ class Diem extends Model
     protected $fillable = ['SinhVienID', 'MonHocID', 'DiemSo', 'HocKy'];
     
     public function sinhVien() {
-        return $this->belongsTo(SinhVien::class, 'SinhVienID', 'SinhVienID');
+        return $this->belongsTo(SinhVien::class, 'SinhVienID', 'id');
     }
 
     public function monHoc() {

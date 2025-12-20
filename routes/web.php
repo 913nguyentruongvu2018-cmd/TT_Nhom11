@@ -33,8 +33,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/mon-hoc/sua/{id}', [MonHocController::class, 'capNhat']);
     Route::get('/admin/mon-hoc/xoa/{id}', [MonHocController::class, 'xoa']);
 
+    // Quản lý Điểm
+    Route::get('/admin/diem', [DiemController::class, 'index']);
     Route::get('/admin/diem/nhap', [DiemController::class, 'hienFormNhap']);
     Route::post('/admin/diem/nhap', [DiemController::class, 'luuDiem']);
+
+    Route::get('/admin/diem/sua/{id}', [DiemController::class, 'hienFormSua']);
+    Route::post('/admin/diem/sua/{id}', [DiemController::class, 'capNhat']);
+
+    Route::get('/admin/diem/xoa/{id}', [DiemController::class, 'xoa']);
 
     Route::get('/sinh-vien/dashboard', [DiemController::class, 'xemDiemCaNhan']);
 
