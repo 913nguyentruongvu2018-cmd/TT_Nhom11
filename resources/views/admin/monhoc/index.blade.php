@@ -30,7 +30,10 @@
                 <td style="font-weight:bold;">{{ $mon->MaMon }}</td> {{-- Hiển thị mã --}}
                 <td style="color:blue;">{{ $mon->TenMonHoc }}</td>
                 <td>{{ $mon->SoTinChi }}</td>
-                <td>...</td>
+                <td>
+                    <a href="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" style="color:blue;">Sửa</a> | 
+                    <a href="/admin/mon-hoc/xoa/{{ $mon->MonHocID }}" style="color:red;" onclick="return confirm('Xóa môn học này?')">Xóa</a>
+                </td>
             </tr>
             @endforeach
         </tbody>
