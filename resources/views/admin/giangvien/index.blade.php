@@ -25,7 +25,7 @@
                     @endforeach
                 </select>
 
-                {{-- Ô SẮP XẾP --}}
+                
                 <select name="sap_xep" style="padding:8px; border:1px solid #ccc;">
                     <option value="">Sắp xếp: Mặc định</option>
                     <option value="az" {{ request('sap_xep') == 'az' ? 'selected' : '' }}>Tên: A ➜ Z</option>

@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Xóa sạch dữ liệu cũ để tránh trùng lặp
+        
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('nguoidung')->truncate();
         DB::table('chuyennganh')->truncate();
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         echo "🚀 ĐANG KHỞI TẠO DỮ LIỆU MẪU...\n";
 
-        // 2. Tạo Admin trước
+        
         DB::table('nguoidung')->insert([
             'TenDangNhap' => 'admin',
             'Email'       => 'admin@ntv.edu.vn',
@@ -31,13 +31,14 @@ class DatabaseSeeder extends Seeder
             'VaiTro'      => 'Admin',
         ]);
 
-        // 3. Gọi các Seeder con
+        
         $this->call([
             ChuyenNganhSeeder::class,
-            MonHocSeeder::class,    // Mới thêm
-            GiangVienSeeder::class, // Tạo GV + Tài khoản
+            MonHocSeeder::class,    
+            GiangVienSeeder::class, 
             LopHocSeeder::class,
-            SinhVienSeeder::class,  // Tạo SV + Tài khoản
+            SinhVienSeeder::class,
+            DiemSeeder::class,  
         ]);
 
         echo "✅ HOÀN TẤT! Dữ liệu đã sẵn sàng.\n";

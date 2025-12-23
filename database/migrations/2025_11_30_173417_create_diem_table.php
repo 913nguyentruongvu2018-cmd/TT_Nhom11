@@ -18,10 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('MonHocID');
 
             $table->float('DiemSo');
-            $table->string('HocKy')->nullable();
 
             $table->foreign('SinhVienID')->references('SinhVienID')->on('sinhvien')->onDelete('cascade');
-            // $table->foreign('MonHocID')->references('MonHocID')->on('monhoc')->onDelete('cascade');
+    
         });
     }
 

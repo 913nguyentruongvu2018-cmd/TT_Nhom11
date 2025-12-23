@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Mã Môn</th> {{-- Thêm cột --}}
+                <th>Mã Môn</th> 
                 <th>Tên Môn Học</th>
                 <th>Số Tín Chỉ</th>
                 <th>Hành Động</th>
@@ -27,7 +27,7 @@
             @foreach ($dsMon as $mon)
             <tr>
                 <td>{{ $mon->MonHocID }}</td>
-                <td style="font-weight:bold;">{{ $mon->MaMon }}</td> {{-- Hiển thị mã --}}
+                <td style="font-weight:bold;">{{ $mon->MaMon }}</td> 
                 <td style="color:blue;">{{ $mon->TenMonHoc }}</td>
                 <td>{{ $mon->SoTinChi }}</td>
                 <td>

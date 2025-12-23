@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('GiangVienID'); 
             $table->integer('ChuyenNganhID')->nullable();
 
-            // $table->foreign('GiangVienID')->references('GiangVienID')->on('giangvien')->onDelete('cascade');
+            
         });
     }
 

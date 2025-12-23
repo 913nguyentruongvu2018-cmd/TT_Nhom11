@@ -8,7 +8,7 @@
         <form action="/admin/nguoi-dung/them" method="POST">
             @csrf
 
-            {{-- Tự động chọn Role nếu có trên URL --}}
+            
             <label>Vai Trò:</label>
             <select name="VaiTro" id="roleSelect" style="width:100%; padding:10px; margin:5px 0;"
                 onchange="handleRoleChange()">
@@ -17,7 +17,7 @@
                 <option value="Admin" {{ (old('VaiTro') ?? request('role')) == 'Admin' ? 'selected' : '' }}>Admin</option>
             </select>
 
-            {{-- Sinh Viên --}}
+            
             <div id="studentSelectArea" style="margin:10px 0; border:1px dashed blue; padding:10px; display:none;">
                 <label style="color:blue; font-weight:bold;">Chọn Sinh viên cần cấp tài khoản:</label>
                 <select name="SinhVienID" id="selectSinhVien" style="width:100%; padding:10px;" onchange="autoFill('sv')">
@@ -26,7 +26,7 @@
                         <option value="{{ $sv->id }}" 
                                 data-code="{{ $sv->MaSV }}" 
                                 data-name="{{ $sv->HoTen }}"
-                                {{-- Tự động chọn đúng người nếu ID khớp với URL --}}
+                                
                                 {{ (old('SinhVienID') ?? request('id')) == $sv->id ? 'selected' : '' }}>
                             {{ $sv->MaSV }} - {{ $sv->HoTen }}
                         </option>
@@ -34,7 +34,7 @@
                 </select>
             </div>
 
-            {{-- Giảng Viên --}}
+            
             <div id="lecturerSelectArea" style="margin:10px 0; border:1px dashed orange; padding:10px; display:none;">
                 <label style="color:orange; font-weight:bold;">Chọn Giảng viên cần cấp tài khoản:</label>
                 <select name="GiangVienID" id="selectGiangVien" style="width:100%; padding:10px;" onchange="autoFill('gv')">
@@ -50,7 +50,7 @@
                 </select>
             </div>
 
-            {{-- Các ô input (Giữ nguyên như cũ) --}}
+            
             <label>Tên Đăng Nhập (Tự động):</label>
             <input type="text" name="TenDangNhap" id="TenDangNhap" style="width:100%; padding:10px; margin:5px 0; background:#e9ecef;" readonly>
 
@@ -78,13 +78,13 @@
 
             if (role === 'SinhVien') {
                 svArea.style.display = 'block';
-                // Nếu có chọn sẵn (do PHP pre-select), kích hoạt điền thông tin luôn
+                
                 if(document.getElementById("selectSinhVien").value) autoFill('sv');
             } else if (role === 'GiangVien') {
                 gvArea.style.display = 'block';
                 if(document.getElementById("selectGiangVien").value) autoFill('gv');
             } else {
-                // Admin: Cho nhập tay
+                
                 document.getElementById("TenDangNhap").readOnly = false;
                 document.getElementById("TenDangNhap").style.backgroundColor = "white";
                 document.getElementById("HoTen").readOnly = false;
@@ -103,7 +103,7 @@
                 document.getElementById("TenDangNhap").value = code;
                 document.getElementById("HoTen").value = name;
                 
-                // Khóa lại
+                
                 document.getElementById("TenDangNhap").readOnly = true;
                 document.getElementById("HoTen").readOnly = true;
                 document.getElementById("TenDangNhap").style.backgroundColor = "#e9ecef";
@@ -111,7 +111,7 @@
             }
         }
 
-        // Chạy ngay khi load trang để xử lý trường hợp bấm từ nút "Tạo TK"
+        
         window.onload = function() {
             handleRoleChange();
         };

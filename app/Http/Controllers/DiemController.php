@@ -7,115 +7,151 @@ use App\Models\Diem;
 use App\Models\SinhVien;
 use App\Models\MonHoc;
 use App\Models\LopHoc;
-use Illuminate\Support\Facades\Auth;
 
 class DiemController extends Controller
 {
-    //DANH SÁCH & QUẢN LÝ 
+    
     public function index(Request $request)
     {
-        $query = Diem::with(['sinhVien', 'monHoc']);
-        if ($request->filled('sv_id')) {
-            $query->where('SinhVienID', $request->sv_id);
-        }
-        if ($request->filled('mh_id')) {
-            $query->where('MonHocID', $request->mh_id);
-        }
-        $dsDiem = $query->orderBy('DiemID', 'desc')->paginate(20);
-
-    
-        $dsSinhVien = SinhVien::all();
+        $dsLop = LopHoc::all();
         $dsMonHoc = MonHoc::all();
+        $query = SinhVien::query();
+
+        if ($request->filled('lop_id')) {
+            $query->where('Lop', $request->lop_id);
+        }
+        if ($request->filled('tu_khoa')) {
+            $tuKhoa = $request->tu_khoa;
+            $query->where(function($q) use ($tuKhoa) {
+                $q->where('HoTen', 'LIKE', "%{$tuKhoa}%")
+                  ->orWhere('MaSV', 'LIKE', "%{$tuKhoa}%");
+            });
+        }
+        $dsSinhVien = $query->orderBy('MaSV', 'asc')->paginate(20);
+
+        $monHocDuocChon = null;
+        if ($request->filled('mh_id')) {
+            $monHocDuocChon = MonHoc::find($request->mh_id);
+            $svIDs = $dsSinhVien->pluck('id');
+            $bangDiem = Diem::where('MonHocID', $request->mh_id)
+                            ->whereIn('SinhVienID', $svIDs)->get()->keyBy('SinhVienID');
+            foreach ($dsSinhVien as $sv) {
+                $sv->diem_hien_tai = $bangDiem->get($sv->id);
+            }
+        }
 
         return view('admin.diem.index', [
-            'dsDiem' => $dsDiem,
             'dsSinhVien' => $dsSinhVien,
+            'dsLop' => $dsLop,
+            'dsMonHoc' => $dsMonHoc,
+            'monHocDuocChon' => $monHocDuocChon
+        ]);
+    }
+
+    
+    public function xemChiTiet($sv_id)
+    {
+        
+        $sinhVien = SinhVien::find($sv_id);
+        if (!$sinhVien) $sinhVien = SinhVien::where('id', $sv_id)->first();
+        if (!$sinhVien) $sinhVien = SinhVien::where('SinhVienID', $sv_id)->first();
+
+        if (!$sinhVien) {
+            return "<h1>⚠️ LỖI: Không tìm thấy sinh viên ID $sv_id</h1>";
+        }
+        
+        $dsMonHoc = MonHoc::all();
+        $diemDaCo = Diem::where('SinhVienID', $sinhVien->id)->get()->keyBy('MonHocID');
+
+        foreach ($dsMonHoc as $mh) {
+            $mh->diem_hien_tai = $diemDaCo->get($mh->MonHocID);
+        }
+
+        return view('admin.diem.chitiet', [
+            'sinhVien' => $sinhVien,
             'dsMonHoc' => $dsMonHoc
         ]);
     }
 
-    // NHẬP ĐIỂM
-    public function hienFormNhap() {
-        
+    
+    public function hienFormNhap(Request $request) {
         $dsLop = LopHoc::all();
         $dsMonHoc = MonHoc::all();
-        $dsSinhVien = SinhVien::all(); 
         
-        return view('admin.diem.nhap', [
-            'dsLop' => $dsLop,
-            'dsMonHoc' => $dsMonHoc,
-            'dsSinhVien' => $dsSinhVien
-        ]);
-    }
-
-    public function luuDiem(Request $request) {
-        $request->validate([
-            'SinhVienID' => 'required',
-            'MonHocID' => 'required',
-            'DiemSo' => 'required|numeric|min:0|max:10',
-            'HocKy' => 'required'
-        ]);
-
-        $diemCu = Diem::where('SinhVienID', $request->SinhVienID)
-                      ->where('MonHocID', $request->MonHocID)
-                      ->first();
-
-        if ($diemCu) {
-            
-            $diemCu->update([
-                'DiemSo' => $request->DiemSo,
-                'HocKy' => $request->HocKy 
-            ]);
-            $thongBao = 'Đã cập nhật điểm và học kỳ!';
-        } else {
-            Diem::create([
-                'SinhVienID' => $request->SinhVienID,
-                'MonHocID' => $request->MonHocID,
-                'DiemSo' => $request->DiemSo,
-                'HocKy' => $request->HocKy
-            ]);
-            $thongBao = 'Đã nhập điểm mới thành công!';
+        $svList = $request->filled('lop_id') ? SinhVien::where('Lop', $request->lop_id)->get() : SinhVien::all();
+        
+        $svSelected = null;
+        if ($request->filled('sv_id')) {
+             $svSelected = SinhVien::find($request->sv_id);
+             if(!$svSelected) $svSelected = SinhVien::where('id', $request->sv_id)->first();
         }
 
-        return redirect('/admin/diem')->with('success', $thongBao); 
-    }
+        $mhSelected = null;
+        if ($request->filled('mh_id')) {
+            $mhSelected = MonHoc::where('MonHocID', $request->mh_id)->first();
+        }
 
-    //SỬA ĐIỂM 
-    public function hienFormSua($id) {
-        $diem = Diem::findOrFail($id);
-        return view('admin.diem.sua', ['diem' => $diem]);
-    }
-
-    public function capNhat(Request $request, $id) {
-        $request->validate([
-            'DiemSo' => 'required|numeric|min:0|max:10',
+        return view('admin.diem.nhap', [
+            'dsLop' => $dsLop, 
+            'dsMonHoc' => $dsMonHoc, 
+            'dsSinhVien' => $svList, 
+            'svSelected' => $svSelected,
+            'mhSelected' => $mhSelected
         ]);
+    }
 
+    
+    public function luuDiem(Request $request) {
+        $request->validate(['SinhVienID'=>'required', 'MonHocID'=>'required', 'DiemSo'=>'required|numeric|min:0|max:10']);
+        
+        $exists = Diem::where('SinhVienID', $request->SinhVienID)->where('MonHocID', $request->MonHocID)->exists();
+        if($exists) return back()->withErrors(['msg'=>'Đã có điểm môn này!']);
+        
+        Diem::create([
+            'SinhVienID' => $request->SinhVienID,
+            'MonHocID' => $request->MonHocID,
+            'DiemSo' => $request->DiemSo
+        ]);
+        
+        
+        if ($request->from_source == 'chitiet') {
+            
+            return redirect()->route('admin.diem.chitiet', ['sv_id' => $request->SinhVienID])
+                             ->with('success', 'Đã nhập điểm!');
+        } else {
+            
+            return redirect('/admin/diem?' . $request->url_params)
+                             ->with('success', 'Đã nhập điểm!');
+        }
+    }
+
+    
+    public function hienFormSua($id) {
+        return view('admin.diem.sua', ['diem' => Diem::findOrFail($id)]);
+    }
+
+    
+    public function capNhat(Request $request, $id) {
+        $request->validate(['DiemSo' => 'required|numeric|min:0|max:10']);
+        
         $diem = Diem::findOrFail($id);
         $diem->update(['DiemSo' => $request->DiemSo]);
-
-        return redirect('/admin/diem')->with('success', 'Đã cập nhật điểm số thành công!');
+        
+        
+        if ($request->from_source == 'chitiet') {
+            
+            return redirect()->route('admin.diem.chitiet', ['sv_id' => $diem->SinhVienID])
+                             ->with('success', 'Cập nhật thành công!');
+        } else {
+            
+            return redirect('/admin/diem?' . $request->url_params)
+                             ->with('success', 'Cập nhật thành công!');
+        }
     }
 
-    //XÓA ĐIỂM
+    
     public function xoa($id) {
         Diem::destroy($id);
-        return redirect('/admin/diem')->with('success', 'Đã xóa bản ghi điểm.');
-    }
-
-    // SINH VIÊN XEM ĐIỂM 
-    public function xemDiemCaNhan() {
-       $user = Auth::user();
-       $sinhVien = SinhVien::where('NguoiDungID', $user->id)->first();
-
-       if (!$sinhVien) {
-           return redirect('/')->withErrors(['msg' => 'Bạn không có hồ sơ sinh viên!']);
-       }
-
-       $bangDiem = Diem::where('SinhVienID', $sinhVien->id)
-                       ->with('monHoc') 
-                       ->get();
-
-       return view('sinhvien.diem', ['bangDiem' => $bangDiem]);
+        return back()->with('success', 'Đã xóa điểm.');
     }
 }

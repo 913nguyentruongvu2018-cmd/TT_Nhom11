@@ -13,7 +13,7 @@ class Diem extends Model
     protected $primaryKey = 'DiemID';
     public $timestamps = false;       
 
-    protected $fillable = ['SinhVienID', 'MonHocID', 'DiemSo', 'HocKy'];
+    protected $fillable = ['SinhVienID', 'MonHocID', 'DiemSo',];
     
     public function sinhVien() {
         return $this->belongsTo(SinhVien::class, 'SinhVienID', 'id');

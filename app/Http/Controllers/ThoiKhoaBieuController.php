@@ -1,5 +1,5 @@
 <?php
-//update
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class ThoiKhoaBieuController extends Controller
             'GioKetThuc.after' => 'Giờ kết thúc phải sau giờ bắt đầu.'
         ]);
     
-        //Trung Phong
+        
         $trungPhong = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
             ->where('PhongHoc', $request->PhongHoc)
             ->whereTime('GioBatDau', '<', $request->GioKetThuc)
@@ -52,7 +52,7 @@ class ThoiKhoaBieuController extends Controller
         if ($trungPhong) {
             return back()->withErrors(['PhongHoc' => 'Phòng học này đã có lớp học vào giờ đó!'])->withInput();
         }
-        //Trung GV
+        
         $trungGV = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
             ->where('GiangVienID', $request->GiangVienID)
             ->whereTime('GioBatDau', '<', $request->GioKetThuc)
@@ -61,7 +61,7 @@ class ThoiKhoaBieuController extends Controller
         if ($trungGV) {
             return back()->withErrors(['GiangVienID' => 'Giảng viên này đã có lịch dạy lớp khác vào giờ đó!'])->withInput();
         }
-        //Trung Lop
+        
         $trungLop = ThoiKhoaBieu::where('ThuTrongTuan', $request->ThuTrongTuan)
             ->where('LopID', $request->LopID)
             ->whereTime('GioBatDau', '<', $request->GioKetThuc)

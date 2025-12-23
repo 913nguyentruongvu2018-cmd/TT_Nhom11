@@ -4,19 +4,19 @@
     <div class="card">
         <h1>Quản Lý Lớp Học</h1>
 
-        {{-- KHUNG TÌM KIẾM (MỚI) --}}
+        
         <div style="background:#f8f9fa; padding:15px; margin-bottom:20px; border:1px solid #ddd;">
             <form action="/admin/lop-hoc" method="GET" style="display:flex; gap:10px; align-items:center;">
 
-                {{-- Tìm tên lớp --}}
+                
                 <input type="text" name="tim_ten" value="{{ request('tim_ten') }}" placeholder="Nhập tên lớp..."
                     style="padding:8px;">
 
-                {{-- Tìm năm học --}}
+                
                 <input type="text" name="tim_nam" value="{{ request('tim_nam') }}" placeholder="Năm (VD: 2024)..."
                     style="padding:8px; width:120px;">
 
-                {{-- Lọc chuyên ngành --}}
+                
                 <select name="tim_cn" style="padding:8px;">
                     <option value="">-- Tất cả Chuyên Ngành --</option>
                     @foreach ($dsChuyenNganh as $cn)
@@ -52,7 +52,7 @@
                 <tr style="background:#eee;">
                     <th>ID</th>
                     <th>Tên Lớp</th>
-                    <th>Năm Học</th> {{-- CỘT MỚI --}}
+                    <th>Năm Học</th> 
                     <th>Chuyên Ngành</th>
                     <th>GV Chủ Nhiệm</th>
                     <th>Hành Động</th>
@@ -64,7 +64,7 @@
                         <td>{{ $lop->LopID }}</td>
                         <td style="font-weight:bold; color:blue;">{{ $lop->TenLop }}</td>
 
-                        {{-- Hiển thị Năm Học --}}
+                        
                         <td style="text-align:center;">{{ $lop->NamHoc }}</td>
 
                         <td>{{ $lop->chuyenNganh->TenChuyenNganh ?? '...' }}</td>
