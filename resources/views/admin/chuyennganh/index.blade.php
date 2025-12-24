@@ -21,9 +21,16 @@
                 <td>{{ $cn->ChuyenNganhID }}</td>
                 <td style="color:blue; font-weight:bold;">{{ $cn->MaCN }}</td>
                 <td>{{ $cn->TenChuyenNganh }}</td>
-                <td>
-                    <a href="/admin/chuyen-nganh/sua/{{ $cn->id }}" style="color:blue;">Sửa</a> | 
-                    <a href="/admin/chuyen-nganh/xoa/{{ $cn->id }}" style="color:red;" onclick="return confirm('Xóa ngành này?')">Xóa</a>
+                <td style="text-align:center;">
+                    <a href="/admin/chuyen-nganh/sua/{{ $cn->ChuyenNganhID }}"
+                        style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">
+                        Sửa
+                    </a>
+                    <a href="/admin/chuyen-nganh/xoa/{{ $cn->ChuyenNganhID }}"
+                        style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:4px 10px; border-radius:4px; display:inline-block;"
+                        onclick="return confirm('Xóa ngành {{ $cn->TenChuyenNganh }}?');">
+                        Xóa
+                    </a>
                 </td>
             </tr>
             @endforeach

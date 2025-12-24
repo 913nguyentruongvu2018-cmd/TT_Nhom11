@@ -52,16 +52,27 @@ class ChuyenNganhController extends Controller
     }
 
     
-    public function capNhat(Request $request, $id)
-    {
-        $cn = ChuyenNganh::find($id);
-        
-        
-        $cn->update([
-            'TenCN' => $request->TenCN
+    public function capNhat(Request $request, $id) {
+        $request->validate([
+            
+            'MaCN' => 'required|unique:chuyennganh,MaCN,'.$id.',ChuyenNganhID', 
+            'TenCN' => 'required'
+        ], [
+            'MaCN.unique' => 'Mã chuyên ngành này đã bị trùng!',
+            'TenCN.required' => 'Tên ngành không được để trống.'
         ]);
 
-        return redirect('/admin/chuyen-nganh')->with('success', 'Cập nhật thành công!');
+        try {
+            $cn = ChuyenNganh::find($id);
+            $cn->update([
+                'MaCN' => $request->MaCN,
+                'TenChuyenNganh' => $request->TenCN
+            ]);
+            
+            return redirect('/admin/chuyen-nganh')->with('success', 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['msg' => 'Lỗi hệ thống: ' . $e->getMessage()]);
+        }
     }
 
     
