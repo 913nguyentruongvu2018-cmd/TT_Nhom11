@@ -8,7 +8,7 @@
         <form action="/admin/lop-hoc/sua/{{ $lop->LopID }}" method="POST">
             @csrf
 
-            {{-- Tên lớp --}}
+            
             <label>Tên Lớp:</label>
             <input type="text" name="TenLop" value="{{ old('TenLop', $lop->TenLop) }}" required
                 style="width:100%; padding:10px; margin:5px 0;">
@@ -16,7 +16,7 @@
                 <div style="color:red">{{ $message }}</div>
             @enderror
 
-            {{-- Chọn Chuyên Ngành (MỚI) --}}
+            
             <label>Chuyên Ngành:</label>
             <select name="ChuyenNganhID" style="width:100%; padding:10px; margin:5px 0;" required>
                 <option value="">-- Chọn chuyên ngành --</option>
@@ -28,7 +28,7 @@
                 @endforeach
             </select>
 
-            {{-- Chọn Giảng Viên --}}
+            
             <label>Giảng Viên Chủ Nhiệm:</label>
             <select name="GiangVienID" style="width:100%; padding:10px; margin:5px 0;" required>
                 <option value="">-- Chọn giảng viên --</option>

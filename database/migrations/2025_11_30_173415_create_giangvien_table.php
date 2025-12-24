@@ -17,13 +17,13 @@ return new class extends Migration
         $table->string('HoTen');
         $table->string('HocVi')->nullable();
         
-        // --- CHANGE 1: Đổi từ string('ChuyenNganh') thành integer('ChuyenNganhID') ---
+        
         $table->integer('ChuyenNganhID'); 
         
-        // --- CHANGE 2: Cho phép NguoiDungID được phép NULL (để trống) ---
+        
         $table->integer('NguoiDungID')->nullable(); 
         
-        // $table->timestamps(); // Nếu bạn không dùng thì bỏ
+        
     });
 }
 
