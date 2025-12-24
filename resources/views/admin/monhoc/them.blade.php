@@ -1,32 +1,68 @@
 @extends('layouts.admin')
 
 @section('noidung')
-<div class="card" style="width: 500px; margin: 0 auto;">
-    <a href="/admin/mon-hoc">← Quay lại</a>
-    <h2>Thêm Môn Học</h2>
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <h1>📚 Thêm Môn Học Mới</h1>
+            <a href="/admin/mon-hoc" style="background:#6c757d; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
+                ← Quay lại
+            </a>
+        </div>
 
-    <form action="/admin/mon-hoc/them" method="POST">
-        @csrf
-        <label>Mã Môn Học:</label>
-        <input type="text" name="MaMon" value="{{ old('MaMon') }}" required placeholder="VD: MH001"
-            style="width:100%; padding:10px; margin:5px 0;">
-        @error('MaMon')
-        <div style="color:red">{{ $message }}</div>
-        @enderror
-        <label>Tên Môn Học:</label>
-        <input type="text" name="TenMonHoc" value="{{ old('TenMonHoc') }}" required
-            style="width:100%; padding:10px; margin:5px 0;">
-        @error('TenMonHoc')
-        <div style="color:red">{{ $message }}</div>
-        @enderror
+        {{-- Hiển thị lỗi nếu có --}}
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
 
-        <label>Số Tín Chỉ:</label>
-        <input type="number" name="SoTinChi" value="{{ old('SoTinChi', 3) }}" min="1" required
-            style="width:100%; padding:10px; margin:5px 0;">
+        <form action="/admin/mon-hoc/them" method="POST">
+            @csrf
+            
+            <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
+                <thead>
+                    <tr style="background:#2980b9; color:white;">
+                        <th style="width: 250px;">Thông Tin</th>
+                        <th>Dữ Liệu Nhập</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- MÃ MÔN --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Mã Môn Học (*)</td>
+                        <td>
+                            <input type="text" name="MaMon" required placeholder="VD: MH001" value="{{ old('MaMon') }}"
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('MaMon') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
 
-        <button type="submit"
-            style="background:green; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">Lưu
-            Môn Học</button>
-    </form>
-</div>
+                    {{-- TÊN MÔN --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Tên Môn Học (*)</td>
+                        <td>
+                            <input type="text" name="TenMonHoc" required placeholder="VD: Lập trình C#" value="{{ old('TenMonHoc') }}"
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('TenMonHoc') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
+
+                    {{-- SỐ TÍN CHỈ --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Số Tín Chỉ (*)</td>
+                        <td>
+                            <input type="number" name="SoTinChi" required min="1" max="10" value="{{ old('SoTinChi', 3) }}"
+                                   style="width:100px; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: right;">
+                <button type="submit" style="background:#28a745; color:white; padding:12px 40px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-size:16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                    💾 LƯU MÔN HỌC
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection

@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Mã Môn</th> 
+                <th>Mã Môn</th> {{-- Thêm cột --}}
                 <th>Tên Môn Học</th>
                 <th>Số Tín Chỉ</th>
                 <th>Hành Động</th>
@@ -27,12 +27,12 @@
             @foreach ($dsMon as $mon)
             <tr>
                 <td>{{ $mon->MonHocID }}</td>
-                <td style="font-weight:bold;">{{ $mon->MaMon }}</td> 
+                <td style="font-weight:bold;">{{ $mon->MaMon }}</td> {{-- Hiển thị mã --}}
                 <td style="color:blue;">{{ $mon->TenMonHoc }}</td>
                 <td>{{ $mon->SoTinChi }}</td>
                 <td>
-                    <a href="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" style="color:blue;">Sửa</a> | 
-                    <a href="/admin/mon-hoc/xoa/{{ $mon->MonHocID }}" style="color:red;" onclick="return confirm('Xóa môn học này?')">Xóa</a>
+                    <a href="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">Sửa</a> 
+                    <a href="/admin/mon-hoc/xoa/{{ $mon->MonHocID }}" style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:4px 10px; border-radius:4px; display:inline-block;" onclick="return confirm('Xóa môn học này?')">Xóa</a>
                 </td>
             </tr>
             @endforeach
