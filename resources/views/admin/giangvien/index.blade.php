@@ -25,7 +25,7 @@
                     @endforeach
                 </select>
 
-                
+                {{-- Ô SẮP XẾP --}}
                 <select name="sap_xep" style="padding:8px; border:1px solid #ccc;">
                     <option value="">Sắp xếp: Mặc định</option>
                     <option value="az" {{ request('sap_xep') == 'az' ? 'selected' : '' }}>Tên: A ➜ Z</option>
@@ -74,8 +74,8 @@
                             @endif
                         </td>
                         <td>
-                            <a href="/admin/giang-vien/sua/{{ $gv->GiangVienID }}" style="color: blue;">Sửa</a> |
-                            <a href="/admin/giang-vien/xoa/{{ $gv->GiangVienID }}" style="color: red;" onclick="return confirm('Xóa?')">Xóa</a>
+                            <a href="/admin/giang-vien/sua/{{ $gv->GiangVienID }}"style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">Sửa</a> 
+                            <a href="/admin/giang-vien/xoa/{{ $gv->GiangVienID }}" style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:4px 10px; border-radius:4px; display:inline-block;">Xóa</a>
                         </td>
                     </tr>
                 @endforeach
