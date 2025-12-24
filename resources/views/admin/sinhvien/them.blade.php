@@ -1,58 +1,86 @@
 @extends('layouts.admin')
 
 @section('noidung')
-<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <h1>🎓 Thêm Sinh Viên Mới</h1>
+            <a href="/admin/sinh-vien" style="background:#6c757d; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
+                ← Quay lại
+            </a>
+        </div>
 
-    <h1 style="text-align: center; margin-bottom: 20px;">Thêm Sinh Viên Mới</h1>
+        {{-- hien thi loi all --}}
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
 
-    <a href="/admin/sinh-vien" style="text-decoration: none; color: #555; display: inline-block; margin-bottom: 15px;">
-        ← Quay lại danh sách
-    </a>
+        <form action="/admin/sinh-vien/them" method="POST">
+            @csrf
+            
+            <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
+                <thead>
+                    <tr style="background:#2980b9; color:white;">
+                        <th style="width: 250px;">Thông Tin</th>
+                        <th>Dữ Liệu Nhập</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- masv --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Mã Sinh Viên (*)</td>
+                        <td>
+                            <input type="text" name="MaSV" value="{{ old('MaSV') }}" required placeholder="VD: DH52201234"
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            <div style="font-size:12px; color:#666; margin-top:5px; font-style:italic;">Mã sinh viên là duy nhất.</div>
+                            @error('MaSV') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
 
-    @if ($errors->any())
-    <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius: 5px;">
-        ⚠️ {{ $errors->first() }}
+                    {{-- ho ten --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Họ và Tên (*)</td>
+                        <td>
+                            <input type="text" name="HoTen" value="{{ old('HoTen') }}" required placeholder="VD: Nguyễn Văn A"
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('HoTen') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
+
+                    {{-- lop hoc --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Lớp Học (*)</td>
+                        <td>
+                            <select name="Lop" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
+                                <option value="">-- Chọn Lớp --</option>
+                                @foreach($dsLop as $lop)
+                                    <option value="{{ $lop->LopID }}" {{ old('Lop') == $lop->LopID ? 'selected' : '' }}>
+                                        {{ $lop->TenLop }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('Lop') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
+
+                    {{-- ngay sinh --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Ngày Sinh (*)</td>
+                        <td>
+                            <input type="date" name="NgaySinh" value="{{ old('NgaySinh') }}" required
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('NgaySinh') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: right;">
+                <button type="submit" style="background:#28a745; color:white; padding:12px 40px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-size:16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                    💾 LƯU SINH VIÊN
+                </button>
+            </div>
+        </form>
     </div>
-    @endif
-
-    <form action="/admin/sinh-vien/them" method="POST"
-        style="background: #fff; padding: 25px; border: 1px solid #ddd; border-radius: 8px;">
-        @csrf
-
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Mã Sinh Viên (*)</label>
-            <input type="text" name="MaSV" value="{{ old('MaSV') }}" required placeholder="VD: DH52201234"
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            <small style="color: #666; font-style: italic;">Bắt đầu bằng DH522 và 5 số.</small>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Họ và Tên (*)</label>
-            <input type="text" name="HoTen" value="{{ old('HoTen') }}" required placeholder="Nhập họ tên"
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Ngày Sinh (*)</label>
-            <input type="date" name="NgaySinh" value="{{ old('NgaySinh') }}" required
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
-
-        <div style="margin-bottom: 20px;">
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Lớp</label>
-            <select name="Lop" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                <option value="">-- Chọn Lớp Học --</option>
-                @foreach($dsLop as $lop)
-                <option value="{{ $lop->LopID }}" {{ old('Lop') == $lop->LopID ? 'selected' : '' }}>
-                    {{ $lop->TenLop }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-
-        <button type="submit" style="background: green; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">
-            Lưu Sinh Viên
-        </button>
-    </form>
-</div>
 @endsection

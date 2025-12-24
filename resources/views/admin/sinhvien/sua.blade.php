@@ -1,48 +1,78 @@
 @extends('layouts.admin')
 
 @section('noidung')
-    <div class="card" style="width: 500px; margin: 0 auto;">
-        <a href="/admin/sinh-vien">← Quay lại</a>
-        <h2>Cập Nhật Sinh Viên</h2>
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <h1>✏️ Cập Nhật Sinh Viên</h1>
+            <a href="/admin/sinh-vien" style="background:#6c757d; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
+                ← Quay lại
+            </a>
+        </div>
 
-        <form action="/admin/sinh-vien/sua/{{ $sv->MaSV }}" method="POST">
+        <form action="/admin/sinh-vien/sua/{{ $sv->id }}" method="POST">
             @csrf
-            @method('POST')
+            
+            <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
+                <thead>
+                    <tr style="background:#2980b9; color:white;">
+                        <th style="width: 250px;">Thông Tin</th>
+                        <th>Dữ Liệu Cập Nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- masv --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Mã Sinh Viên</td>
+                        <td>
+                            <input type="text" name="MaSV" value="{{ $sv->MaSV }}" readonly
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; background:#e9ecef; font-weight:bold; color:#666; cursor:not-allowed;">
+                            <div style="font-size:12px; color:#666; margin-top:5px;">🔒 Mã sinh viên không được phép thay đổi.</div>
+                        </td>
+                    </tr>
 
-            <label>Mã Sinh Viên:</label>
-            <input type="text" name="MaSV" value="{{ $sv->MaSV }}" readonly
-                style="width:100%; padding:10px; margin:5px 0; background-color: #eee; cursor: not-allowed;">
+                    {{-- ten --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Họ và Tên</td>
+                        <td>
+                            <input type="text" name="HoTen" value="{{ old('HoTen', $sv->HoTen) }}" required 
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('HoTen') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
 
-            <label>Họ Tên:</label>
-            <input type="text" name="HoTen" value="{{ old('HoTen', $sv->HoTen) }}" required
-                style="width:100%; padding:10px; margin:5px 0;">
+                    {{-- lop --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Lớp Học</td>
+                        <td>
+                            <select name="Lop" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
+                                <option value="">-- Chọn Lớp --</option>
+                                @foreach($dsLop as $lop)
+                                    <option value="{{ $lop->LopID }}" {{ old('Lop', $sv->LopID) == $lop->LopID ? 'selected' : '' }}>
+                                        {{ $lop->TenLop }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('Lop') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
 
-           <label>Lớp:</label>
+                    {{-- ngay sinh --}}
+                    <tr>
+                        <td style="font-weight:bold; background:#f9f9f9;">Ngày Sinh</td>
+                        <td>
+                            <input type="date" name="NgaySinh" value="{{ old('NgaySinh', $sv->NgaySinh) }}" required
+                                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('NgaySinh') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <select name="Lop" required style="width:100%; padding:10px; margin:5px 0 15px 0;">
-
-                <option value="">-- Chọn Lớp Học --</option>
-
-                @foreach ($dsLop as $lop)
-
-                    <option value="{{ $lop->LopID }}" {{ old('Lop', $sv->Lop) == $lop->LopID ? 'selected' : '' }}>
-
-                        {{ $lop->TenLop }}
-
-                    </option>
-
-                @endforeach
-
-            </select>
-
-            <label>Ngày Sinh:</label>
-            <input type="date" name="NgaySinh" value="{{ old('NgaySinh', $sv->NgaySinh) }}" required
-                style="width:100%; padding:10px; margin:5px 0;">
-
-            <button type="submit"
-                style="background:#e67e22; color:white; padding:10px; width:100%; border:none; margin-top:10px; cursor:pointer;">
-                Cập Nhật
-            </button>
+            <div style="text-align: right;">
+                <button type="submit" style="background:#e67e22; color:white; padding:12px 40px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-size:16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                    💾 LƯU CẬP NHẬT
+                </button>
+            </div>
         </form>
     </div>
 @endsection
