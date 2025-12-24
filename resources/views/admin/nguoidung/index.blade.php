@@ -4,7 +4,6 @@
 <div class="card">
     <h1>Quản Lý Người Dùng</h1>
 
-
     <div style="background:#f1f1f1; padding:15px; margin-bottom:20px; border-radius:5px;">
         <form action="/admin/nguoi-dung" method="GET" style="display:flex; gap:10px; align-items:center;">
             <input type="text" name="tu_khoa" value="{{ request('tu_khoa') }}"
@@ -25,18 +24,29 @@
         </form>
     </div>
 
-
     <a href="/admin/nguoi-dung/them"
         style="background:green; color:white; padding:10px; text-decoration:none; border-radius:5px; margin-bottom:15px; display:inline-block;">+
         Thêm Tài Khoản</a>
 
+    {{-- tb thanh cong --}}
     @if (session('success'))
-    <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">✅ {{ session('success') }}
-    </div>
+        <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">
+            ✅ {{ session('success') }}
+        </div>
     @endif
 
+    {{-- tb loi --}}
+    @if (session('error'))
+        <div style="background:#f8d7da; color:#721c24; padding:10px; margin-bottom:10px; border: 1px solid #f5c6cb;">
+            ⚠️ {{ session('error') }}
+        </div>
+    @endif
+
+    {{-- loi validate --}}
     @if ($errors->any())
-    <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:10px;">⚠️ {{ $errors->first() }}</div>
+        <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:10px;">
+            ⚠️ {{ $errors->first() }}
+        </div>
     @endif
 
     <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse; border-color: #ddd;">
@@ -61,11 +71,11 @@
                 <td>{{ $user->HoTen }}</td>
                 <td>
                     @if ($user->VaiTro == 'Admin')
-                    <span style="color:red; font-weight:bold;">Admin</span>
+                        <span style="color:red; font-weight:bold;">Admin</span>
                     @elseif($user->VaiTro == 'GiangVien')
-                    <span style="color:orange; font-weight:bold;">Giảng Viên</span>
+                        <span style="color:orange; font-weight:bold;">Giảng Viên</span>
                     @else
-                    <span style="color:green; font-weight:bold;">Sinh Viên</span>
+                        <span style="color:green; font-weight:bold;">Sinh Viên</span>
                     @endif
                 </td>
                 <td>
@@ -77,6 +87,7 @@
             @endforeach
         </tbody>
     </table>
+    
     <div style="margin-top: 15px;">
         {{ $dsNguoiDung->appends(request()->all())->links('phantrang') }}
     </div>
