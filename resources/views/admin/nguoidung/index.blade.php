@@ -79,8 +79,8 @@
                     @endif
                 </td>
                 <td>
-                    <a href="/admin/nguoi-dung/sua/{{ $user->id }}" style="color: blue;">Sửa</a> |
-                    <a href="/admin/nguoi-dung/xoa/{{ $user->id }}" style="color: red;"
+                    <a href="/admin/nguoi-dung/sua/{{ $user->id }}" style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">Sửa</a> 
+                    <a href="/admin/nguoi-dung/xoa/{{ $user->id }}" style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:4px 10px; border-radius:4px; display:inline-block;"
                         onclick="return confirm('Bạn có chắc muốn xóa tài khoản này?');">Xóa</a>
                 </td>
             </tr>
