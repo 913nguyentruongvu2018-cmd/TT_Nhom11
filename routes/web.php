@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
 
-    
+
     Route::get('/admin/diem', [DiemController::class, 'index'])->name('admin.diem.index');
     Route::get('/admin/diem/nhap', [DiemController::class, 'hienFormNhap'])->name('admin.diem.nhap');
     Route::post('/admin/diem/nhap', [DiemController::class, 'luuDiem']);
@@ -30,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/diem/sua/{id}', [DiemController::class, 'hienFormSua'])->name('admin.diem.sua');
     Route::post('/admin/diem/sua/{id}', [DiemController::class, 'capNhat']);
     Route::get('/admin/diem/xoa/{id}', [DiemController::class, 'xoa']);
-    
-    
+
+
     Route::get('/admin/mon-hoc', [MonHocController::class, 'index']);
     Route::get('/admin/mon-hoc/them', [MonHocController::class, 'hienFormThem']);
     Route::post('/admin/mon-hoc/them', [MonHocController::class, 'luuMonHoc']);
@@ -64,6 +64,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/tkb/them', [ThoiKhoaBieuController::class, 'hienFormThem']);
     Route::post('/admin/tkb/them', [ThoiKhoaBieuController::class, 'luuTKB']);
     Route::get('/admin/tkb/xoa/{id}', [ThoiKhoaBieuController::class, 'xoa']);
+    Route::get('/admin/tkb/sua/{id}', [ThoiKhoaBieuController::class, 'hienFormSua']);
+    Route::post('/admin/tkb/sua/{id}', [ThoiKhoaBieuController::class, 'capNhat']);
 
     Route::get('/admin/nguoi-dung', [NguoiDungController::class, 'index']);
     Route::get('/admin/nguoi-dung/them', [NguoiDungController::class, 'hienFormThem']);
@@ -79,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/chuyen-nganh/sua/{id}', [ChuyenNganhController::class, 'capNhat']);
     Route::get('/admin/chuyen-nganh/xoa/{id}', [ChuyenNganhController::class, 'xoa']);
 
-    
+
     Route::get('/', function () {
         return redirect('/dang-nhap');
     });
