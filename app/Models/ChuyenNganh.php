@@ -8,9 +8,9 @@ class ChuyenNganh extends Model
 {
     use HasFactory;
     protected $table = 'chuyennganh';
-    
+    protected $primaryKey = 'ChuyenNganhID';
     
     public $timestamps = false; 
 
-    protected $fillable = ['MaCN', 'TenCN'];
+    protected $fillable = ['MaCN', 'TenChuyenNganh'];
 }
