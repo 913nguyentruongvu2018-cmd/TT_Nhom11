@@ -9,7 +9,14 @@
             </a>
         </div>
 
-        <form action="/admin/lop-hoc/sua/{{ $lop->LopID }}" method="POST">
+        {{-- loi all --}}
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
+
+        <form action="/admin/lop-hoc/sua/{{ $lop->LopID }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -43,6 +50,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('ChuyenNganhID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 
@@ -59,6 +67,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('GiangVienID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 
@@ -68,6 +77,7 @@
                         <td>
                             <input type="text" name="NamHoc" value="{{ old('NamHoc', $lop->NamHoc) }}" required 
                                    style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('NamHoc') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
                 </tbody>

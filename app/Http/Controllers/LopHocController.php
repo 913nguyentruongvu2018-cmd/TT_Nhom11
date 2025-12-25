@@ -56,7 +56,14 @@ class LopHocController extends Controller
             'NamHoc' => 'required', 
             'GiangVienID' => 'required',
             'ChuyenNganhID' => 'required',
-        ]);
+        ],[
+            'TenLop.required'        => 'Vui lòng nhập tên lớp.',
+            'TenLop.unique'          => 'Tên lớp này đã tồn tại.',
+            'NamHoc.required'        => 'Vui lòng nhập khóa học/năm học.',
+            'GiangVienID.required'   => 'Vui lòng chọn cố vấn học tập (GVCN).',
+            'ChuyenNganhID.required' => 'Vui lòng chọn chuyên ngành.',
+        ]
+    );
 
         LopHoc::create($request->all());
         return redirect('/admin/lop-hoc')->with('success', 'Đã tạo lớp học mới!');
@@ -80,6 +87,12 @@ class LopHocController extends Controller
             'NamHoc' => 'required',
             'GiangVienID' => 'required',
             'ChuyenNganhID' => 'required',
+        ],[
+            'TenLop.required'        => 'Vui lòng nhập tên lớp.',
+            'TenLop.unique'          => 'Tên lớp này đã tồn tại (trùng với lớp khác).',
+            'NamHoc.required'        => 'Vui lòng nhập khóa học/năm học.',
+            'GiangVienID.required'   => 'Vui lòng chọn cố vấn học tập.',
+            'ChuyenNganhID.required' => 'Vui lòng chọn chuyên ngành.',
         ]);
 
         $lop = LopHoc::find($id);

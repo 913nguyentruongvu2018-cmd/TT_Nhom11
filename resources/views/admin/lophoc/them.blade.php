@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="/admin/lop-hoc/them" method="POST">
+        <form action="/admin/lop-hoc/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -75,6 +75,7 @@
                         <td>
                             <input type="text" name="NamHoc" value="{{ old('NamHoc') }}" required placeholder="VD: 2024-2025"
                                    style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('NamHoc') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
                 </tbody>
