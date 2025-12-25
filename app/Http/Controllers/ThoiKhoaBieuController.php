@@ -67,6 +67,13 @@ class ThoiKhoaBieuController extends Controller
             'GioKetThuc' => 'required|after:GioBatDau',
             'PhongHoc' => 'required',
         ], [
+            'LopID.required' => 'Vui lòng chọn lớp học.',
+            'MonHocID.required' => 'Vui lòng chọn môn học.',
+            'GiangVienID.required' => 'Vui lòng chọn giảng viên.',
+            'ThuTrongTuan.required' => 'Vui lòng chọn thứ trong tuần.',
+            'GioBatDau.required' => 'Vui lòng nhập giờ bắt đầu.',
+            'GioKetThuc.required' => 'Vui lòng nhập giờ kết thúc.',
+            'PhongHoc.required' => 'Vui lòng nhập tên phòng học.',
             'GioKetThuc.after' => 'Giờ kết thúc phải sau giờ bắt đầu.'
         ]);
 
@@ -130,6 +137,13 @@ class ThoiKhoaBieuController extends Controller
             'GioKetThuc' => 'required|after:GioBatDau',
             'PhongHoc' => 'required',
         ], [
+            'LopID.required' => 'Vui lòng chọn lớp học.',
+            'MonHocID.required' => 'Vui lòng chọn môn học.',
+            'GiangVienID.required' => 'Vui lòng chọn giảng viên.',
+            'ThuTrongTuan.required' => 'Vui lòng chọn thứ trong tuần.',
+            'GioBatDau.required' => 'Vui lòng nhập giờ bắt đầu.',
+            'GioKetThuc.required' => 'Vui lòng nhập giờ kết thúc.',
+            'PhongHoc.required' => 'Vui lòng nhập tên phòng học.',
             'GioKetThuc.after' => 'Giờ kết thúc phải sau giờ bắt đầu.'
         ]);
 

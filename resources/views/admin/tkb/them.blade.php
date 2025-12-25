@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="/admin/tkb/them" method="POST">
+        <form action="/admin/tkb/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -33,6 +33,7 @@
                         <td style="font-weight:bold; background:#f9f9f9;">Lớp Học</td>
                         <td>
                             <select name="LopID" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                                <option value="">-- Chọn Lớp --</option>
                                 @foreach($lops as $lop)
                                     <option value="{{ $lop->LopID }}" {{ old('LopID') == $lop->LopID ? 'selected' : '' }}>
                                         {{ $lop->TenLop }}
@@ -48,6 +49,7 @@
                         <td style="font-weight:bold; background:#f9f9f9;">Môn Học</td>
                         <td>
                             <select name="MonHocID" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                                <option value="">-- Chọn Môn Học --</option>
                                 @foreach($mons as $mon)
                                     <option value="{{ $mon->MonHocID }}" {{ old('MonHocID') == $mon->MonHocID ? 'selected' : '' }}>
                                         {{ $mon->TenMonHoc }} ({{ $mon->SoTinChi }} tín chỉ)
@@ -63,6 +65,7 @@
                         <td style="font-weight:bold; background:#f9f9f9;">Giảng Viên Dạy</td>
                         <td>
                             <select name="GiangVienID" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                                <option value="">-- Chọn Giảng Viên --</option>
                                 @foreach($gvs as $gv)
                                     <option value="{{ $gv->GiangVienID }}" {{ old('GiangVienID') == $gv->GiangVienID ? 'selected' : '' }}>
                                         {{ $gv->HoTen }} ({{ $gv->MaGV }})
@@ -81,6 +84,7 @@
                                 <div style="flex:1;">
                                     <label style="font-size:12px; color:#666; display:block; margin-bottom:3px;">Thứ trong tuần:</label>
                                     <select name="ThuTrongTuan" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                                        <option value="">-- Chọn Thứ --</option>
                                         <option value="Hai" {{ old('ThuTrongTuan') == 'Hai' ? 'selected' : '' }}>Thứ Hai</option>
                                         <option value="Ba" {{ old('ThuTrongTuan') == 'Ba' ? 'selected' : '' }}>Thứ Ba</option>
                                         <option value="Tu" {{ old('ThuTrongTuan') == 'Tu' ? 'selected' : '' }}>Thứ Tư</option>
@@ -88,6 +92,7 @@
                                         <option value="Sau" {{ old('ThuTrongTuan') == 'Sau' ? 'selected' : '' }}>Thứ Sáu</option>
                                         <option value="Bay" {{ old('ThuTrongTuan') == 'Bay' ? 'selected' : '' }}>Thứ Bảy</option>
                                     </select>
+                                    @error('ThuTrongTuan') <div style="color:red; font-size:13px;">⚠️ {{ $message }}</div> @enderror
                                 </div>
                                 <div style="flex:1;">
                                     <label style="font-size:12px; color:#666; display:block; margin-bottom:3px;">Phòng học:</label>

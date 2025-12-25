@@ -15,8 +15,7 @@
                 ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
             </div>
         @endif
-
-        <form action="/admin/tkb/sua/{{ $tkb->TKBid }}" method="POST">
+        <form action="/admin/tkb/sua/{{ $tkb->TKBid }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -88,6 +87,7 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('ThuTrongTuan') <div style="color:red; font-size:13px;">⚠️ {{ $message }}</div> @enderror
                                 </div>
                                 <div style="flex:1;">
                                     <label style="font-size:12px; color:#666; display:block; margin-bottom:3px;">Phòng học:</label>
@@ -125,7 +125,6 @@
             </table>
 
             <div style="text-align: right;">
-               
                 <button type="submit" style="background:#e67e22; color:white; padding:12px 40px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-size:16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
                     💾 LƯU CẬP NHẬT
                 </button>
