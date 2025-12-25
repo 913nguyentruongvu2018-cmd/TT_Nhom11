@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <form action="/admin/chuyen-nganh/sua/{{ $cn->ChuyenNganhID }}" method="POST">
+        <form action="/admin/chuyen-nganh/sua/{{ $cn->ChuyenNganhID }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">

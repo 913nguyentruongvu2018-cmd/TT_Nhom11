@@ -26,17 +26,18 @@ class ChuyenNganhController extends Controller
         
         $request->validate([
             'MaCN' => 'required|unique:chuyennganh,MaCN', 
-            'TenCN' => 'required'
+            'TenCN' => 'required|unique:chuyennganh,TenChuyenNganh'
         ], [
             'MaCN.unique' => 'Mã chuyên ngành này đã tồn tại!',
             'MaCN.required' => 'Vui lòng nhập mã chuyên ngành.',
-            'TenCN.required' => 'Vui lòng nhập tên chuyên ngành.'
+            'TenCN.required' => 'Vui lòng nhập tên chuyên ngành.',
+            'TenCN.unique'=>'Tên chuyên ngành đã tồn tại'
         ]);
 
         
         ChuyenNganh::create([
             'MaCN' => $request->MaCN,
-            'TenCN' => $request->TenCN
+            'TenChuyenNganh' => $request->TenCN
         ]);
 
         return redirect('/admin/chuyen-nganh')->with('success', 'Thêm chuyên ngành thành công!');
@@ -56,10 +57,12 @@ class ChuyenNganhController extends Controller
         $request->validate([
             
             'MaCN' => 'required|unique:chuyennganh,MaCN,'.$id.',ChuyenNganhID', 
-            'TenCN' => 'required'
+            'TenCN' => 'required|unique:chuyennganh,TenChuyenNganh,'.$id.',ChuyenNganhID'
         ], [
-            'MaCN.unique' => 'Mã chuyên ngành này đã bị trùng!',
-            'TenCN.required' => 'Tên ngành không được để trống.'
+            'MaCN.required' => 'Vui lòng nhập mã chuyên ngành.',
+            'MaCN.unique' => 'Mã chuyên ngành này đã bị trùng với ngành khác.',
+            'TenCN.required' => 'Vui lòng nhập tên chuyên ngành.',
+            'TenCN.unique'=>'Tên chuyên ngành đã tồn tại'
         ]);
 
         try {
