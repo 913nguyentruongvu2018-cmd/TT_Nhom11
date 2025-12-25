@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="/admin/giang-vien/them" method="POST">
+        <form action="/admin/giang-vien/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -59,6 +59,7 @@
                                 <option value="Phó Giáo sư" {{ old('HocVi') == 'Phó Giáo sư' ? 'selected' : '' }}>Phó Giáo sư</option>
                                 <option value="Giáo sư" {{ old('HocVi') == 'Giáo sư' ? 'selected' : '' }}>Giáo sư</option>
                             </select>
+                            @error('HocVi') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 

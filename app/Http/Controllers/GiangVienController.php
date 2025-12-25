@@ -51,10 +51,6 @@ class GiangVienController extends Controller
     }
 
 
-
-
-
-
     public function hienFormThem()
     {
         $dsChuyenNganh = ChuyenNganh::all();
@@ -67,6 +63,13 @@ class GiangVienController extends Controller
             'MaGV' => 'required|unique:giangvien,MaGV',
             'HoTen' => 'required',
             'ChuyenNganhID' => 'required',
+            'HocVi' => 'required',
+        ], [
+            'MaGV.required' => 'Vui lòng nhập mã giảng viên.',
+            'MaGV.unique' => 'Mã giảng viên này đã tồn tại.',
+            'HoTen.required' => 'Vui lòng nhập họ tên giảng viên.',
+            'ChuyenNganhID.required' => 'Vui lòng chọn chuyên ngành.',
+            'HocVi.required' => 'Vui lòng chọn học vị.',
         ]);
         GiangVien::create([
             'MaGV' => $request->MaGV,
@@ -94,6 +97,13 @@ class GiangVienController extends Controller
             'MaGV' => 'required|unique:giangvien,MaGV,' . $gv->GiangVienID . ',GiangVienID',
             'HoTen' => 'required',
             'ChuyenNganhID' => 'required',
+            'HocVi' => 'required', 
+        ], [
+            'MaGV.required' => 'Vui lòng nhập mã giảng viên.',
+            'MaGV.unique' => 'Mã giảng viên này đã tồn tại (trùng với người khác).',
+            'HoTen.required' => 'Vui lòng nhập họ tên giảng viên.',
+            'ChuyenNganhID.required' => 'Vui lòng chọn chuyên ngành.',
+            'HocVi.required' => 'Vui lòng chọn học vị.',
         ]);
         $gv->update([
             'MaGV' => $request->MaGV,

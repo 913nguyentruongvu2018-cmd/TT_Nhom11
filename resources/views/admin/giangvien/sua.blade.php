@@ -8,8 +8,13 @@
                 ← Quay lại
             </a>
         </div>
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
 
-        <form action="/admin/giang-vien/sua/{{ $gv->GiangVienID }}" method="POST">
+        <form action="/admin/giang-vien/sua/{{ $gv->GiangVienID }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -46,13 +51,13 @@
                         <td>
                             <select name="HocVi" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
                                 <option value="" disabled>-- Chọn Học Vị --</option>
-                                {{-- Tôi đã sửa logic old() ở đây để nó bắt đúng giá trị cũ --}}
                                 <option value="Cử nhân" {{ old('HocVi', $gv->HocVi) == 'Cử nhân' ? 'selected' : '' }}>Cử nhân</option>
                                 <option value="Thạc sĩ" {{ old('HocVi', $gv->HocVi) == 'Thạc sĩ' ? 'selected' : '' }}>Thạc sĩ</option>
                                 <option value="Tiến sĩ" {{ old('HocVi', $gv->HocVi) == 'Tiến sĩ' ? 'selected' : '' }}>Tiến sĩ</option>
                                 <option value="Phó Giáo sư" {{ old('HocVi', $gv->HocVi) == 'Phó Giáo sư' ? 'selected' : '' }}>Phó Giáo sư</option>
                                 <option value="Giáo sư" {{ old('HocVi', $gv->HocVi) == 'Giáo sư' ? 'selected' : '' }}>Giáo sư</option>
                             </select>
+                            @error('HocVi') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 
@@ -69,6 +74,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('ChuyenNganhID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
                 </tbody>
