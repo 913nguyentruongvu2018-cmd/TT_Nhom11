@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="/admin/sinh-vien/them" method="POST">
+        <form action="/admin/sinh-vien/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">

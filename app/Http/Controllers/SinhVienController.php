@@ -56,10 +56,14 @@ class SinhVienController extends Controller
             'MaSV' => ['required', 'unique:sinhvien,MaSV', 'regex:/^DH522\d{5}$/'],
             'HoTen' => 'required',
             'Lop' => 'required',
+            'NgaySinh' => 'required', 
         ], [
+            'MaSV.required' => 'Vui lòng nhập mã sinh viên.',
             'MaSV.regex' => 'Mã SV phải bắt đầu bằng DH522 và có 5 số phía sau.',
             'MaSV.unique' => 'Mã sinh viên này đã tồn tại.',
-            'Lop.required' => 'Vui lòng chọn lớp.'
+            'HoTen.required' => 'Vui lòng nhập họ tên sinh viên.',
+            'Lop.required' => 'Vui lòng chọn lớp.',
+            'NgaySinh.required' => 'Vui lòng chọn ngày sinh.', 
         ]);
 
         SinhVien::create([
@@ -76,7 +80,6 @@ class SinhVienController extends Controller
 
     public function hienFormSua($id)
     {
-
         $sv = SinhVien::where('id', $id)->first();
         if (!$sv) $sv = SinhVien::where('MaSV', $id)->first();
 
@@ -89,7 +92,6 @@ class SinhVienController extends Controller
 
     public function capNhat(Request $request, $id)
     {
-
         $sinhvien = SinhVien::where('id', $id)->first();
         if (!$sinhvien) $sinhvien = SinhVien::where('MaSV', $id)->first();
 
@@ -98,6 +100,11 @@ class SinhVienController extends Controller
         $request->validate([
             'HoTen' => 'required',
             'Lop' => 'required',
+            'NgaySinh' => 'required', 
+        ], [
+            'HoTen.required' => 'Vui lòng nhập họ tên sinh viên.',
+            'Lop.required' => 'Vui lòng chọn lớp học.',
+            'NgaySinh.required' => 'Vui lòng chọn ngày sinh.', 
         ]);
 
 
@@ -123,8 +130,6 @@ class SinhVienController extends Controller
     {
         $sv = SinhVien::where('id', $id)->orWhere('MaSV', $id)->first();
         if ($sv) {
-
-
             $sv->delete();
         }
         return back()->with('success', 'Đã xóa sinh viên.');

@@ -8,8 +8,12 @@
                 ← Quay lại
             </a>
         </div>
-
-        <form action="/admin/sinh-vien/sua/{{ $sv->id }}" method="POST">
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
+        <form action="/admin/sinh-vien/sua/{{ $sv->id }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -47,7 +51,7 @@
                             <select name="Lop" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
                                 <option value="">-- Chọn Lớp --</option>
                                 @foreach($dsLop as $lop)
-                                    <option value="{{ $lop->LopID }}" {{ old('Lop', $sv->LopID) == $lop->LopID ? 'selected' : '' }}>
+                                    <option value="{{ $lop->LopID }}" {{ old('Lop', $sv->Lop) == $lop->LopID ? 'selected' : '' }}>
                                         {{ $lop->TenLop }}
                                     </option>
                                 @endforeach
