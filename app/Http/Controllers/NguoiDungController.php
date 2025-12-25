@@ -56,6 +56,13 @@ class NguoiDungController extends Controller
             'Email'       => 'required|email|unique:nguoidung,Email',
             'MatKhau'     => 'required|min:6',
             'VaiTro'      => 'required',
+        ], [
+            'Email.required' => 'Vui lòng nhập Email.',
+            'Email.email'    => 'Email không đúng định dạng.',
+            'Email.unique'   => 'Email này đã được sử dụng.',
+            'MatKhau.required' => 'Vui lòng nhập mật khẩu.',
+            'MatKhau.min'      => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'VaiTro.required'  => 'Vui lòng chọn vai trò.',
         ]);
 
         $tenDangNhap = $request->TenDangNhap;
@@ -63,7 +70,9 @@ class NguoiDungController extends Controller
 
 
         if ($request->VaiTro == 'SinhVien') {
-            $request->validate(['SinhVienID' => 'required']);
+            $request->validate(['SinhVienID' => 'required'], [
+                'SinhVienID.required' => 'Vui lòng chọn sinh viên cần cấp tài khoản.'
+            ]);
 
             $sv = SinhVien::where('id', $request->SinhVienID)->first();
             if (!$sv) return back()->withErrors(['SinhVienID' => 'Lỗi ID sinh viên.']);
@@ -71,7 +80,9 @@ class NguoiDungController extends Controller
             $tenDangNhap = $sv->MaSV;
             $hoTen = $sv->HoTen;
         } elseif ($request->VaiTro == 'GiangVien') {
-            $request->validate(['GiangVienID' => 'required']);
+            $request->validate(['GiangVienID' => 'required'], [
+                'GiangVienID.required' => 'Vui lòng chọn giảng viên cần cấp tài khoản.'
+            ]);
 
             $gv = GiangVien::where('GiangVienID', $request->GiangVienID)->first();
             if (!$gv) return back()->withErrors(['GiangVienID' => 'Lỗi ID giảng viên.']);
@@ -120,7 +131,12 @@ class NguoiDungController extends Controller
         }
         $request->validate([
             'Email' => 'required|email|unique:nguoidung,Email,' . $id,
+        ], [
+            'Email.required' => 'Vui lòng nhập Email.',
+            'Email.email'    => 'Email không đúng định dạng.',
+            'Email.unique'   => 'Email này đã được sử dụng bởi người khác.',
         ]);
+
         $matKhauLuuDB = $user->MatKhau;
         if ($request->filled('MatKhau')) {
             $matKhauLuuDB = Hash::make($request->MatKhau);

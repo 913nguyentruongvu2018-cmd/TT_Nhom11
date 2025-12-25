@@ -15,8 +15,7 @@
                 ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
             </div>
         @endif
-
-        <form action="/admin/nguoi-dung/them" method="POST">
+        <form action="/admin/nguoi-dung/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -37,6 +36,7 @@
                                 <option value="GiangVien" {{ (old('VaiTro') ?? request('role')) == 'GiangVien' ? 'selected' : '' }}>Giảng Viên</option>
                                 <option value="Admin" {{ (old('VaiTro') ?? request('role')) == 'Admin' ? 'selected' : '' }}>Admin</option>
                             </select>
+                            @error('VaiTro') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
 
                             {{-- sinh vien (an /hien) --}}
                             <div id="studentSelectArea" style="margin-top:10px; border:1px dashed #007bff; background:#e9f7fe; padding:10px; border-radius:4px; display:none;">
@@ -52,6 +52,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('SinhVienID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                             </div>
 
                             {{-- giang vien( an /hien) --}}
@@ -68,6 +69,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('GiangVienID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                             </div>
                         </td>
                     </tr>
@@ -140,7 +142,6 @@
                 gvArea.style.display = 'block';
                 if(document.getElementById("selectGiangVien").value) autoFill('gv');
             } else {
-               
                 enableInput("TenDangNhap");
                 enableInput("HoTen");
             }

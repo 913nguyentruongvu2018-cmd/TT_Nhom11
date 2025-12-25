@@ -10,7 +10,14 @@
             </a>
         </div>
 
-        <form action="/admin/nguoi-dung/sua/{{ $user->id }}" method="POST">
+        {{-- loi all --}}
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
+            </div>
+        @endif
+
+        <form action="/admin/nguoi-dung/sua/{{ $user->id }}" method="POST" novalidate>
             @csrf
             
             
