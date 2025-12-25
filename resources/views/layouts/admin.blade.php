@@ -3,129 +3,124 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font chữ đẹp hơn */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             height: 100vh;
+            background-color: #f4f6f9; 
+            color: #333;
         }
 
+        /* menu trai */
         .sidebar {
-            width: 260px; /* Rộng hơn xíu cho thoáng */
-            background-color: #2c3e50;
-            color: white;
+            width: 260px;
+            background-color: #ffffff; 
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* Cho phép cuộn nếu menu dài */
+            border-right: 1px solid #e0e0e0; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.03); 
         }
 
         .sidebar-header {
+            padding: 25px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f0f0f0;
             text-align: center;
-            padding: 20px 0;
-            background-color: #1a252f;
-            border-bottom: 1px solid #34495e;
         }
-        
+
         .sidebar-header h2 {
             margin: 0;
-            font-size: 24px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #007bff; 
         }
 
-        /* Style cho Tiêu đề nhóm (MỚI) */
-        .menu-label {
-            color: #95a5a6;
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 15px 20px 5px 20px;
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
+        /* link menu*/
         .sidebar a {
-            padding: 12px 20px;
-            color: #ecf0f1;
+            padding: 12px 24px;
+            color: #555; 
             text-decoration: none;
-            display: flex; /* Canh icon và chữ thẳng hàng */
-            align-items: center; 
-            gap: 10px; /* Khoảng cách giữa icon và chữ */
-            border-left: 4px solid transparent; /* Tạo hiệu ứng border trái */
-            transition: all 0.3s;
+            display: block;
+            border-left: 4px solid transparent; 
+            transition: all 0.2s;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .sidebar a:hover {
-            background-color: #34495e;
-            color: #fff;
+            background-color: #f8f9fa; 
+            color: #007bff;
+            padding-left: 28px; 
         }
 
+        /* muc dang chon */
         .sidebar a.active {
-            background-color: #2980b9; /* Màu xanh sáng hơn */
-            border-left: 4px solid #3498db; /* Border nổi bật */
+            background-color: #e3f2fd; 
+            border-left: 4px solid #007bff; 
+            color: #007bff;
             font-weight: bold;
         }
 
-        .logout-form {
-            margin-top: auto; /* Đẩy xuống đáy */
-            border-top: 1px solid #34495e;
+        /*tieu de */
+        .menu-group {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #999; 
+            padding: 20px 24px 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* dang xuat */
+        .logout-box {
+            margin-top: auto;
+            border-top: 1px solid #f0f0f0;
+            padding: 10px;
         }
 
         .logout-btn {
             width: 100%;
-            padding: 15px;
-            background-color: #c0392b;
-            color: white;
-            border: none;
+            padding: 12px;
+            background-color: #fff5f5; 
+            color: #e74c3c;
+            border: 1px solid #ffebea;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-            text-align: left;
-            padding-left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-align: center; 
+            font-size: 15px;
             font-weight: bold;
-        }
-        
-        .logout-btn:hover {
-            background-color: #e74c3c;
+            transition: 0.2s;
         }
 
+        .logout-btn:hover {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        /* noi dung chinh */
         .content {
             flex: 1;
-            padding: 20px;
-            background-color: #ecf0f1;
+            padding: 30px;
             overflow-y: auto;
         }
 
-        /* Giữ nguyên CSS card và table cũ của bạn */
         .card {
             background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04); /* Bóng đổ nhẹ hơn */
+            border: 1px solid #eaedf1;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #2980b9;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border: 1px solid #ebebeb; text-align: left; }
+        th { background-color: #007bff; color: white; border-color: #007bff; }
+        tr:nth-child(even) { background-color: #f9fbfd; }
     </style>
 </head>
 
@@ -133,58 +128,35 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2>🎓 Admin Panel</h2>
+            <h2>🎓 PHÒNG ĐÀO TẠO</h2>
         </div>
 
-        {{-- NHÓM 1: TỔNG QUAN --}}
         <a href="/admin/dashboard" class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
-            🏠 Trang chủ
+            🏠 Trang Chủ
         </a>
 
-        {{-- NHÓM 2: QUẢN LÝ ĐÀO TẠO (Cấu trúc trường học) --}}
-        <div class="menu-label">Đào Tạo & Học Vụ</div>
+        <div class="menu-group">Đào Tạo & Học Vụ</div>
+        <a href="/admin/chuyen-nganh" class="{{ Request::is('admin/chuyen-nganh*') ? 'active' : '' }}">🏢 Chuyên Ngành</a>
+        <a href="/admin/mon-hoc" class="{{ Request::is('admin/mon-hoc*') ? 'active' : '' }}">📚 Môn Học</a>
+        <a href="/admin/lop-hoc" class="{{ Request::is('admin/lop-hoc*') ? 'active' : '' }}">🏫 Lớp Học</a>
+        <a href="/admin/tkb" class="{{ Request::is('admin/tkb*') ? 'active' : '' }}">📅 Lịch Học (TKB)</a>
+        <a href="/admin/diem" class="{{ Request::is('admin/diem*') ? 'active' : '' }}">📝 Nhập Điểm</a>
+
+        <div class="menu-group">Quản Lý Hồ Sơ</div>
+        <a href="/admin/giang-vien" class="{{ Request::is('admin/giang-vien*') ? 'active' : '' }}">👨‍🏫 Giảng Viên</a>
+        <a href="/admin/sinh-vien" class="{{ Request::is('admin/sinh-vien*') ? 'active' : '' }}">👨‍🎓 Sinh Viên</a>
         
-        <a href="/admin/chuyen-nganh" class="{{ Request::is('admin/chuyen-nganh*') ? 'active' : '' }}">
-            🏢 Chuyên ngành
-        </a>
-        <a href="/admin/mon-hoc" class="{{ Request::is('admin/mon-hoc*') ? 'active' : '' }}">
-            📚 Môn học
-        </a>
-        <a href="/admin/lop-hoc" class="{{ Request::is('admin/lop-hoc*') ? 'active' : '' }}">
-            🏫 Lớp học
-        </a>
-        <a href="/admin/tkb" class="{{ Request::is('admin/tkb*') ? 'active' : '' }}">
-            📅 Lịch học (TKB)
-        </a>
+        <div class="menu-group">Hệ Thống</div>
+        <a href="/admin/nguoi-dung" class="{{ Request::is('admin/nguoi-dung*') ? 'active' : '' }}">👤 Tài Khoản</a>
 
-        {{-- NHÓM 3: NHÂN SỰ & KẾT QUẢ --}}
-        <div class="menu-label">Nhân Sự & Điểm Số</div>
-
-        <a href="/admin/giang-vien" class="{{ Request::is('admin/giang-vien*') ? 'active' : '' }}">
-            👨‍🏫 Giảng viên
-        </a>
-        <a href="/admin/sinh-vien" class="{{ Request::is('admin/sinh-vien*') ? 'active' : '' }}">
-            🎓 Sinh viên
-        </a>
-        <a href="/admin/diem" class="{{ Request::is('admin/diem*') ? 'active' : '' }}">
-            📝 Nhập Điểm
-        </a>
-
-        {{-- NHÓM 4: HỆ THỐNG --}}
-        <div class="menu-label">Hệ Thống</div>
-
-        <a href="/admin/nguoi-dung" class="{{ Request::is('admin/nguoi-dung*') ? 'active' : '' }}">
-            👤 Tài khoản
-        </a>
-
-        {{-- NÚT ĐĂNG XUẤT --}}
-        <form action="/dang-xuat" method="POST" class="logout-form">
-            @csrf
-            <button type="submit" class="logout-btn"
-                onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');">
-                🚪 Đăng Xuất
-            </button>
-        </form>
+        <div class="logout-box">
+            <form action="/dang-xuat" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn" onclick="return confirm('Bạn muốn đăng xuất khỏi hệ thống?');">
+                    🚪 Đăng Xuất
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="content">
@@ -192,5 +164,4 @@
     </div>
 
 </body>
-
 </html>
