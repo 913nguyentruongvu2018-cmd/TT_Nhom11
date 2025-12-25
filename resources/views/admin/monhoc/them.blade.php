@@ -9,14 +9,14 @@
             </a>
         </div>
 
-        {{-- Hiển thị lỗi nếu có --}}
+        {{-- loi all --}}
         @if($errors->any())
             <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #f5c6cb;">
                 ⚠️ Vui lòng kiểm tra lại dữ liệu nhập bên dưới.
             </div>
         @endif
 
-        <form action="/admin/mon-hoc/them" method="POST">
+        <form action="/admin/mon-hoc/them" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -51,8 +51,11 @@
                     <tr>
                         <td style="font-weight:bold; background:#f9f9f9;">Số Tín Chỉ (*)</td>
                         <td>
-                            <input type="number" name="SoTinChi" required min="1" max="10" value="{{ old('SoTinChi', 3) }}"
+                            <input type="number" name="SoTinChi" step="any" required min="1" max="10" value="{{ old('SoTinChi', 3) }}"
                                    style="width:100px; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                            @error('SoTinChi') 
+                                <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> 
+                            @enderror
                         </td>
                     </tr>
                 </tbody>

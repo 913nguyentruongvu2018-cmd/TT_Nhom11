@@ -28,7 +28,13 @@ class MonHocController extends Controller
         ], [
             'MaMon.unique' => 'Mã môn này đã tồn tại.',
             'MaMon.required' => 'Vui lòng nhập mã môn.',
+            
             'TenMonHoc.unique' => 'Tên môn học này đã tồn tại.',
+            'TenMonHoc.required' => 'Vui lòng nhập tên môn học.',
+
+            'SoTinChi.required'  => 'Vui lòng nhập số tín chỉ.',
+            'SoTinChi.integer'   => 'Số tín chỉ phải là số nguyên (không nhập số lẻ).',
+            'SoTinChi.min'       => 'Số tín chỉ phải lớn hơn hoặc bằng 1.',
         ]);
 
         MonHoc::create([
@@ -48,10 +54,21 @@ class MonHocController extends Controller
 
     public function capNhat(Request $request, $id)
     {
-        $request->validate([
+       $request->validate([
             'MaMon'     => 'required|unique:monhoc,MaMon,'.$id.',MonHocID', 
             'TenMonHoc' => 'required|unique:monhoc,TenMonHoc,'.$id.',MonHocID',
             'SoTinChi'  => 'required|integer|min:1',
+        ],[
+            'MaMon.required'     => 'Vui lòng nhập mã môn học.',
+            'MaMon.unique'       => 'Mã môn học này đã tồn tại (trùng với môn khác).',
+            
+            'TenMonHoc.required' => 'Vui lòng nhập tên môn học.',
+            'TenMonHoc.unique'   => 'Tên môn học này đã tồn tại.',
+            
+            'SoTinChi.required'  => 'Vui lòng nhập số tín chỉ.',
+            'SoTinChi.integer'   => 'Số tín chỉ phải là số nguyên.',
+            'SoTinChi.min'       => 'Số tín chỉ phải lớn hơn hoặc bằng 1.',
+
         ]);
 
         $monHoc = MonHoc::find($id);

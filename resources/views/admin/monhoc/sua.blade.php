@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <form action="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" method="POST">
+        <form action="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" method="POST" novalidate>
             @csrf
             
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
@@ -44,8 +44,10 @@
                     <tr>
                         <td style="font-weight:bold; background:#f9f9f9;">Số Tín Chỉ</td>
                         <td>
-                            <input type="number" name="SoTinChi" value="{{ old('SoTinChi', $mon->SoTinChi) }}" min="1" required 
+                            <input type="number" name="SoTinChi" step="any" value="{{ old('SoTinChi', $mon->SoTinChi) }}" min="1" required 
                                    style="width:100px; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                                    @error('SoTinChi')<div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div>
+                                    @enderror
                         </td>
                     </tr>
                 </tbody>
