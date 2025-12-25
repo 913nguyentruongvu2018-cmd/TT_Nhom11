@@ -10,12 +10,17 @@
                 ← Quay lại bảng điểm
             </a>
         </div>
-
-        <form action="/admin/diem/sua/{{ $diem->DiemID }}" method="POST">
+        @if($errors->any())
+            <div style="background:#f8d7da; color:red; padding:10px; margin-bottom:10px; border-radius:4px;">
+                ⚠️ Vui lòng kiểm tra lại dữ liệu nhập.
+            </div>
+        @endif
+        <form action="/admin/diem/sua/{{ $diem->DiemID }}" method="POST" novalidate>
             @csrf
             
-<input type="hidden" name="url_params" value="{{ http_build_query(request()->except(['_token', 'from_source'])) }}">
-<input type="hidden" name="from_source" value="{{ request('from_source') }}">
+            <input type="hidden" name="url_params" value="{{ http_build_query(request()->except(['_token', 'from_source'])) }}">
+            <input type="hidden" name="from_source" value="{{ request('from_source') }}">
+            
             <table border="1" cellpadding="15" cellspacing="0" style="width:100%; border-collapse:collapse; border:1px solid #ddd; margin-bottom:20px;">
                 <thead>
                     <tr style="background:#2980b9; color:white;">
@@ -48,9 +53,7 @@
                                 value="{{ $diem->DiemSo }}"
                                 style="width:150px; padding:10px; border:2px solid #e67e22; border-radius:4px; font-weight:bold; font-size:18px; color:#e67e22;">
                             
-                            @error('DiemSo')
-                                <span style="color:red; margin-left:10px;">⚠️ {{ $message }}</span>
-                            @enderror
+                            @error('DiemSo') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
                 </tbody>

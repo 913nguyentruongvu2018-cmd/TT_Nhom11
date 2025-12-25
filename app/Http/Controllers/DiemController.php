@@ -102,7 +102,18 @@ class DiemController extends Controller
 
     
     public function luuDiem(Request $request) {
-        $request->validate(['SinhVienID'=>'required', 'MonHocID'=>'required', 'DiemSo'=>'required|numeric|min:0|max:10']);
+        $request->validate([
+            'SinhVienID'=>'required', 
+            'MonHocID'=>'required', 
+            'DiemSo'=>'required|numeric|min:0|max:10'
+        ], [
+            'SinhVienID.required' => 'Vui lòng chọn sinh viên.',
+            'MonHocID.required' => 'Vui lòng chọn môn học.',
+            'DiemSo.required' => 'Vui lòng nhập điểm số.',
+            'DiemSo.numeric' => 'Điểm số phải là số.',
+            'DiemSo.min' => 'Điểm số không được thấp hơn 0.',
+            'DiemSo.max' => 'Điểm số không được cao hơn 10.',
+        ]);
         
         $exists = Diem::where('SinhVienID', $request->SinhVienID)->where('MonHocID', $request->MonHocID)->exists();
         if($exists) return back()->withErrors(['msg'=>'Đã có điểm môn này!']);
@@ -132,7 +143,14 @@ class DiemController extends Controller
 
     
     public function capNhat(Request $request, $id) {
-        $request->validate(['DiemSo' => 'required|numeric|min:0|max:10']);
+        $request->validate([
+            'DiemSo' => 'required|numeric|min:0|max:10'
+        ], [
+            'DiemSo.required' => 'Vui lòng nhập điểm số.',
+            'DiemSo.numeric' => 'Điểm số phải là số.',
+            'DiemSo.min' => 'Điểm số không được thấp hơn 0.',
+            'DiemSo.max' => 'Điểm số không được cao hơn 10.',
+        ]);
         
         $diem = Diem::findOrFail($id);
         $diem->update(['DiemSo' => $request->DiemSo]);

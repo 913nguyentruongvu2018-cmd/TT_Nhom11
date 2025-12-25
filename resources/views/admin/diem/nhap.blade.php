@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.diem.nhap') }}" method="POST">
+        <form action="{{ route('admin.diem.nhap') }}" method="POST" novalidate>
             @csrf
            
 <input type="hidden" name="url_params" value="{{ http_build_query(request()->except(['_token', 'from_source'])) }}">
@@ -99,6 +99,7 @@
                             <input type="number" name="DiemSo" step="0.1" min="0" max="10" required placeholder="0.0" autofocus
                                 style="width:150px; padding:10px; border:2px solid #e67e22; border-radius:4px; font-weight:bold; font-size:18px; color:#e67e22;">
                             <span style="color:#856404; margin-left:10px; font-style:italic;">(Thang điểm 10)</span>
+                            @error('DiemSo') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 
