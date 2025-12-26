@@ -23,4 +23,17 @@ class GiangVienPanelController extends Controller
 
         return view('giangvien.dashboard', compact('gv'));
     }
+
+    public function xemLichDay() {
+        $gv = $this->getLoggedGiangVien();
+        if (!$gv) return back();
+
+        $dsTKB = ThoiKhoaBieu::where('GiangVienID', $gv->GiangVienID)
+                    ->with(['lopHoc', 'monHoc'])
+                    ->orderByRaw("FIELD(ThuTrongTuan, 'Hai', 'Ba', 'Tu', 'Nam', 'Sau', 'Bay', 'CN')")
+                    ->orderBy('GioBatDau')
+                    ->get();
+
+        return view('giangvien.lichday', compact('dsTKB','gv'));
+    }
 }

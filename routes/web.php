@@ -89,4 +89,5 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
     Route::get('/dashboard', [GiangVienPanelController::class, 'index']);
+    Route::get('/lich-day', [GiangVienPanelController::class, 'xemLichDay']);
 });
