@@ -90,4 +90,12 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
     Route::get('/dashboard', [GiangVienPanelController::class, 'index']);
     Route::get('/lich-day', [GiangVienPanelController::class, 'xemLichDay']);
+    Route::get('/lop-chu-nhiem', [GiangVienPanelController::class, 'xemLopChuNhiem']);
+    Route::get('/lop-chu-nhiem/diem/{id}', [GiangVienPanelController::class, 'xemDiemLop']);
+    Route::get('/lop-giang-day', [GiangVienPanelController::class, 'xemLopGiangDay']);
+    Route::get('/xem-lop-day/{lop_id}/{mon_hoc_id}', [GiangVienPanelController::class, 'xemDanhSachLopDay']);
+    Route::get('/xem-diem-sinh-vien/{id}', [GiangVienPanelController::class, 'xemChiTietDiem']);
+    Route::get('/', function () {
+        return redirect('/dang-nhap');
+    });
 });

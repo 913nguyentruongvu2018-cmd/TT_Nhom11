@@ -10,9 +10,6 @@ class SinhVien extends Model
     use HasFactory;
 
     protected $table = 'sinhvien';
-    protected $primaryKey = 'MaSV'; 
-    public $incrementing = false;   
-    protected $keyType = 'string';
     public $timestamps = false;
 
     protected $fillable = ['MaSV', 'HoTen', 'NguoiDungID', 'Lop', 'NgaySinh'];
@@ -22,5 +19,10 @@ class SinhVien extends Model
         
        
         return $this->belongsTo(LopHoc::class, 'Lop', 'LopID');
+    }
+
+    public function diems()
+    {
+        return $this->hasMany(Diem::class, 'SinhVienID', 'id');
     }
 }
