@@ -11,6 +11,7 @@ use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\ThoiKhoaBieuController;
 use App\Http\Controllers\NguoiDungController;
 use App\Http\Controllers\ChuyenNganhController;
+use App\Http\Controllers\GiangVienPanelController;
 
 
 Route::get('/dang-nhap', [DangNhapController::class, 'hienForm'])->name('login');
@@ -85,4 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return redirect('/dang-nhap');
     });
+});
+Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
+    Route::get('/dashboard', [GiangVienPanelController::class, 'index']);
 });

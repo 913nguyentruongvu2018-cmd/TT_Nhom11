@@ -45,7 +45,7 @@ class DangNhapController extends Controller
                 return redirect('/sinh-vien/dashboard');
             } elseif ($user->VaiTro == 'GiangVien') {
                 
-                return redirect('/admin/dashboard'); 
+                return redirect('/giang-vien/dashboard');;  
             }
             
             
