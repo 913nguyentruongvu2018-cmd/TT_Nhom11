@@ -12,7 +12,7 @@ use App\Http\Controllers\ThoiKhoaBieuController;
 use App\Http\Controllers\NguoiDungController;
 use App\Http\Controllers\ChuyenNganhController;
 use App\Http\Controllers\GiangVienPanelController;
-
+use App\Http\Controllers\SinhVienPanelController;
 
 Route::get('/dang-nhap', [DangNhapController::class, 'hienForm'])->name('login');
 Route::post('/dang-nhap', [DangNhapController::class, 'xuLyDangNhap']);
@@ -98,4 +98,12 @@ Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
     Route::get('/', function () {
         return redirect('/dang-nhap');
     });
+});
+Route::prefix('sinh-vien')->middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [SinhVienPanelController::class, 'index'])->name('sv.dashboard');
+    Route::get('/lich-hoc', [SinhVienPanelController::class, 'xemLichHoc'])->name('sv.lichhoc');
+    Route::get('/bang-diem', [SinhVienPanelController::class, 'xemBangDiem'])->name('sv.bangdiem');
+    Route::get('/lop-cua-toi', [SinhVienPanelController::class, 'xemLopCuaToi'])->name('sv.lopcuatoi');
+    Route::get('/ho-so', [SinhVienPanelController::class, 'xemHoSo'])->name('sv.hoso');
+    Route::post('/doi-mat-khau', [SinhVienPanelController::class, 'doiMatKhau'])->name('sv.doimatkhau');
 });
