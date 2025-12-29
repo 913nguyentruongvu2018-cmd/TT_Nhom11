@@ -13,11 +13,17 @@ use App\Http\Controllers\NguoiDungController;
 use App\Http\Controllers\ChuyenNganhController;
 use App\Http\Controllers\GiangVienPanelController;
 use App\Http\Controllers\SinhVienPanelController;
+use App\Http\Controllers\QuenMatKhauController; 
+
 
 Route::get('/dang-nhap', [DangNhapController::class, 'hienForm'])->name('login');
 Route::post('/dang-nhap', [DangNhapController::class, 'xuLyDangNhap']);
 Route::post('/dang-xuat', [DangNhapController::class, 'dangXuat']);
-
+//quenmk
+Route::get('/quen-mat-khau', [QuenMatKhauController::class, 'hienFormQuenMK']);
+Route::post('/quen-mat-khau', [QuenMatKhauController::class, 'guiMaXacNhan']);
+Route::get('/nhap-ma', [QuenMatKhauController::class, 'hienFormNhapMa']);
+Route::post('/xac-nhan-doi-pass', [QuenMatKhauController::class, 'xacNhanDoiPass']);
 
 Route::middleware(['auth'])->group(function () {
 

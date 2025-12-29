@@ -99,7 +99,7 @@
                     <tr>
                         <td style="font-weight:bold; background:#f9f9f9;">Email (*)</td>
                         <td>
-                            <input type="email" name="Email" value="{{ old('Email') }}" required placeholder="VD: example@gmail.com"
+                            <input type="email" name="Email" value="{{ old('Email') }}" required placeholder="VD: example@mailinator.com"
                                    style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
                              @error('Email') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>

@@ -117,6 +117,10 @@
         <label for="password">Mật khẩu:</label>
         <input type="password" id="password" name="MatKhau" required placeholder="Nhập mật khẩu">
 
+        <div class="forgot-pass">
+            <a href="/quen-mat-khau">Quên mật khẩu?</a>
+        </div>
+        
         <button type="submit">Đăng Nhập</button>
         
         <div class="note">
