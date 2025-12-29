@@ -17,7 +17,7 @@ class DangNhapController extends Controller
     {
         
         $request->validate([
-            'Email' => 'required|email',
+            'TenDangNhap' => 'required',
             'MatKhau' => 'required'
         ]);
 
@@ -25,7 +25,7 @@ class DangNhapController extends Controller
         
         
         $thongTinXacThuc = [
-            'Email' => $request->Email,
+            'TenDangNhap' => $request->TenDangNhap,
             'password' => $request->MatKhau
         ];
 

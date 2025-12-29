@@ -56,7 +56,6 @@
             font-size: 14px;
         }
 
-        /* Thông báo thành công */
         .success-msg {
             background-color: #d4edda;
             color: #155724;
@@ -67,13 +66,26 @@
             text-align: center;
         }
         
-        /* Ghi chú nhỏ */
         .note {
             font-size: 12px;
             color: #666;
             text-align: center;
             margin-top: 15px;
             font-style: italic;
+        }
+
+        .forgot-pass {
+            text-align: right;
+            margin-bottom: 15px;
+            margin-top: -10px;
+        }
+        .forgot-pass a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .forgot-pass a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -99,8 +111,8 @@
 
         @csrf
 
-        <label for="Email">Email nhà trường:</label>
-        <input type="email" id="Email" name="Email" required placeholder="VD: DH522xxxxx@student.ntv.vn" autofocus>
+        <label for="TenDangNhap">Tên đăng nhập:</label>
+        <input type="text" id="TenDangNhap" name="TenDangNhap" required placeholder="VD: DH52200001" autofocus>
 
         <label for="password">Mật khẩu:</label>
         <input type="password" id="password" name="MatKhau" required placeholder="Nhập mật khẩu">
@@ -108,7 +120,7 @@
         <button type="submit">Đăng Nhập</button>
         
         <div class="note">
-            Vui lòng sử dụng tài khoản Email do nhà trường cấp.
+            Sử dụng Mã SV hoặc Mã GV để đăng nhập.
         </div>
     </form>
 
