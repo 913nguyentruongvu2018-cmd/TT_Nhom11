@@ -9,7 +9,13 @@
         Thêm Môn Mới</a>
 
     @if (session('success'))
-    <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">✅ {{ session('success') }}
+    <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">
+        ✅ {{ session('success') }}
+    </div>
+    @endif
+    @if (session('error'))
+    <div style="background:#f8d7da; color:#721c24; padding:10px; margin-bottom:10px; border: 1px solid #f5c6cb;">
+        ⚠️ {{ session('error') }}
     </div>
     @endif
 
@@ -31,7 +37,7 @@
                 <td style="color:blue;">{{ $mon->TenMonHoc }}</td>
                 <td>{{ $mon->SoTinChi }}</td>
                 <td>
-                    <a href="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">Sửa</a> 
+                    <a href="/admin/mon-hoc/sua/{{ $mon->MonHocID }}" style="color:#007bff; font-weight:bold; text-decoration:none; border:1px solid #007bff; padding:4px 10px; border-radius:4px; display:inline-block; margin-right:5px;">Sửa</a>
                     <a href="/admin/mon-hoc/xoa/{{ $mon->MonHocID }}" style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:4px 10px; border-radius:4px; display:inline-block;" onclick="return confirm('Xóa môn học này?')">Xóa</a>
                 </td>
             </tr>

@@ -54,6 +54,11 @@
         ✅ {{ session('success') }}
     </div>
     @endif
+    @if (session('error'))
+    <div style="background:#f8d7da; color:#721c24; padding:10px; margin-bottom:10px; border: 1px solid #f5c6cb;">
+        ⚠️ {{ session('error') }}
+    </div>
+    @endif
 
     <table border="1" cellpadding="10" style="width:100%; border-collapse:collapse;">
         <thead>

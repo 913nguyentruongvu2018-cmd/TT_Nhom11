@@ -129,9 +129,18 @@ class SinhVienController extends Controller
     public function xoa($id)
     {
         $sv = SinhVien::where('id', $id)->orWhere('MaSV', $id)->first();
-        if ($sv) {
-            $sv->delete();
+       if ($sv->NguoiDungID != null) {
+            $userExists = NguoiDung::find($sv->NguoiDungID);
+            if ($userExists) {
+                return back()->with('error', 'Không thể xóa! Sinh viên này đang có tài khoản đăng nhập. Vui lòng xóa tài khoản trước.');
+            }
         }
-        return back()->with('success', 'Đã xóa sinh viên.');
+
+        try {
+            $sv->delete();
+            return back()->with('success', 'Đã xóa hồ sơ sinh viên.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi hệ thống: Không thể xóa sinh viên này (Có thể do đang dính bảng Điểm hoặc dữ liệu khác).');
+        }
     }
 }

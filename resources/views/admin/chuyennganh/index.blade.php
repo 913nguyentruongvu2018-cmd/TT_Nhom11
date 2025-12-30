@@ -4,7 +4,16 @@
     <h1>Quản Lý Chuyên Ngành</h1>
     <a href="/admin/chuyen-nganh/them" style="background:green; color:white; padding:10px; text-decoration:none; margin-bottom:15px; display:inline-block;">+ Thêm Ngành</a>
 
-    @if(session('success')) <div style="color:green; margin:10px 0;">✅ {{ session('success') }}</div> @endif
+    @if (session('success'))
+    <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">
+        ✅ {{ session('success') }}
+    </div>
+    @endif
+    @if (session('error'))
+    <div style="background:#f8d7da; color:#721c24; padding:10px; margin-bottom:10px; border: 1px solid #f5c6cb;">
+        ⚠️ {{ session('error') }}
+    </div>
+    @endif
 
     <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse;">
         <thead style="background:#f2f2f2;">

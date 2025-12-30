@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ChuyenNganh; 
+use App\Models\LopHoc; 
 
 class ChuyenNganhController extends Controller
 {
@@ -81,11 +82,18 @@ class ChuyenNganhController extends Controller
     
     public function xoa($id)
     {
+        $soLuongLop = LopHoc::where('ChuyenNganhID', $id)->count();
+
+        if ($soLuongLop > 0) {
+            return redirect()->back()->with('error', 
+                "Không thể xóa! Chuyên ngành này đang có $soLuongLop lớp học. Vui lòng xóa các lớp này trước.");
+        }
         try {
             ChuyenNganh::destroy($id);
             return redirect()->back()->with('success', 'Đã xóa chuyên ngành!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Lỗi: Có thể ngành này đang được dùng cho Lớp/GV khác.');
         }
+        
     }
 }

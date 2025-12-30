@@ -83,12 +83,25 @@ class MonHocController extends Controller
 
     public function xoa($id)
     {
-       ThoiKhoaBieu::where('MonHocId',$id)->delete();
-       Diem::where('MonHocID',$id)->delete();
-       $monHoc = MonHoc::find($id);
-       if($monHoc) {
-           $monHoc->delete();
-       }
-       return redirect('/admin/mon-hoc')->with('success', 'Đã xóa môn học và lịch học liên quan.');
+        $monHoc = MonHoc::find($id);
+       $countTKB = ThoiKhoaBieu::where('MonHocID', $id)->count();
+
+        if ($countTKB > 0) {
+            return redirect('/admin/mon-hoc')->with('error', 
+                "Không thể xóa! Môn này đang có $countTKB lịch dạy trong Thời Khóa Biểu.");
+        }
+
+        $countDiem = Diem::where('MonHocID', $id)->count();
+
+        if ($countDiem > 0) {
+            return redirect('/admin/mon-hoc')->with('error', 
+                "Không thể xóa! Môn này đã nhập điểm cho $countDiem sinh viên.");
+        }
+        try {
+            $monHoc->delete();
+            return redirect('/admin/mon-hoc')->with('success', 'Đã xóa môn học thành công.');
+        } catch (\Exception $e) {
+            return redirect('/admin/mon-hoc')->with('error', 'Lỗi hệ thống: Không thể xóa môn học này.');
+        }
     }
 }

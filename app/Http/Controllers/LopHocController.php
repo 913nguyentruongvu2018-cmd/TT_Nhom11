@@ -108,7 +108,11 @@ class LopHocController extends Controller
         if ($soLuongSV > 0) {
             return redirect('/admin/lop-hoc')->with('error', 'Không thể xóa! Lớp này đang có ' . $soLuongSV . ' sinh viên.');
         }
+        try{
         LopHoc::find($id)->delete();
         return redirect('/admin/lop-hoc')->with('success', 'Đã xóa lớp học.');
+        }catch(\Exception $e){
+            return back()->with('error', 'Lỗi hệ thống: Không thể xóa lớp này do ràng buộc dữ liệu khác.');
+        }
     }
 }

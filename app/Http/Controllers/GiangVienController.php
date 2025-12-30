@@ -121,7 +121,19 @@ class GiangVienController extends Controller
     public function xoa($id)
     {
         $gv = GiangVien::where('GiangVienID', $id)->orWhere('MaGV', $id)->first();
-        if ($gv) $gv->delete();
-        return redirect('/admin/giang-vien')->with('success', 'Đã xóa giảng viên.');
+
+        if ($gv->NguoiDungID != null) {
+            $userExists =NguoiDung::find($gv->NguoiDungID);
+            if ($userExists) {
+                return redirect('/admin/giang-vien')->with('error', 'Không thể xóa! Giảng viên này đang có tài khoản. Vui lòng xóa tài khoản trước.');
+            }
+        }
+
+        try {
+            $gv->delete();
+            return redirect('/admin/giang-vien')->with('success', 'Đã xóa hồ sơ giảng viên.');
+        } catch (\Exception $e) {
+            return redirect('/admin/giang-vien')->with('error', 'Lỗi hệ thống: Không thể xóa GV này (Có thể đang dính Lớp chủ nhiệm hoặc Lịch dạy).');
+        }
     }
 }
