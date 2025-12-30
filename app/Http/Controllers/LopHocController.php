@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\LopHoc;
 use App\Models\GiangVien;
 use App\Models\ChuyenNganh;
+use App\Models\SinhVien;
 
 class LopHocController extends Controller
 {
@@ -102,6 +103,11 @@ class LopHocController extends Controller
 
     
     public function xoa($id) {
+        $soLuongSV = SinhVien::where('Lop', $id)->count();
+
+        if ($soLuongSV > 0) {
+            return redirect('/admin/lop-hoc')->with('error', 'Không thể xóa! Lớp này đang có ' . $soLuongSV . ' sinh viên.');
+        }
         LopHoc::find($id)->delete();
         return redirect('/admin/lop-hoc')->with('success', 'Đã xóa lớp học.');
     }

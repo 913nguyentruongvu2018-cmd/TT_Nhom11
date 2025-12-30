@@ -89,9 +89,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/chuyen-nganh/xoa/{id}', [ChuyenNganhController::class, 'xoa']);
 
 
-    Route::get('/', function () {
-        return redirect('/dang-nhap');
-    });
 });
 Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
     Route::get('/dashboard', [GiangVienPanelController::class, 'index']);
@@ -101,9 +98,8 @@ Route::middleware(['auth'])->prefix('giang-vien')->group(function () {
     Route::get('/lop-giang-day', [GiangVienPanelController::class, 'xemLopGiangDay']);
     Route::get('/xem-lop-day/{lop_id}/{mon_hoc_id}', [GiangVienPanelController::class, 'xemDanhSachLopDay']);
     Route::get('/xem-diem-sinh-vien/{id}', [GiangVienPanelController::class, 'xemChiTietDiem']);
-    Route::get('/', function () {
-        return redirect('/dang-nhap');
-    });
+    Route::get('/ho-so', [GiangVienPanelController::class, 'hoSo']);
+    Route::post('/doi-mat-khau', [GiangVienPanelController::class, 'doiMatKhau']);
 });
 Route::prefix('sinh-vien')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [SinhVienPanelController::class, 'index'])->name('sv.dashboard');

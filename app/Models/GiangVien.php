@@ -17,4 +17,8 @@ class GiangVien extends Model
     public function chuyenNganh() {
         return $this->belongsTo(ChuyenNganh::class, 'ChuyenNganhID', 'ChuyenNganhID');
     }
+    public function lopHoc()
+    {
+        return $this->hasOne(LopHoc::class, 'GiangVienID', 'GiangVienID');
+    }
 }

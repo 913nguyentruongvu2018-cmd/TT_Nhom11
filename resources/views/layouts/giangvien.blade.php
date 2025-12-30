@@ -49,6 +49,9 @@
         <a href="/giang-vien/lop-chu-nhiem" class="{{ Request::is('giang-vien/lop-chu-nhiem*') ? 'active' : '' }}">
             👨‍🏫 Lớp Chủ Nhiệm
         </a>
+       <a href="/giang-vien/ho-so" class="{{ Request::is('giang-vien/ho-so*') ? 'active' : '' }}">
+            👤 Hồ Sơ & Tài Khoản
+        </a>
         <div class="logout-box">
         <form action="/dang-xuat" method="POST">
             @csrf
