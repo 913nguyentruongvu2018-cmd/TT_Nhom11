@@ -45,7 +45,7 @@
         </form>
     </div>
 
-    <a href="/admin/sinh-vien/them" style="background:green; color:white; padding:10px; text-decoration:none; display:inline-block; margin-bottom:15px;">
+    <a href="/admin/sinh-vien/them" style="background:green; color:white; padding:10px; text-decoration:none; display:inline-block; margin-bottom:15px;border-radius:5px;">
         + Thêm Sinh Viên Mới
     </a>
 

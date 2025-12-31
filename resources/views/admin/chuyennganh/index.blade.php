@@ -2,7 +2,7 @@
 @section('noidung')
 <div class="card">
     <h1>Quản Lý Chuyên Ngành</h1>
-    <a href="/admin/chuyen-nganh/them" style="background:green; color:white; padding:10px; text-decoration:none; margin-bottom:15px; display:inline-block;">+ Thêm Ngành</a>
+    <a href="/admin/chuyen-nganh/them" style="background:green; color:white; padding:10px;border-radius:5px; text-decoration:none; margin-bottom:15px; display:inline-block;">+ Thêm Ngành</a>
 
     @if (session('success'))
     <div style="background:#d4edda; color:#155724; padding:10px; margin-bottom:10px;">

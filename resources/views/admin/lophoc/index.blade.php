@@ -37,7 +37,7 @@
         </div>
 
         <a href="/admin/lop-hoc/them"
-            style="background:green; color:white; padding:10px; text-decoration:none; display:inline-block; margin-bottom:15px;">
+            style="background:green; color:white; padding:10px; text-decoration:none; display:inline-block; margin-bottom:15px;border-radius:5px;">
             + Thêm Lớp Học
         </a>
 
