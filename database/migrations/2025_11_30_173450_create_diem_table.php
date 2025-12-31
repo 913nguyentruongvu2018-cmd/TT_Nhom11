@@ -6,27 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-   public function up(): void
+    public function up(): void
     {
         Schema::create('diem', function (Blueprint $table) {
-            $table->id('DiemID'); 
-
+            $table->engine = 'InnoDB';
+            $table->id('DiemID');
             $table->unsignedBigInteger('SinhVienID');
             $table->unsignedBigInteger('MonHocID');
-
             $table->float('DiemSo');
 
-            $table->foreign('SinhVienID')->references('SinhVienID')->on('sinhvien')->onDelete('cascade');
-    
+            $table->foreign('SinhVienID')->references('id')->on('sinhvien')->onDelete('cascade');
+            $table->foreign('MonHocID')->references('MonHocID')->on('monhoc')->onDelete('cascade');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('diem');

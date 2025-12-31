@@ -6,12 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('nguoidung', function (Blueprint $table) {
+         Schema::create('nguoidung', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
 
             $table->string('TenDangNhap')->unique();
@@ -21,10 +19,6 @@ return new class extends Migration
             $table->enum('VaiTro', ['Admin', 'GiangVien', 'SinhVien'])->default('SinhVien');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('nguoidung');

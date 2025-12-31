@@ -52,15 +52,15 @@
                     <tr>
                         <td style="font-weight:bold; background:#f9f9f9;">Lớp Học (*)</td>
                         <td>
-                            <select name="Lop" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
+                            <select name="LopID" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" required>
                                 <option value="">-- Chọn Lớp --</option>
                                 @foreach($dsLop as $lop)
-                                    <option value="{{ $lop->LopID }}" {{ old('Lop') == $lop->LopID ? 'selected' : '' }}>
+                                    <option value="{{ $lop->LopID }}" {{ old('LopID') == $lop->LopID ? 'selected' : '' }}>
                                         {{ $lop->TenLop }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('Lop') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
+                            @error('LopID') <div style="color:red; font-size:13px; margin-top:5px;">⚠️ {{ $message }}</div> @enderror
                         </td>
                     </tr>
 

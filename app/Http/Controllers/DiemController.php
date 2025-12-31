@@ -18,7 +18,7 @@ class DiemController extends Controller
         $query = SinhVien::query();
 
         if ($request->filled('lop_id')) {
-            $query->where('Lop', $request->lop_id);
+            $query->where('LopID', $request->lop_id);
         }
         if ($request->filled('tu_khoa')) {
             $tuKhoa = $request->tu_khoa;
@@ -78,7 +78,7 @@ class DiemController extends Controller
         $dsLop = LopHoc::all();
         $dsMonHoc = MonHoc::all();
         
-        $svList = $request->filled('lop_id') ? SinhVien::where('Lop', $request->lop_id)->get() : SinhVien::all();
+        $svList = $request->filled('lop_id') ? SinhVien::where('LopID', $request->lop_id)->get() : SinhVien::all();
         
         $svSelected = null;
         if ($request->filled('sv_id')) {

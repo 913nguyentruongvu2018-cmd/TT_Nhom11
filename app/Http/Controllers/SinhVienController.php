@@ -19,7 +19,7 @@ class SinhVienController extends Controller
             $query->whereNull('NguoiDungID');
         }
         if ($request->filled('lop_id')) {
-            $query->where('Lop', $request->lop_id);
+            $query->where('LopID', $request->lop_id);
         }
         if ($request->filled('tu_khoa')) {
             $query->where(function ($q) use ($request) {
@@ -55,14 +55,14 @@ class SinhVienController extends Controller
         $request->validate([
             'MaSV' => ['required', 'unique:sinhvien,MaSV', 'regex:/^DH522\d{5}$/'],
             'HoTen' => 'required',
-            'Lop' => 'required',
+            'LopID' => 'required',
             'NgaySinh' => 'required', 
         ], [
             'MaSV.required' => 'Vui lòng nhập mã sinh viên.',
             'MaSV.regex' => 'Mã SV phải bắt đầu bằng DH522 và có 5 số phía sau.',
             'MaSV.unique' => 'Mã sinh viên này đã tồn tại.',
             'HoTen.required' => 'Vui lòng nhập họ tên sinh viên.',
-            'Lop.required' => 'Vui lòng chọn lớp.',
+            'LopID.required' => 'Vui lòng chọn lớp.',
             'NgaySinh.required' => 'Vui lòng chọn ngày sinh.', 
         ]);
 
@@ -70,7 +70,7 @@ class SinhVienController extends Controller
             'MaSV' => $request->MaSV,
             'HoTen' => $request->HoTen,
             'NgaySinh' => $request->NgaySinh,
-            'Lop' => $request->Lop,
+            'LopID' => $request->LopID,
             'NguoiDungID' => null
         ]);
 
@@ -99,11 +99,11 @@ class SinhVienController extends Controller
 
         $request->validate([
             'HoTen' => 'required',
-            'Lop' => 'required',
+            'LopID' => 'required',
             'NgaySinh' => 'required', 
         ], [
             'HoTen.required' => 'Vui lòng nhập họ tên sinh viên.',
-            'Lop.required' => 'Vui lòng chọn lớp học.',
+            'LopID.required' => 'Vui lòng chọn lớp học.',
             'NgaySinh.required' => 'Vui lòng chọn ngày sinh.', 
         ]);
 
@@ -111,7 +111,7 @@ class SinhVienController extends Controller
         $sinhvien->update([
             'HoTen' => $request->HoTen,
             'NgaySinh' => $request->NgaySinh,
-            'Lop' => $request->Lop,
+            'LopID' => $request->LopID,
         ]);
 
 

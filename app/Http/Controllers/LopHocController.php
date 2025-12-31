@@ -103,7 +103,7 @@ class LopHocController extends Controller
 
     
     public function xoa($id) {
-        $soLuongSV = SinhVien::where('Lop', $id)->count();
+        $soLuongSV = SinhVien::where('LopID', $id)->count();
 
         if ($soLuongSV > 0) {
             return redirect('/admin/lop-hoc')->with('error', 'Không thể xóa! Lớp này đang có ' . $soLuongSV . ' sinh viên.');

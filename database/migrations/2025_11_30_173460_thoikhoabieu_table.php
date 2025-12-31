@@ -6,28 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
    public function up(): void
     {
-        Schema::create('thoikhoabieu', function (Blueprint $table) {
+       Schema::create('thoikhoabieu', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('TKBid');
-            
             $table->unsignedBigInteger('LopID');
             $table->unsignedBigInteger('MonHocID');
-            $table->unsignedBigInteger('GiangVienID');
-
+            $table->unsignedInteger('GiangVienID');
             $table->string('ThuTrongTuan');
             $table->time('GioBatDau');
             $table->time('GioKetThuc');
             $table->string('PhongHoc');
+            
+            $table->foreign('LopID')->references('LopID')->on('lophoc')->onDelete('cascade');
+            $table->foreign('MonHocID')->references('MonHocID')->on('monhoc')->onDelete('cascade');
+            $table->foreign('GiangVienID')->references('GiangVienID')->on('giangvien')->onDelete('cascade');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('thoikhoabieu');

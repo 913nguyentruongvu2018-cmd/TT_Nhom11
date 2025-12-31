@@ -12,13 +12,13 @@ class SinhVien extends Model
     protected $table = 'sinhvien';
     public $timestamps = false;
 
-    protected $fillable = ['MaSV', 'HoTen', 'NguoiDungID', 'Lop', 'NgaySinh'];
+    protected $fillable = ['MaSV', 'HoTen', 'NguoiDungID', 'LopID', 'NgaySinh'];
 
     
     public function lopHoc() {
         
        
-        return $this->belongsTo(LopHoc::class, 'Lop', 'LopID');
+        return $this->belongsTo(LopHoc::class, 'LopID', 'LopID');
     }
 
     public function diems()

@@ -49,7 +49,7 @@ class GiangVienPanelController extends Controller
 
         $lop = LopHoc::where('GiangVienID', $gv->GiangVienID)->first();
 
-        $dsSV = $lop ? SinhVien::where('Lop', $lop->LopID)->get() : collect([]);
+        $dsSV = $lop ? SinhVien::where('LopID', $lop->LopID)->get() : collect([]);
 
         return view('giangvien.lop_chunhiem', compact('lop', 'dsSV', 'gv'));
     }
@@ -73,7 +73,7 @@ class GiangVienPanelController extends Controller
             return redirect('/giang-vien/lop-chu-nhiem')->with('error', 'Bạn không phụ trách lớp này!');
         }
 
-        $dsSV = SinhVien::where('Lop', $idLop)->with('diems.monHoc')->get();
+        $dsSV = SinhVien::where('LopID', $idLop)->with('diems.monHoc')->get();
 
         return view('giangvien.bangdiem', compact('lop', 'dsSV'));
     }
@@ -108,7 +108,7 @@ class GiangVienPanelController extends Controller
         $lop = LopHoc::find($lopID);
         $mon = \App\Models\MonHoc::find($monHocID);
 
-        $dsSV = SinhVien::where('Lop', $lopID)->get();
+        $dsSV = SinhVien::where('LopID', $lopID)->get();
 
         foreach ($dsSV as $sv) {
             $diem = \App\Models\Diem::where('SinhVienID', $sv->id)

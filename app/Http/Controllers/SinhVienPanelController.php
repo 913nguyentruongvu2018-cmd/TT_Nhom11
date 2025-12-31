@@ -32,7 +32,7 @@ class SinhVienPanelController extends Controller
         $sv = $this->getLoggedSinhVien();
         if (!$sv) return back();
 
-        $dsTKB = ThoiKhoaBieu::where('LopID', $sv->Lop)
+        $dsTKB = ThoiKhoaBieu::where('LopID', $sv->LopID)
             ->with(['monHoc', 'giangVien'])
             ->orderByRaw("FIELD(ThuTrongTuan, 'Hai', 'Ba', 'Tu', 'Nam', 'Sau', 'Bay', 'CN')")
             ->orderBy('GioBatDau')
@@ -47,7 +47,7 @@ class SinhVienPanelController extends Controller
         if (!$sv) return back();
         $monCoDiemIDs = Diem::where('SinhVienID', $sv->id)->pluck('MonHocID')->toArray();
 
-        $monTrongTKB_IDs = ThoiKhoaBieu::where('LopID', $sv->Lop)->pluck('MonHocID')->toArray();
+        $monTrongTKB_IDs = ThoiKhoaBieu::where('LopID', $sv->LopID)->pluck('MonHocID')->toArray();
 
         $allMonHocIDs = array_unique(array_merge($monCoDiemIDs, $monTrongTKB_IDs));
 
@@ -68,8 +68,8 @@ class SinhVienPanelController extends Controller
         $sv = $this->getLoggedSinhVien();
         if (!$sv) return back();
 
-        $lop = LopHoc::find($sv->Lop);
-        $dsSV = SinhVien::where('Lop', $sv->Lop)->orderBy('HoTen')->get();
+        $lop = LopHoc::find($sv->LopID);
+        $dsSV = SinhVien::where('LopID', $sv->LopID)->orderBy('HoTen')->get();
 
         return view('sinhvien.lop_cuatoi', compact('lop', 'dsSV', 'sv'));
     }
