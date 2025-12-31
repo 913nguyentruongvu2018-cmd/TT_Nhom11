@@ -109,3 +109,7 @@ Route::prefix('sinh-vien')->middleware(['auth'])->group(function () {
     Route::get('/ho-so', [SinhVienPanelController::class, 'xemHoSo'])->name('sv.hoso');
     Route::post('/doi-mat-khau', [SinhVienPanelController::class, 'doiMatKhau'])->name('sv.doimatkhau');
 });
+
+ Route::get('/', function () {
+        return redirect('/dang-nhap');
+    });
