@@ -92,7 +92,7 @@
 
 <body>
 
-    <form action="/dang-nhap" method="POST">
+    <form action="/dang-nhap" method="POST" novalidate>
         <h2>Đăng Nhập</h2>
 
         @if (session('success'))
@@ -113,7 +113,6 @@
 
         <label for="TenDangNhap">Tên đăng nhập:</label>
         <input type="text" id="TenDangNhap" name="TenDangNhap" required placeholder="VD: DH52200001" autofocus>
-
         <label for="password">Mật khẩu:</label>
         <input type="password" id="password" name="MatKhau" required placeholder="Nhập mật khẩu">
 

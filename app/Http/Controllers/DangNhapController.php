@@ -19,6 +19,9 @@ class DangNhapController extends Controller
         $request->validate([
             'TenDangNhap' => 'required',
             'MatKhau' => 'required'
+        ],[
+            'TenDangNhap.required' => 'Vui lòng nhập tên đăng nhập.',
+            'MatKhau.required' => 'Vui lòng nhập mật khẩu.'
         ]);
 
         
@@ -53,7 +56,7 @@ class DangNhapController extends Controller
         }
 
         
-        return back()->with('error', 'Email hoặc mật khẩu không đúng!');
+        return back()->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng!');
     }
 
     
