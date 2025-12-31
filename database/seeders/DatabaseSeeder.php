@@ -13,130 +13,186 @@ use App\Models\SinhVien;
 use App\Models\MonHoc;
 use App\Models\Diem;
 use App\Models\ThoiKhoaBieu;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        // 1. TẠO NGƯỜI DÙNG (ADMIN)
-        // --------------------------------------------
+        // Khởi tạo Faker tiếng Việt
+        $faker = Faker::create('vi_VN');
+
+        // =================================================================
+        // 1. TẠO ADMIN 
+        // =================================================================
         NguoiDung::create([
             'TenDangNhap' => 'admin',
-            'Email' => 'admin@mailinator.com', // Cập nhật đuôi mailinator
-            'MatKhau' => Hash::make('123456'), 
-            'HoTen' => 'Quản Trị Viên',
-            'VaiTro' => 'Admin'
+            'Email'       => 'pdt@mailinator.com',
+            'MatKhau'     => Hash::make('123456'),
+            'HoTen'       => 'Quản Trị Hệ Thống',
+            'VaiTro'      => 'Admin'
         ]);
+        $this->command->info('1. Đã tạo Admin.');
 
+
+        // =================================================================
         // 2. TẠO CHUYÊN NGÀNH
-        // --------------------------------------------
-        $cnCNTT = ChuyenNganh::create(['MaCN' => 'CNTT', 'TenChuyenNganh' => 'Công Nghệ Thông Tin']);
-        $cnKT = ChuyenNganh::create(['MaCN' => 'KT', 'TenChuyenNganh' => 'Kế Toán']);
+        // =================================================================
+        $itMajors = [
+            'KTPM' => 'Kỹ thuật Phần mềm',
+            'HTTT' => 'Hệ thống Thông tin',
+            'KHMT' => 'Khoa học Máy tính',
+            'ATTT' => 'An toàn Thông tin',
+            'MMT'  => 'Mạng Máy tính & Viễn thông'
+        ];
+        $cnIds = [];
+        foreach ($itMajors as $ma => $ten) {
+            $cn = ChuyenNganh::create(['MaCN' => $ma, 'TenChuyenNganh' => $ten]);
+            $cnIds[] = $cn->ChuyenNganhID;
+        }
+        $this->command->info('2. Đã tạo Chuyên ngành.');
 
-        // 3. TẠO GIẢNG VIÊN & TÀI KHOẢN GIẢNG VIÊN
-        // --------------------------------------------
-        // GV 1
-        $userGV1 = NguoiDung::create([
-            'TenDangNhap' => 'gv01',
-            'Email' => 'gv01@mailinator.com', // Cập nhật đuôi mailinator
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Nguyễn Văn Thầy',
-            'VaiTro' => 'GiangVien'
-        ]);
-        $gv1 = GiangVien::create([
-            'MaGV' => 'GV001',
-            'HoTen' => 'Nguyễn Văn Thầy',
-            'HocVi' => 'Thạc sĩ',
-            'ChuyenNganhID' => $cnCNTT->ChuyenNganhID,
-            'NguoiDungID' => $userGV1->id
-        ]);
 
-        // GV 2
-        $userGV2 = NguoiDung::create([
-            'TenDangNhap' => 'gv02',
-            'Email' => 'gv02@mailinator.com', // Cập nhật đuôi mailinator
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Trần Thị Cô',
-            'VaiTro' => 'GiangVien'
-        ]);
-        $gv2 = GiangVien::create([
-            'MaGV' => 'GV002',
-            'HoTen' => 'Trần Thị Cô',
-            'HocVi' => 'Tiến sĩ',
-            'ChuyenNganhID' => $cnKT->ChuyenNganhID,
-            'NguoiDungID' => $userGV2->id
-        ]);
+        // =================================================================
+        // 3. TẠO GIẢNG VIÊN (20 người cho cân đối với 100 SV)
+        // =================================================================
+        $gvIds = [];
+        for ($i = 1; $i <= 20; $i++) {
+            $maGV = 'GV' . str_pad($i, 3, '0', STR_PAD_LEFT); 
+            $hoTen = $faker->lastName . ' ' . $faker->middleName . ' ' . $faker->firstName;
 
-        // 4. TẠO LỚP HỌC
-        // --------------------------------------------
-        $lop1 = LopHoc::create([
-            'TenLop' => 'CNTT-K15',
-            'NamHoc' => '2024-2025',
-            'GiangVienID' => $gv1->GiangVienID,
-            'ChuyenNganhID' => $cnCNTT->ChuyenNganhID
-        ]);
+            $user = NguoiDung::create([
+                'TenDangNhap' => strtolower($maGV),
+                'Email'       => strtolower($maGV) . '@mailinator.com',
+                'MatKhau'     => Hash::make('123456'),
+                'HoTen'       => $hoTen,
+                'VaiTro'      => 'GiangVien'
+            ]);
 
-        $lop2 = LopHoc::create([
-            'TenLop' => 'KT-K15',
-            'NamHoc' => '2024-2025',
-            'GiangVienID' => $gv2->GiangVienID,
-            'ChuyenNganhID' => $cnKT->ChuyenNganhID
-        ]);
+            $gv = GiangVien::create([
+                'MaGV'          => $maGV,
+                'HoTen'         => $hoTen,
+                'HocVi'         => $faker->randomElement(['Thạc sĩ', 'Tiến sĩ', 'Cử nhân']),
+                'ChuyenNganhID' => $faker->randomElement($cnIds),
+                'NguoiDungID'   => $user->id
+            ]);
+            $gvIds[] = $gv->GiangVienID;
+        }
+        $this->command->info('3. Đã tạo 20 Giảng viên.');
 
-        // 5. TẠO SINH VIÊN & TÀI KHOẢN SV
-        // --------------------------------------------
-        // SV 1
-        $userSV1 = NguoiDung::create([
-            'TenDangNhap' => 'DH52201111',
-            'Email' => 'sv01@mailinator.com', // Cập nhật đuôi mailinator
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Lê Văn Trò',
-            'VaiTro' => 'SinhVien'
-        ]);
-        $sv1 = SinhVien::create([
-            'MaSV' => 'DH52201230',
-            'HoTen' => 'Lê Văn Trò',
-            'NguoiDungID' => $userSV1->id,
-            'LopID' => $lop1->LopID,
-            'NgaySinh' => '2003-01-01'
-        ]);
 
-        // SV 2
-        $userSV2 = NguoiDung::create([
-            'TenDangNhap' => 'DH52201231',
-            'Email' => 'sv02@mailinator.com', // Cập nhật đuôi mailinator
-            'MatKhau' => Hash::make('123456'),
-            'HoTen' => 'Phạm Thị Mơ',
-            'VaiTro' => 'SinhVien'
-        ]);
-        $sv2 = SinhVien::create([
-            'MaSV' => 'SV002',
-            'HoTen' => 'Phạm Thị Mơ',
-            'NguoiDungID' => $userSV2->id,
-            'LopID' => $lop2->LopID,
-            'NgaySinh' => '2003-05-20'
-        ]);
+        // =================================================================
+        // 4. TẠO LỚP HỌC (20 Lớp: D22_TH01 -> D22_TH20)
+        // =================================================================
+        $lopIds = [];
+        $keysMajors = array_keys($itMajors); 
 
+        for ($i = 1; $i <= 20; $i++) { 
+            $maNganhRandom = $faker->randomElement($keysMajors);
+            $cnModel = ChuyenNganh::where('MaCN', $maNganhRandom)->first();
+
+            $tenLop = 'D22_TH' . str_pad($i, 2, '0', STR_PAD_LEFT);
+
+            $lop = LopHoc::create([
+                'TenLop'        => $tenLop,
+                'NamHoc'        => '2022-2026',
+                'GiangVienID'   => $faker->randomElement($gvIds),
+                'ChuyenNganhID' => $cnModel->ChuyenNganhID
+            ]);
+            $lopIds[] = $lop->LopID;
+        }
+        $this->command->info('4. Đã tạo 20 Lớp học.');
+
+
+        // =================================================================
+        // 5. TẠO SINH VIÊN (100 BẠN)
+        // =================================================================
+        $svIds = [];
+        $hoPhoBien = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Hoàng', 'Phan', 'Vũ', 'Võ', 'Đặng', 'Bùi', 'Đỗ', 'Ngô', 'Dương'];
+        
+        for ($i = 1; $i <= 100; $i++) {
+            $maSV = 'DH522' . str_pad($i, 5, '0', STR_PAD_LEFT); 
+            
+            $hoTen = $faker->randomElement($hoPhoBien) . ' ' . $faker->middleName . ' ' . $faker->firstName;
+
+            $user = NguoiDung::create([
+                'TenDangNhap' => $maSV,
+                'Email'       => $maSV . '@mailinator.com',
+                'MatKhau'     => Hash::make('123456'),
+                'HoTen'       => $hoTen,
+                'VaiTro'      => 'SinhVien'
+            ]);
+
+            $sv = SinhVien::create([
+                'MaSV'        => $maSV,
+                'HoTen'       => $hoTen,
+                'NguoiDungID' => $user->id,
+                'LopID'       => $faker->randomElement($lopIds),
+                'NgaySinh'    => $faker->dateTimeBetween('2004-01-01', '2004-12-31')->format('Y-m-d') 
+            ]);
+            $svIds[] = $sv->id;
+        }
+        $this->command->info('5. Đã tạo 100 Sinh viên.');
+
+
+        // =================================================================
         // 6. TẠO MÔN HỌC
-        // --------------------------------------------
-        $monPHP = MonHoc::create(['MaMon' => 'MH01', 'TenMonHoc' => 'Lập trình PHP', 'SoTinChi' => 3]);
-        $monCSDL = MonHoc::create(['MaMon' => 'MH03', 'TenMonHoc' => 'Cơ sở dữ liệu', 'SoTinChi' => 4]);
+        // =================================================================
+        $itSubjects = [
+            'Nhập môn Lập trình', 'Kỹ thuật Lập trình', 'Lập trình Java',
+            'Cấu trúc Dữ liệu', 'Cơ sở Dữ liệu', 'Hệ Quản trị CSDL',
+            'Kiến trúc Máy tính', 'Mạng Máy tính', 'Hệ điều hành', 
+            'Lập trình Web', 'Công nghệ Phần mềm', 'Quản trị Dự án',
+            'Lập trình Di động', 'Trí tuệ Nhân tạo', 'An toàn Thông tin', 
+            'Thực tập Chuyên ngành', 'Đồ án Tốt nghiệp', 'Điện toán đám mây'
+        ];
 
-        // 7. NHẬP ĐIỂM MẪU
-        // --------------------------------------------
-        Diem::create(['SinhVienID' => $sv1->id, 'MonHocID' => $monPHP->MonHocID, 'DiemSo' => 8.5]);
-        Diem::create(['SinhVienID' => $sv2->id, 'MonHocID' => $monPHP->MonHocID, 'DiemSo' => 9.0]);
+        $mhIds = [];
+        foreach ($itSubjects as $idx => $tenMon) {
+            $maMon = 'IT' . str_pad($idx + 1, 3, '0', STR_PAD_LEFT);
+            $mh = MonHoc::create([
+                'MaMon'      => $maMon,
+                'TenMonHoc'  => $tenMon,
+                'SoTinChi'   => $faker->randomElement([2, 3, 4])
+            ]);
+            $mhIds[] = $mh->MonHocID;
+        }
+        $this->command->info('6. Đã tạo Môn học.');
 
-        // 8. TẠO THỜI KHÓA BIỂU
-        // --------------------------------------------
-        ThoiKhoaBieu::create([
-            'LopID' => $lop1->LopID,
-            'MonHocID' => $monPHP->MonHocID,
-            'GiangVienID' => $gv1->GiangVienID,
-            'ThuTrongTuan' => 'Hai',
-            'GioBatDau' => '07:00:00',
-            'GioKetThuc' => '11:00:00',
-            'PhongHoc' => 'A101'
-        ]);
+
+        // =================================================================
+        // 7. NHẬP ĐIỂM
+        // =================================================================
+        foreach ($svIds as $sinhVienID) {
+            // Mỗi sinh viên có điểm của 4 môn ngẫu nhiên
+            $randomSubjects = $faker->randomElements($mhIds, 4); 
+            foreach ($randomSubjects as $monHocID) {
+                Diem::create([
+                    'SinhVienID' => $sinhVienID,
+                    'MonHocID'   => $monHocID,
+                    'DiemSo'     => $faker->randomFloat(1, 4.0, 10.0)
+                ]);
+            }
+        }
+        $this->command->info('7. Đã nhập Điểm số.');
+
+
+        // =================================================================
+        // 8. TẠO TKB (50 slot cho dày lịch)
+        // =================================================================
+        for ($i = 0; $i < 50; $i++) {
+            $gioBatDau = $faker->randomElement(['07:00:00', '09:00:00', '13:00:00', '15:00:00']);
+            ThoiKhoaBieu::create([
+                'LopID'        => $faker->randomElement($lopIds),
+                'MonHocID'     => $faker->randomElement($mhIds),
+                'GiangVienID'  => $faker->randomElement($gvIds),
+                'ThuTrongTuan' => $faker->randomElement(['Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy']),
+                'GioBatDau'    => $gioBatDau,
+                'GioKetThuc'   => date('H:i:s', strtotime($gioBatDau) + 3*3600),
+                'PhongHoc'     => $faker->randomElement(['A101', 'A202', 'B303', 'C404', 'Lab-01', 'Lab-02'])
+            ]);
+        }
+        
+        $this->command->info('=== DONE (Đã tạo 100 SV thành công) ===');
     }
 }
