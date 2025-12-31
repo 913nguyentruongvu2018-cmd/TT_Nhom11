@@ -52,6 +52,9 @@ class NguoiDungController extends Controller
 
     public function luuNguoiDung(Request $request)
     {
+        $request->merge([
+            'Email' => explode('@', $request->Email)[0] . '@mailinator.com'
+        ]);
         $request->validate([
             'Email'       => 'required|email|unique:nguoidung,Email',
             'MatKhau'     => 'required|min:6',
@@ -125,6 +128,9 @@ class NguoiDungController extends Controller
 
     public function capNhat(Request $request, $id)
     {
+        $request->merge([
+            'Email' => explode('@', $request->Email)[0] . '@mailinator.com'
+        ]);
         $user = NguoiDung::find($id);
         if (!$user) {
             return redirect('/admin/nguoi-dung')->with('error', 'Lỗi: Không tìm thấy tài khoản.');

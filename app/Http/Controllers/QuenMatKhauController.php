@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class QuenMatKhauController extends Controller
 {
-    
+
     public function hienFormQuenMK()
     {
         return view('quenmatkhau.nhap-email');
@@ -19,6 +19,9 @@ class QuenMatKhauController extends Controller
     // xu ly gui ma
     public function guiMaXacNhan(Request $request)
     {
+        $request->merge([
+            'Email' => explode('@', $request->Email)[0] . '@mailinator.com'
+        ]);
         $request->validate([
             'Email' => 'required|email|exists:nguoidung,Email'
         ], [
