@@ -41,10 +41,10 @@
 
                 <td style="text-align:center;">
                     @if($mon->diem_so !== null)
-                    @if($mon->diem_so >= 4)
+                    @if($mon->diem_so >= 5)
                     <span style="color:green; font-weight:bold;">Đạt</span>
                     @else
-                    <span style="color:red; font-weight:bold;">Học lại</span>
+                    <span style="color:red; font-weight:bold;">Không Đạt</span>
                     @endif
                     @else
                     <span style="color:#999; font-size:13px; font-style:italic;">Chưa chấm</span>
