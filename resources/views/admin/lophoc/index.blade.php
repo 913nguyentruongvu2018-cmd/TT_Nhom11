@@ -32,7 +32,7 @@
                     🔍 Tìm kiếm
                 </button>
 
-                <a href="/admin/lop-hoc" style="color:#666; margin-left:10px;">Xóa lọc</a>
+                <a href="/admin/lop-hoc" style="color:#666; margin-left:5px; text-decoration:none;">❌ Xóa lọc</a>
             </form>
         </div>
 

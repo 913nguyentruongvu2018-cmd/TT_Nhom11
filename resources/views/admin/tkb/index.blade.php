@@ -34,7 +34,7 @@
                 </select>
 
                 <button type="submit" style="background:#007bff; color:white; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">🔍 Tìm kiếm</button>
-                <a href="/admin/tkb" style="color:#666; text-decoration:none; margin-left:5px;">❌ Xóa lọc</a>
+                <a href="/admin/tkb" style="color:#666; margin-left:5px; text-decoration:none;">❌ Xóa lọc</a>
             </form>
         </div>
 

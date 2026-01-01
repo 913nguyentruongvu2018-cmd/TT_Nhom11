@@ -36,14 +36,14 @@
             <button type="submit" style="background:#007bff; color:white; border:none; padding:8px 15px; cursor:pointer;">
                 🔍 Tìm
             </button>
-            <a href="{{ route('admin.diem.index') }}" style="color:#666; margin-left:5px; text-decoration:none;">❌ Reset</a>
+            <a href="{{ route('admin.diem.index') }}" style="color:#666; margin-left:5px; text-decoration:none;">❌ Xóa lọc</a>
         </form>
     </div>
 
 
-    <table border="1" cellpadding="10" style="width:100%; border-collapse:collapse;">
+    <table border="1" cellpadding="10" style="width:100%; border-radius:5px;; ">
         <thead>
-            <tr style="background:#343a40; color:white;">
+            <tr style="background:#343a40; color:white; ">
                 <th>MSSV</th>
                 <th>Họ Tên</th>
                 <th>Lớp</th>

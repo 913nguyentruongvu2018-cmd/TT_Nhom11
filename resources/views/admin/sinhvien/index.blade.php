@@ -103,7 +103,7 @@
 
                     <a href="/admin/sinh-vien/xoa/{{ $sv->id }}"
                         style="color:#dc3545; font-weight:bold; text-decoration:none; border:1px solid #dc3545; padding:5px 10px; border-radius:4px; display:inline-block; font-size:13px;"
-                        onclick="return confirm('Xóa sinh viên này sẽ xóa luôn điểm số và tài khoản liên quan. Bạn chắc chứ?')">
+                        onclick="return confirm('Bạn có chắc muốn xóa sinh viên này chứ?!')">
                         Xóa
                     </a>
                     <a href="{{ route('admin.diem.chitiet', ['sv_id' => $sv->id] + request()->all()) }}"
